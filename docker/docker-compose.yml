@@ -1,0 +1,14 @@
+services:
+  hivemq:
+    image: docker.io/hivemq/hivemq-ce
+    container_name: hivemq
+    volumes:
+      - ./logs:/opt/hivemq/log
+      - ./conf:/opt/hivemq/conf
+      - ./extensions:/opt/hivemq/extensions
+      - data:/opt/hivemq/data
+    ports:
+      - 127.0.0.1:1883:1883   # MQTT
+      - 127.0.0.1:8883:8883   # MQTT + TLS
+volumes:
+  data:
