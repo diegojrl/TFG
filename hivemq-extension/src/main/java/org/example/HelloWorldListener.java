@@ -22,6 +22,7 @@ import com.hivemq.extension.sdk.api.events.client.parameters.AuthenticationSucce
 import com.hivemq.extension.sdk.api.events.client.parameters.ConnectionStartInput;
 import com.hivemq.extension.sdk.api.events.client.parameters.DisconnectEventInput;
 import com.hivemq.extension.sdk.api.packets.general.MqttVersion;
+import com.hivemq.extension.sdk.api.services.Services;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

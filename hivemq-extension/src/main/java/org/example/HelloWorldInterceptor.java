@@ -22,6 +22,8 @@ import com.hivemq.extension.sdk.api.interceptor.publish.PublishInboundIntercepto
 import com.hivemq.extension.sdk.api.interceptor.publish.parameter.PublishInboundInput;
 import com.hivemq.extension.sdk.api.interceptor.publish.parameter.PublishInboundOutput;
 import com.hivemq.extension.sdk.api.packets.publish.ModifiablePublishPacket;
+import com.hivemq.extension.sdk.api.services.Services;
+import com.hivemq.extension.sdk.api.services.general.IterationCallback;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,16 +47,13 @@ public class HelloWorldInterceptor implements PublishInboundInterceptor {
     public void onInboundPublish(final @NotNull PublishInboundInput publishInboundInput, final @NotNull PublishInboundOutput publishInboundOutput) {
         final ModifiablePublishPacket publishPacket = publishInboundOutput.getPublishPacket();
         final String topic = publishPacket.getTopic();
+        //Services.subscriptionStore().iterateAllSubscribersForTopic(topic,(c, a)-> {
+        //});
         final Optional<ByteBuffer> payload = publishPacket.getPayload();
         if (payload.isPresent()) {
             final String msg = Charset.defaultCharset().decode(payload.get()).toString();
-
         }
         log.info("published: {}",publishInboundInput.getPublishPacket().getTopic());
-        if ("hello/world".equals(publishPacket.getTopic())) {
-            final ByteBuffer payload1 = ByteBuffer.wrap("Hello World!".getBytes(StandardCharsets.UTF_8));
-            publishPacket.setPayload(payload1);
-        }
     }
 
 }

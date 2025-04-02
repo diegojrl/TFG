@@ -28,6 +28,8 @@ import com.hivemq.extension.sdk.api.services.intializer.InitializerRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * This is the main class of the extension,
  * which is instantiated either during the HiveMQ start up process (if extension is enabled)
@@ -47,10 +49,10 @@ public class HelloWorldMain implements ExtensionMain {
             addAuth();
             addClientLifecycleEventListener();
             addPublishModifier();
-
+            //Update control info every 5s
+            Services.extensionExecutorService().scheduleAtFixedRate(ControlSub.controlTask, 10,5000, TimeUnit.MILLISECONDS);
             final ExtensionInformation extensionInformation = extensionStartInput.getExtensionInformation();
             log.info("Started {}:{}", extensionInformation.getName(), extensionInformation.getVersion());
-
         } catch (Exception e) {
             log.error("Exception thrown at extension start: ", e);
         }
@@ -67,7 +69,6 @@ public class HelloWorldMain implements ExtensionMain {
 
     private void addAuth() {
         final SecurityRegistry securityRegistry = Services.securityRegistry();
-
         final EnhancedAuthenticator auth = new Auth();
         securityRegistry.setEnhancedAuthenticatorProvider(in -> auth);
     }
@@ -86,8 +87,15 @@ public class HelloWorldMain implements ExtensionMain {
         final InitializerRegistry initializerRegistry = Services.initializerRegistry();
 
         final HelloWorldInterceptor helloWorldInterceptor = new HelloWorldInterceptor();
-
-        initializerRegistry.setClientInitializer((initializerInput, clientContext) -> clientContext.addPublishInboundInterceptor(helloWorldInterceptor));
+        final TrustEvalInterceptor trustEvalInterceptor = new TrustEvalInterceptor();
+        final Ping ping = new Ping();
+        initializerRegistry.setClientInitializer((initializerInput, clientContext) -> {
+            clientContext.addPublishInboundInterceptor(trustEvalInterceptor);
+            clientContext.addPublishOutboundInterceptor(trustEvalInterceptor);
+            clientContext.addPublishInboundInterceptor(helloWorldInterceptor);
+            clientContext.addPingReqInboundInterceptor(ping);
+            clientContext.addPingRespOutboundInterceptor(ping);
+        });
     }
 
 }
