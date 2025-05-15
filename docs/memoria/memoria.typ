@@ -22,7 +22,8 @@
 //Apendice
 #outline(target: heading.where(numbering: "A."), title: [Anexo])
 
-#show heading: it => pagebreak(to: "odd", weak: true) + it
+// Cada apartado aparece en una página nueva e impar
+//#show heading: it => pagebreak(to: "odd", weak: true) + it
 
 
 = Introducción
@@ -35,11 +36,27 @@ fads
 
 = Estado del arte
 
-Con el fin de establecer el contexto de este trabajo se revisarán los estudios relacionados con la confianza y el control de acceso en IoT.
+Con el fin de establecer el contexto de este trabajo se revisarán los estudios relacionados con la confianza y el control de
+acceso en IoT.
 
-Tras realizar una revisión exhaustiva de las investigaciones relevantes, se puede concluir que, aunque existe una gran cantidad de información respecto a la confianza en IoT, actualmente no existe un sistema que ofrezca la capacidad de integrarse fácilmente en un entorno existente.
+- En @siot se presenta una arquitectura para integrar dispositivos inteligentes. El componente de gestión de confianza se basa
+ en las relaciones previas con los dispositivos para seleccionar el dispositivo que mejor cumplirá con el servicio. 
+
+- Gestión de la confianza para la arquitectura basada en servicio @soa-iot, presenta un sistema de confianza distribuido para interconectar
+  dispositivos IoT que proporcionan diferentes servicios, tomano como base las relaciones sociales entre los dispositivos. 
+
+-  Trust-aware access control system for IoT (TACIoT) @taciot, propone un mecanismo de seguridad ligero para dispositivos IoT, tomando la confianza
+  como un factor principal y usando la lógica difusa para su cálculo. Este sistema ha sido probado bajo condiciones reales y muestra un buen rendimiento.
+
+- Trustee @trustee, presenta un sistema de gestión de la confianza usando múltiples factores. Aprovechando las ventajas que aportan las técnicas de aprendizaje 
+  computacional, el sistema tiene la capacidad de detectar anomalías e integrar esta información en el cálculo de la confianza.
+
+Tras realizar una revisión exhaustiva de las investigaciones relevantes, se puede concluir
+que, aunque existe una gran cantidad de información respecto a la confianza en IoT, actualmente 
+no existe un sistema que ofrezca la capacidad de integrarse fácilmente en un entorno existente.
 
 
+#bibliography("bibliografia.bib", style: "ieee")
 
 #show: anexo
 
