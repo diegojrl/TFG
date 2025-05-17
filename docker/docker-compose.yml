@@ -2,6 +2,8 @@ services:
   hivemq:
     image: docker.io/hivemq/hivemq-ce
     container_name: hivemq
+    environment:
+      HIVEMQ_LOG_LEVEL: DEBUG
     volumes:
       - ./logs:/opt/hivemq/log
       - ./conf:/opt/hivemq/conf

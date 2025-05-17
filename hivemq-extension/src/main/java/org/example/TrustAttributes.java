@@ -1,6 +1,11 @@
 package org.example;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
+import java.nio.ByteBuffer;
+
 public class TrustAttributes {
+
     private final String clientId;
     private int failureRate;
     private long latencySum;    //Total sum of
@@ -52,11 +57,11 @@ public class TrustAttributes {
         return failureRate;
     }
 
-    public long getLatency() {
+    public int getLatency() {
         if (latencyNum == 0) {
             return Integer.MAX_VALUE;
         }else {
-            return this.latencySum / latencyNum;
+            return (int)(this.latencySum / latencyNum);
         }
 
     }
@@ -71,6 +76,22 @@ public class TrustAttributes {
 
     public int getReputation() {
         return reputation;
+    }
+
+
+    private DeviceTrustData asDeviceTrustData() {
+        Integer failureRate = this.getFailureRate();
+        Integer delay = this.getLatency();
+        Integer reputation = this.getReputation();
+        DeviceTrustData.NetworkType networkType = this.externalNetwork ?
+                DeviceTrustData.NetworkType.External : DeviceTrustData.NetworkType.Internal;
+        DeviceTrustData.NetworkSecurity networkSecurity = this.usedTLS ?
+                DeviceTrustData.NetworkSecurity.TLS : DeviceTrustData.NetworkSecurity.No;
+        return new DeviceTrustData(failureRate,delay, networkType,networkSecurity, reputation);
+    }
+
+    public ByteBuffer encode() throws JsonProcessingException {
+        return ByteBuffer.wrap(MsgTest.objectMapper.writeValueAsBytes(this.asDeviceTrustData()));
     }
 
 

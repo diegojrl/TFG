@@ -28,7 +28,9 @@ public class Ping implements PingReqInboundInterceptor, PingRespOutboundIntercep
     public void onOutboundPingResp(@NotNull PingRespOutboundInput pingRespOutboundInput, @NotNull PingRespOutboundOutput pingRespOutboundOutput) {
         final long currentTime = System.currentTimeMillis();
         final String clientId = pingRespOutboundInput.getClientInformation().getClientId();
-        final long latency = currentTime - pingTimes.remove(clientId);
+        Long recvTime = pingTimes.remove(clientId);
+        if (recvTime == null) recvTime = 0L;
+        final long latency = currentTime - recvTime;
         TrustAttributes trustAttributes = TrustStore.getTrustAttributes(clientId);
         trustAttributes.addLatency(latency);
         log.info("{}: latency: {} ms", clientId, trustAttributes.getLatency());

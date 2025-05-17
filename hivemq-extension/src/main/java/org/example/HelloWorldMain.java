@@ -50,7 +50,7 @@ public class HelloWorldMain implements ExtensionMain {
             addClientLifecycleEventListener();
             addPublishModifier();
             //Update control info every 5s
-            Services.extensionExecutorService().scheduleAtFixedRate(ControlSub.controlTask, 10,5000, TimeUnit.MILLISECONDS);
+            Services.extensionExecutorService().scheduleAtFixedRate(ControlSub.controlTask, 10,5, TimeUnit.SECONDS);
             final ExtensionInformation extensionInformation = extensionStartInput.getExtensionInformation();
             log.info("Started {}:{}", extensionInformation.getName(), extensionInformation.getVersion());
         } catch (Exception e) {
