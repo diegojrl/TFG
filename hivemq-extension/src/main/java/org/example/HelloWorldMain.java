@@ -93,8 +93,12 @@ public class HelloWorldMain implements ExtensionMain {
             clientContext.addPublishInboundInterceptor(trustEvalInterceptor);
             clientContext.addPublishOutboundInterceptor(trustEvalInterceptor);
             clientContext.addPublishInboundInterceptor(helloWorldInterceptor);
+
+            //Set up Ping
             clientContext.addPingReqInboundInterceptor(ping);
-            clientContext.addPingRespOutboundInterceptor(ping);
+            clientContext.addPublishOutboundInterceptor(ping);
+            clientContext.addPubackInboundInterceptor(ping);
+            clientContext.addPubrecInboundInterceptor(ping);
         });
     }
 

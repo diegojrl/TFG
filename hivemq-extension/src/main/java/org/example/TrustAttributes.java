@@ -3,50 +3,42 @@ package org.example;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.nio.ByteBuffer;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class TrustAttributes {
 
     private final String clientId;
-    private int failureRate;
-    private long latencySum;    //Total sum of
-    private long latencyNum;    //Number of latency data points
-    private boolean usedTLS;
-    private boolean externalNetwork;
-    private int reputation;
+    private final AtomicInteger failureRate;
+    private final AtomicLong latencySum;    //Total sum of
+    private final AtomicLong latencyNum;    //Number of latency data points
+    private final boolean usedTLS;
+    private final boolean externalNetwork;
+    private final AtomicInteger reputation;
 
     public TrustAttributes(String clientId, int failureRate, boolean usedTLS, boolean externalNetwork, int reputation) {
         this.clientId = clientId;
-        this.failureRate = failureRate;
-        this.latencySum = 0;
-        this.latencyNum = 0;
+        this.failureRate = new AtomicInteger(failureRate);
+        this.latencySum = new AtomicLong();
+        this.latencyNum = new AtomicLong();
         this.usedTLS = usedTLS;
         this.externalNetwork = externalNetwork;
-        this.reputation = reputation;
+        this.reputation = new AtomicInteger(reputation);
     }
 
-    public TrustAttributes(String clientId) {
-        this.clientId = clientId;
-    }
 
     public void setFailureRate(int failureRate) {
-        this.failureRate = failureRate;
+        this.failureRate.set(failureRate);
     }
 
     public void addLatency(long latency) {
-        this.latencySum += latency;
-        this.latencyNum++;
+        this.latencySum.addAndGet(latency);
+        this.latencyNum.incrementAndGet();
     }
 
-    public void setUsedTLS(boolean usedTLS) {
-        this.usedTLS = usedTLS;
-    }
-
-    public void setExternalNetwork(boolean externalNetwork) {
-        this.externalNetwork = externalNetwork;
-    }
 
     public void setReputation(int reputation) {
-        this.reputation = reputation;
+        this.reputation.set(reputation);
     }
 
     public String getClientId() {
@@ -54,14 +46,14 @@ public class TrustAttributes {
     }
 
     public int getFailureRate() {
-        return failureRate;
+        return failureRate.get();
     }
 
     public int getLatency() {
-        if (latencyNum == 0) {
+        if (latencyNum.get() == 0) {
             return Integer.MAX_VALUE;
         }else {
-            return (int)(this.latencySum / latencyNum);
+            return (int)(this.latencySum.get() / latencyNum.get());
         }
 
     }
@@ -75,7 +67,7 @@ public class TrustAttributes {
     }
 
     public int getReputation() {
-        return reputation;
+        return reputation.get();
     }
 
 

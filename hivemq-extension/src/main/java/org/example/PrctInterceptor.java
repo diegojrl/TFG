@@ -27,6 +27,7 @@ public class PrctInterceptor implements
         PubackInboundInterceptor,      // Client -> Broker / QoS1
         PubrecInboundInterceptor      // Client -> Broker / QoS2
 {
+    //Todo implement timer and check for failure
     @Override
     public void onOutboundPublish(@NotNull PublishOutboundInput publishOutboundInput, @NotNull PublishOutboundOutput publishOutboundOutput) {
         //Save packet id
