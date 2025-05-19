@@ -20,13 +20,13 @@ public class TrustEvalInterceptor implements PublishOutboundInterceptor, Publish
     @Override
     public void onInboundPublish(@NotNull PublishInboundInput publishInboundInput, @NotNull PublishInboundOutput publishInboundOutput) {
         final String sender = publishInboundInput.getClientInformation().getClientId();
-        log.info("Sent by: {}", sender);
+        //log.info("Sent by: {}", sender);
     }
 
     @Override
     public void onOutboundPublish(@NotNull PublishOutboundInput publishOutboundInput, @NotNull PublishOutboundOutput publishOutboundOutput) {
         final String receiver = publishOutboundInput.getClientInformation().getClientId();
-        log.info("Sent to: {}", receiver);
+        //log.info("Sent to: {}", receiver);
 
     }
 

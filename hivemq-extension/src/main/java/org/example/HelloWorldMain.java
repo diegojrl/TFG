@@ -25,6 +25,9 @@ import com.hivemq.extension.sdk.api.parameter.*;
 import com.hivemq.extension.sdk.api.services.Services;
 import com.hivemq.extension.sdk.api.services.auth.SecurityRegistry;
 import com.hivemq.extension.sdk.api.services.intializer.InitializerRegistry;
+import org.example.trustControl.ControlSub;
+import org.example.trustManagement.Ping;
+import org.example.trustManagement.PublishOutboundChecks;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -89,16 +92,20 @@ public class HelloWorldMain implements ExtensionMain {
         final HelloWorldInterceptor helloWorldInterceptor = new HelloWorldInterceptor();
         final TrustEvalInterceptor trustEvalInterceptor = new TrustEvalInterceptor();
         final Ping ping = new Ping();
+        final PublishOutboundChecks outChecks = new PublishOutboundChecks();
         initializerRegistry.setClientInitializer((initializerInput, clientContext) -> {
             clientContext.addPublishInboundInterceptor(trustEvalInterceptor);
             clientContext.addPublishOutboundInterceptor(trustEvalInterceptor);
             clientContext.addPublishInboundInterceptor(helloWorldInterceptor);
 
+            //Set up outbound checks
+            clientContext.addPublishOutboundInterceptor(outChecks);
+
             //Set up Ping
             clientContext.addPingReqInboundInterceptor(ping);
-            clientContext.addPublishOutboundInterceptor(ping);
             clientContext.addPubackInboundInterceptor(ping);
             clientContext.addPubrecInboundInterceptor(ping);
+
         });
     }
 

@@ -1,4 +1,4 @@
-package org.example;
+package org.example.trustManagement;
 
 import com.hivemq.extension.sdk.api.annotations.NotNull;
 import com.hivemq.extension.sdk.api.client.parameter.ConnectionAttributeStore;
@@ -8,9 +8,6 @@ import com.hivemq.extension.sdk.api.interceptor.pingreq.parameter.PingReqInbound
 import com.hivemq.extension.sdk.api.interceptor.puback.PubackInboundInterceptor;
 import com.hivemq.extension.sdk.api.interceptor.puback.parameter.PubackInboundInput;
 import com.hivemq.extension.sdk.api.interceptor.puback.parameter.PubackInboundOutput;
-import com.hivemq.extension.sdk.api.interceptor.publish.PublishOutboundInterceptor;
-import com.hivemq.extension.sdk.api.interceptor.publish.parameter.PublishOutboundInput;
-import com.hivemq.extension.sdk.api.interceptor.publish.parameter.PublishOutboundOutput;
 import com.hivemq.extension.sdk.api.interceptor.pubrec.PubrecInboundInterceptor;
 import com.hivemq.extension.sdk.api.interceptor.pubrec.parameter.PubrecInboundInput;
 import com.hivemq.extension.sdk.api.interceptor.pubrec.parameter.PubrecInboundOutput;
@@ -18,13 +15,15 @@ import com.hivemq.extension.sdk.api.packets.general.Qos;
 import com.hivemq.extension.sdk.api.services.Services;
 import com.hivemq.extension.sdk.api.services.builder.Builders;
 import com.hivemq.extension.sdk.api.services.publish.Publish;
+import org.example.trustData.DeviceTrustAttributes;
+import org.example.trustData.TrustStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
 import java.util.Optional;
 
-public class Ping implements PingReqInboundInterceptor, PublishOutboundInterceptor, PubackInboundInterceptor, PubrecInboundInterceptor {
+public class Ping implements PingReqInboundInterceptor, PubackInboundInterceptor, PubrecInboundInterceptor {
     private static final Logger log = LoggerFactory.getLogger(Ping.class);
 
     private static final String PING_TOPIC = "tmgr/ping";
@@ -49,25 +48,6 @@ public class Ping implements PingReqInboundInterceptor, PublishOutboundIntercept
         Services.publishService().publishToClient(pingMsg, clientId).join();
     }
 
-    /**
-     *  If an outgoing message has QoS > 0, then store the ID and timestamp
-     */
-    @Override
-    public void onOutboundPublish(@NotNull PublishOutboundInput publishOutboundInput, @NotNull PublishOutboundOutput publishOutboundOutput) {
-        log.debug("Received PublishOutbound, {} , qos: {}, topic: {}", publishOutboundOutput.getPublishPacket().getPacketId(), publishOutboundOutput.getPublishPacket().getQos(), publishOutboundInput.getPublishPacket().getTopic());
-        if (publishOutboundInput.getPublishPacket().getQos().getQosNumber() > 0){
-            log.debug("Save timestamp");
-            final Integer packetId = publishOutboundOutput.getPublishPacket().getPacketId();
-            final long timestamp = publishOutboundInput.getPublishPacket().getTimestamp();
-
-            //Store timestamp and packetId in session store
-            ByteBuffer timeData = ByteBuffer.allocate(Long.BYTES);
-            timeData.putLong(timestamp);
-            timeData.position(0);
-            publishOutboundInput.getConnectionInformation().getConnectionAttributeStore().put(packetId.toString(), timeData);
-        }
-        //Save packet id
-    }
 
     @Override
     public void onInboundPubrec(@NotNull PubrecInboundInput pubrecInboundInput, @NotNull PubrecInboundOutput pubrecInboundOutput) {
@@ -104,9 +84,14 @@ public class Ping implements PingReqInboundInterceptor, PublishOutboundIntercept
             final long rtt = (currentTime - timestamp);
             final long latency = rtt / 2;
 
-            final TrustAttributes trustAttributes = TrustStore.getTrustAttributes(clientId);
-            trustAttributes.addLatency(latency);
-            log.debug("{} latency: {}", clientId, latency);
+            final DeviceTrustAttributes trustAttributes = TrustStore.getTrustAttributes(clientId);
+            if (trustAttributes != null){
+                trustAttributes.addLatency(latency);
+                log.debug("{} latency: {}", clientId, latency);
+            } else {
+                log.error("No client with id {} found", clientId);
+            }
+
         } else {
             log.debug("No time data for packet {}, client {}", packetId, clientId);
         }

@@ -33,6 +33,14 @@
         <source.document.name>README.adoc</source.document.name>
     </properties>
 
+
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <!-- HiveMQ SDK -->
         <dependency>
@@ -47,6 +55,13 @@
             <artifactId>jackson-dataformat-msgpack</artifactId>
             <version>0.9.8</version>
         </dependency>
+        <!-- Fuzzy logic library -->
+        <dependency>
+            <groupId>com.github.sorend</groupId>
+            <artifactId>fuzzy4j</artifactId>
+            <version>1.4</version>
+        </dependency>
+
         <!-- testing -->
         <dependency>
             <groupId>com.hivemq</groupId>

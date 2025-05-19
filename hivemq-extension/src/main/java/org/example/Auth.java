@@ -7,6 +7,8 @@ import com.hivemq.extension.sdk.api.auth.parameter.EnhancedAuthInput;
 import com.hivemq.extension.sdk.api.auth.parameter.EnhancedAuthOutput;
 import com.hivemq.extension.sdk.api.client.parameter.ConnectionInformation;
 import com.hivemq.extension.sdk.api.client.parameter.Listener;
+import org.example.trustData.DeviceTrustAttributes;
+import org.example.trustData.TrustStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +24,7 @@ public class Auth implements EnhancedAuthenticator {
         String clientId = enhancedAuthConnectInput.getClientInformation().getClientId();
         boolean usedTLS = isTLSUsed(enhancedAuthConnectInput.getConnectionInformation());
         boolean externalNetwork = isExternalNetwork(enhancedAuthConnectInput.getConnectionInformation());
-        TrustStore.putTrustAttributes(clientId, new TrustAttributes(clientId,0,usedTLS,externalNetwork,50));
+        TrustStore.putTrustAttributes(clientId, new DeviceTrustAttributes(clientId,usedTLS,externalNetwork,50));
         if (enhancedAuthConnectInput.getConnectPacket().getUserName().isPresent()) {
             enhancedAuthOutput.authenticateSuccessfully();
         }else {
