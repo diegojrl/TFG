@@ -27,10 +27,10 @@ public class PublishOutboundChecks implements PublishOutboundInterceptor {
             // Check for packet resends
             if (store.get(packetId).isPresent()) {
                 log.debug("Packet resend");
-                TrustStore.getTrustAttributes(clientId).addFailedPacket();
+                TrustStore.get(clientId).addFailedPacket();
             }else {
                 log.trace("Packet sent");
-                TrustStore.getTrustAttributes(clientId).addSentPacket();
+                TrustStore.get(clientId).addSentPacket();
             }
             // Store timestamp for Latency calculation
             log.debug("Save timestamp");

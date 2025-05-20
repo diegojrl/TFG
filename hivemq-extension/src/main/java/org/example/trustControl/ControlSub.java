@@ -25,7 +25,7 @@ public class ControlSub  {
         Services.clientService().iterateAllClients((itContext, session) -> {
             if (session.isConnected()) {
                 final String clientId = session.getClientIdentifier();
-                final DeviceTrustAttributes trustAttributes = TrustStore.getTrustAttributes(clientId);
+                final DeviceTrustAttributes trustAttributes = TrustStore.get(clientId);
                 if (trustAttributes != null) {
                     try {
                         //Encode data to byteBuffer

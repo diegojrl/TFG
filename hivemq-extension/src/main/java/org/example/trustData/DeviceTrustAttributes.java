@@ -1,15 +1,20 @@
 package org.example.trustData;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hivemq.extension.sdk.api.annotations.NotNull;
+import com.hivemq.extension.sdk.api.client.parameter.ClientInformation;
+import com.hivemq.extension.sdk.api.client.parameter.ConnectionInformation;
+import com.hivemq.extension.sdk.api.client.parameter.Listener;
+import org.example.Configuration;
 import org.example.trustControl.ControlMapper;
 
+import java.net.InetAddress;
 import java.nio.ByteBuffer;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class DeviceTrustAttributes {
-    public static int MIN_LATENCY = 20;
-    public static int MAX_LATENCY = 500;
 
     private final String clientId;
     private final AtomicLong failedPacketCount;
@@ -19,6 +24,10 @@ public class DeviceTrustAttributes {
     private final boolean usedTLS;
     private final boolean externalNetwork;
     private final AtomicInteger reputation;
+
+    public DeviceTrustAttributes(@NotNull final ClientInformation clientInfo, @NotNull final ConnectionInformation connInfo) {
+        this(clientInfo.getClientId(), isTLSUsed(connInfo), isExternalNetwork(connInfo), 50);
+    }
 
     public DeviceTrustAttributes(String clientId, boolean usedTLS, boolean externalNetwork, int reputation) {
         this.clientId = clientId;
@@ -44,10 +53,6 @@ public class DeviceTrustAttributes {
         this.totalPacketCount.getAndIncrement();
     }
 
-    public void setReputation(int reputation) {
-        this.reputation.set(reputation);
-    }
-
     public String getClientId() {
         return clientId;
     }
@@ -57,20 +62,34 @@ public class DeviceTrustAttributes {
         return Math.min(failureRate, 1);
     }
 
+    public void setFailureRate(int failureRate) {
+        if (failureRate > 100) failureRate = 100;
+        else if (failureRate < 0) failureRate = 0;
+        failedPacketCount.set(failureRate);
+        totalPacketCount.set(1);
+    }
+
     public int getLatency() {
         if (latencyNum.get() == 0) {
-            return MAX_LATENCY;
+            return Configuration.getDelayMax();
         } else {
-            int latency = (int) (latencyNum.get() / latencySum.get());
-            if (latency < MIN_LATENCY) {
-                return MIN_LATENCY;
-            }else if (latency > MAX_LATENCY) {
-                return MAX_LATENCY;
+            int latency = (int) (latencySum.get() / latencyNum.get());
+            if (latency < Configuration.getDelayMin()) {
+                return Configuration.getDelayMin();
+            }else if (latency > Configuration.getDelayMax()) {
+                return Configuration.getDelayMax();
             }else {
                 return latency;
             }
         }
 
+    }
+
+    public void setLatency(int latency) {
+        if (latency > Configuration.getDelayMax()) latency = Configuration.getDelayMax();
+        else if (latency < Configuration.getDelayMin()) latency = Configuration.getDelayMin();
+        latencySum.set(latency);
+        latencyNum.set(1);
     }
 
     public int getSecurity() {
@@ -107,5 +126,38 @@ public class DeviceTrustAttributes {
     public ByteBuffer encodeToControlFormat() throws JsonProcessingException {
         return ByteBuffer.wrap(ControlMapper.MAPPER.writeValueAsBytes(this.asDeviceTrustData()));
     }
+
+    @Override
+    public String toString() {
+        return clientId + ", " +
+                "delay: " + getLatency() + "ms, " +
+                "fail: " + getFailureRate() + "%, " +
+                "sec: " + (getSecurity() == 1) + ", " +
+                "rep: " + getReputation() + "%";
+    }
+
+    private static boolean isTLSUsed(ConnectionInformation connectionInformation) {
+        Optional<Listener> optionalListener = connectionInformation.getListener();
+        if (optionalListener.isPresent()) {
+            Listener listener = optionalListener.get();
+            switch (listener.getListenerType()) {
+                case TLS_TCP_LISTENER:
+                case TLS_WEBSOCKET_LISTENER:
+                    return true;
+            }
+        }
+        return false;
+
+    }
+    private static boolean isExternalNetwork(ConnectionInformation connectionInformation) {
+        Optional<InetAddress> optionalListener = connectionInformation.getInetAddress();
+        if (optionalListener.isPresent()) {
+            InetAddress address = optionalListener.get();
+            return !address.isAnyLocalAddress();
+        }else {
+            return true;
+        }
+    }
+
 
 }

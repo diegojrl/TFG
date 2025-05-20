@@ -23,8 +23,8 @@ import org.slf4j.LoggerFactory;
 import java.nio.ByteBuffer;
 import java.util.Optional;
 
-public class Ping implements PingReqInboundInterceptor, PubackInboundInterceptor, PubrecInboundInterceptor {
-    private static final Logger log = LoggerFactory.getLogger(Ping.class);
+public class PingInterceptor implements PingReqInboundInterceptor, PubackInboundInterceptor, PubrecInboundInterceptor {
+    private static final Logger log = LoggerFactory.getLogger(PingInterceptor.class);
 
     private static final String PING_TOPIC = "tmgr/ping";
 
@@ -84,7 +84,7 @@ public class Ping implements PingReqInboundInterceptor, PubackInboundInterceptor
             final long rtt = (currentTime - timestamp);
             final long latency = rtt / 2;
 
-            final DeviceTrustAttributes trustAttributes = TrustStore.getTrustAttributes(clientId);
+            final DeviceTrustAttributes trustAttributes = TrustStore.get(clientId);
             if (trustAttributes != null){
                 trustAttributes.addLatency(latency);
                 log.debug("{} latency: {}", clientId, latency);

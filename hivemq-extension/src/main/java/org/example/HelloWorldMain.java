@@ -26,11 +26,14 @@ import com.hivemq.extension.sdk.api.services.Services;
 import com.hivemq.extension.sdk.api.services.auth.SecurityRegistry;
 import com.hivemq.extension.sdk.api.services.intializer.InitializerRegistry;
 import org.example.trustControl.ControlSub;
-import org.example.trustManagement.Ping;
+import org.example.trustControl.ModificationListener;
+import org.example.trustManagement.PingInterceptor;
 import org.example.trustManagement.PublishOutboundChecks;
+import org.example.trustManagement.TrustEvalInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -56,10 +59,13 @@ public class HelloWorldMain implements ExtensionMain {
             Services.extensionExecutorService().scheduleAtFixedRate(ControlSub.controlTask, 10,5, TimeUnit.SECONDS);
             final ExtensionInformation extensionInformation = extensionStartInput.getExtensionInformation();
             log.info("Started {}:{}", extensionInformation.getName(), extensionInformation.getVersion());
-        } catch (Exception e) {
+        } catch (IOException e) {
+            log.error("Failed to read configuration", e);
+            extensionStartOutput.preventExtensionStartup("Failed to read configuration: " + e.getMessage());
+        }catch(Exception e) {
             log.error("Exception thrown at extension start: ", e);
+            extensionStartOutput.preventExtensionStartup(e.getLocalizedMessage());
         }
-
     }
 
     @Override
@@ -86,17 +92,20 @@ public class HelloWorldMain implements ExtensionMain {
 
     }
 
-    private void addPublishModifier() {
+    private void addPublishModifier() throws IOException {
         final InitializerRegistry initializerRegistry = Services.initializerRegistry();
 
-        final HelloWorldInterceptor helloWorldInterceptor = new HelloWorldInterceptor();
         final TrustEvalInterceptor trustEvalInterceptor = new TrustEvalInterceptor();
-        final Ping ping = new Ping();
+        final PingInterceptor ping = new PingInterceptor();
         final PublishOutboundChecks outChecks = new PublishOutboundChecks();
+        final ModificationListener modListener = new ModificationListener();
+
         initializerRegistry.setClientInitializer((initializerInput, clientContext) -> {
+
+            //Setup Authorization checks
             clientContext.addPublishInboundInterceptor(trustEvalInterceptor);
             clientContext.addPublishOutboundInterceptor(trustEvalInterceptor);
-            clientContext.addPublishInboundInterceptor(helloWorldInterceptor);
+
 
             //Set up outbound checks
             clientContext.addPublishOutboundInterceptor(outChecks);
@@ -105,6 +114,9 @@ public class HelloWorldMain implements ExtensionMain {
             clientContext.addPingReqInboundInterceptor(ping);
             clientContext.addPubackInboundInterceptor(ping);
             clientContext.addPubrecInboundInterceptor(ping);
+
+            //Set up control mod listener
+            clientContext.addPublishInboundInterceptor(modListener);
 
         });
     }

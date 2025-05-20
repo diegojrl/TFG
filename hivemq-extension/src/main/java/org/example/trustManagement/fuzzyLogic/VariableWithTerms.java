@@ -1,11 +1,10 @@
-package org.example.trustManagement.fuzzy;
+package org.example.trustManagement.fuzzyLogic;
 
 import fuzzy4j.flc.Term;
 import fuzzy4j.flc.Variable;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 public class VariableWithTerms {
     private final Variable variable;

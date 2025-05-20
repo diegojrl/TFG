@@ -1,7 +1,8 @@
-package org.example.trustManagement.fuzzy;
+package org.example.trustManagement.fuzzyLogic;
 
 import fuzzy4j.flc.*;
 import fuzzy4j.sets.TrapezoidalFunction;
+import org.example.Configuration;
 import org.example.trustData.DeviceTrustAttributes;
 
 import java.io.IOException;
@@ -42,8 +43,10 @@ public class FuzzyCtr {
 
 
     public double evaluate(final DeviceTrustAttributes device) {
+        final double latency = (device.getLatency() - Configuration.getDelayMin()) /
+                (double) (Configuration.getDelayMax() - Configuration.getDelayMin());
         InputInstance input = new InputInstance()
-                .is(delay.getVariable(), device.getLatency())
+                .is(delay.getVariable(), latency)
                 .is(security.getVariable(), device.getSecurity())
                 .is(reputation.getVariable(), device.getReputation())
                 .is(failedPctr.getVariable(), device.getFailureRate());
@@ -60,14 +63,11 @@ public class FuzzyCtr {
     }
 
     private static VariableWithTerms createDelay() {
-        final double delayMax = 500;
-        final double delayMin = 20;
-        final double mean = (delayMax + delayMin)/2;
 
-        Term sLow = term("low", new TrapezoidalFunction(0,0, delayMin, mean));
-        Term sMedium = term("medium", delayMin,mean,  delayMax);
-        Term sHigh  = new Term("high", new TrapezoidalFunction(mean, delayMax, delayMax + 10, delayMax + 10));
-        Variable security = input("delay", sLow, sMedium, sHigh).start(delayMin).end(delayMax);
+        Term sLow = term("low", new TrapezoidalFunction(0,0, 0, 0.5));
+        Term sMedium = term("medium", 0, 0.5,  1);
+        Term sHigh  = new Term("high", new TrapezoidalFunction(0.5, 1, 2, 2));
+        Variable security = input("delay", sLow, sMedium, sHigh);
         VariableWithTerms variable = new VariableWithTerms(security, sLow, sMedium, sHigh);
         variables.put("delay" , variable);
         return variable;

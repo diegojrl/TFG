@@ -22,9 +22,12 @@ import com.hivemq.extension.sdk.api.events.client.parameters.AuthenticationSucce
 import com.hivemq.extension.sdk.api.events.client.parameters.ConnectionStartInput;
 import com.hivemq.extension.sdk.api.events.client.parameters.DisconnectEventInput;
 import com.hivemq.extension.sdk.api.packets.general.MqttVersion;
-import com.hivemq.extension.sdk.api.services.Services;
+import org.example.trustData.DeviceTrustAttributes;
+import org.example.trustData.TrustStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Optional;
 
 /**
  * This is a very simple {@link ClientLifecycleEventListener}
@@ -42,24 +45,27 @@ public class HelloWorldListener implements ClientLifecycleEventListener {
         final MqttVersion version = connectionStartInput.getConnectPacket().getMqttVersion();
         switch (version) {
             case V_5:
-                log.info("MQTT 5 client connected with id: {} ", connectionStartInput.getClientInformation().getClientId());
+                log.debug("MQTT 5 client connected with id: {} ", connectionStartInput.getClientInformation().getClientId());
                 break;
             case V_3_1_1:
-                log.info("MQTT 3.1.1 client connected with id: {} ", connectionStartInput.getClientInformation().getClientId());
+                log.debug("MQTT 3.1.1 client connected with id: {} ", connectionStartInput.getClientInformation().getClientId());
                 break;
             case V_3_1:
-                log.info("MQTT 3.1 client connected with id: {} ", connectionStartInput.getClientInformation().getClientId());
+                log.debug("MQTT 3.1 client connected with id: {} ", connectionStartInput.getClientInformation().getClientId());
                 break;
         }
     }
 
     @Override
     public void onAuthenticationSuccessful(final @NotNull AuthenticationSuccessfulInput authenticationSuccessfulInput) {
-
+        final Optional<String> username = authenticationSuccessfulInput.getConnectionInformation().getConnectionAttributeStore().getAsString("username");
+        final DeviceTrustAttributes device = new DeviceTrustAttributes(authenticationSuccessfulInput.getClientInformation(), authenticationSuccessfulInput.getConnectionInformation());
+        TrustStore.put(device.getClientId(), device);
     }
 
     @Override
     public void onDisconnect(final @NotNull DisconnectEventInput disconnectEventInput) {
+        TrustStore.remove(disconnectEventInput.getClientInformation().getClientId());
         log.info("Client disconnected with id: {} ", disconnectEventInput.getClientInformation().getClientId());
     }
 }

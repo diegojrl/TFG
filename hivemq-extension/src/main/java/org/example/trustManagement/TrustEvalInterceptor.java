@@ -1,4 +1,4 @@
-package org.example;
+package org.example.trustManagement;
 
 import com.hivemq.extension.sdk.api.annotations.NotNull;
 import com.hivemq.extension.sdk.api.interceptor.publish.PublishInboundInterceptor;
@@ -7,8 +7,14 @@ import com.hivemq.extension.sdk.api.interceptor.publish.parameter.PublishInbound
 import com.hivemq.extension.sdk.api.interceptor.publish.parameter.PublishInboundOutput;
 import com.hivemq.extension.sdk.api.interceptor.publish.parameter.PublishOutboundInput;
 import com.hivemq.extension.sdk.api.interceptor.publish.parameter.PublishOutboundOutput;
+import org.example.trustData.DeviceTrustAttributes;
+import org.example.trustData.TrustStore;
+import org.example.trustManagement.fuzzyLogic.FuzzyCtr;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.nio.file.Path;
 
 
 /**
@@ -16,11 +22,21 @@ import org.slf4j.LoggerFactory;
  */
 public class TrustEvalInterceptor implements PublishOutboundInterceptor, PublishInboundInterceptor {
     private static final @NotNull Logger log = LoggerFactory.getLogger(TrustEvalInterceptor.class);
+    private final FuzzyCtr fuzzyCtr;
 
+    public TrustEvalInterceptor() throws IOException {
+        this.fuzzyCtr = new FuzzyCtr(Path.of("/opt/hivemq/conf/trustRules.flc"));
+    }
     @Override
     public void onInboundPublish(@NotNull PublishInboundInput publishInboundInput, @NotNull PublishInboundOutput publishInboundOutput) {
         final String sender = publishInboundInput.getClientInformation().getClientId();
-        //log.info("Sent by: {}", sender);
+        final long time = System.nanoTime();
+        final DeviceTrustAttributes trust = TrustStore.get(sender);
+        final double trustValue = fuzzyCtr.evaluate(trust);
+        final long duration = System.nanoTime() - time;
+        log.info("Sent by: {}, {}, took: {}ms", sender, trustValue, duration/1_000_000D);
+        log.trace(trust.toString());
+
     }
 
     @Override

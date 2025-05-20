@@ -1,8 +1,7 @@
-package org.example.trustManagement.fuzzy;
+package org.example.trustManagement.fuzzyLogic;
 
 import fuzzy4j.flc.IfThenRule;
 import fuzzy4j.flc.Term;
-import org.example.trustControl.ControlSub;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
