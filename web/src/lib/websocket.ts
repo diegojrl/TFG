@@ -3,7 +3,7 @@ import { arrayToDevice, type Device } from './device';
 import { Decoder } from "@msgpack/msgpack";
 import { PUBLIC_MQTT_HOST } from '$env/static/public';
 
-export let mqttClient: mqtt.MqttClient | undefined;
+let mqttClient: mqtt.MqttClient | undefined;
 
 const CONTROL_TOPIC = "control/view/";
 const PING_TOPIC = "tmgr/ping";
@@ -12,9 +12,7 @@ export const SERVER = new URL(PUBLIC_MQTT_HOST);
 
 export async function start_mqtt_connection(username: string, password: string, fn: (dev: Device) => void): Promise<boolean> {
     try {
-        if (mqttClient != undefined) {
-            await mqttClient.endAsync();
-        }
+        await stop_mqtt_client();
         console.log("test")
         let client_options: IClientOptions = {
             username: username,
@@ -51,7 +49,7 @@ export async function start_mqtt_connection(username: string, password: string, 
 
         });
         mqttClient.on("reconnect", () => {
-            
+
         });
 
         return true;
@@ -61,4 +59,11 @@ export async function start_mqtt_connection(username: string, password: string, 
         return false;
     }
 
+}
+
+export async function stop_mqtt_client() {
+    if (mqttClient != undefined) {
+        await mqttClient.endAsync();
+        mqttClient = undefined;
+    }
 }

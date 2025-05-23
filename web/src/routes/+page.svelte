@@ -3,8 +3,11 @@
     import DeviceLayout from "./DeviceLayout.svelte";
     import Modal from "./modals/ConnectModal.svelte";
     import { type Device } from "../lib/device";
-    import { start_mqtt_connection, mqttClient, SERVER } from "../lib/websocket";
-    
+    import {
+        start_mqtt_connection,
+        stop_mqtt_client,
+        SERVER,
+    } from "../lib/websocket";
 
     let devices: Device[] = $state([]);
     let server_name = $state("");
@@ -32,11 +35,7 @@
     async function connect() {
         try {
             if (
-                await start_mqtt_connection(
-                    username,
-                    password,
-                    add_information,
-                )
+                await start_mqtt_connection(username, password, add_information)
             ) {
                 showModal = false;
                 server_name = SERVER.hostname;
@@ -49,9 +48,7 @@
         }
     }
     async function logout() {
-        if (mqttClient != undefined) {
-            await mqttClient.endAsync();
-        }
+        await stop_mqtt_client();
         server_name = "";
         username = "";
         password = "";
