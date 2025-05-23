@@ -92,33 +92,6 @@
       </plugin>
     </plugins>
   </build>
-  <profiles>
-    <profile>
-      <id>RunWithHiveMQ</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>com.hivemq</groupId>
-            <artifactId>hivemq-maven-plugin</artifactId>
-            <version>4.0.3</version>
-            <executions>
-              <execution>
-                <id>hivemq</id>
-                <phase>package</phase>
-                <goals>
-                  <goal>hivemq</goal>
-                </goals>
-                <configuration>
-                  <hiveMQDir>FIXME, insert your HiveMQ directory here!</hiveMQDir>
-                  <debugMode>SERVER</debugMode>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
   <repositories>
     <repository>
       <id>jitpack.io</id>
@@ -132,118 +105,11 @@
       <version>4.6.3</version>
       <scope>compile</scope>
     </dependency>
-    <dependency>
-      <groupId>com.hivemq</groupId>
-      <artifactId>hivemq-mqtt-client</artifactId>
-      <version>1.2.1</version>
-      <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>rxjava</artifactId>
-          <groupId>io.reactivex.rxjava2</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>reactive-streams</artifactId>
-          <groupId>org.reactivestreams</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>netty-buffer</artifactId>
-          <groupId>io.netty</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>netty-codec</artifactId>
-          <groupId>io.netty</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>netty-common</artifactId>
-          <groupId>io.netty</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>netty-handler</artifactId>
-          <groupId>io.netty</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>netty-transport</artifactId>
-          <groupId>io.netty</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>jctools-core</artifactId>
-          <groupId>org.jctools</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>annotations</artifactId>
-          <groupId>org.jetbrains</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>dagger</artifactId>
-          <groupId>com.google.dagger</groupId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.6.1</version>
-      <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>apiguardian-api</artifactId>
-          <groupId>org.apiguardian</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>junit-platform-engine</artifactId>
-          <groupId>org.junit.platform</groupId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <version>5.6.1</version>
-      <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>opentest4j</artifactId>
-          <groupId>org.opentest4j</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>junit-platform-commons</artifactId>
-          <groupId>org.junit.platform</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>apiguardian-api</artifactId>
-          <groupId>org.apiguardian</groupId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>com.hivemq</groupId>
-      <artifactId>hivemq-testcontainer-junit5</artifactId>
-      <version>1.3.1</version>
-      <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>hivemq-testcontainer-core</artifactId>
-          <groupId>com.hivemq</groupId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-classic</artifactId>
-      <version>1.2.3</version>
-      <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>logback-core</artifactId>
-          <groupId>ch.qos.logback</groupId>
-        </exclusion>
-      </exclusions>
-    </dependency>
   </dependencies>
   <properties>
     <output.dir>${basedir}</output.dir>
     <asciidoctor.version>1.5.7.1</asciidoctor.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <extension.name>Hello World Extension</extension.name>
     <extension.author>HiveMQ GmbH</extension.author>
     <source.document.name>README.adoc</source.document.name>

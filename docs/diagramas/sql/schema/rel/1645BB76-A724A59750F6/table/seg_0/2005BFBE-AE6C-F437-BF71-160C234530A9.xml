@@ -1,0 +1,125 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="2005BFBE-AE6C-F437-BF71-160C234530A9" name="DEVICES">
+<createdBy>diego</createdBy>
+<createdTime>2025-05-22 16:21:42 UTC</createdTime>
+<ownerDesignName>schema</ownerDesignName>
+<ordsAlias>table_2</ordsAlias>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="USERID" id="BB074367-6D34-3CBE-5A4D-A675F3D13D08">
+<createdBy>diego</createdBy>
+<createdTime>2025-05-22 16:22:23 UTC</createdTime>
+<ownerDesignName>schema</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="57B57142-255E-1B6E-6E38-4F32810D95B9" referredColumn="331F2C4E-3E52-198A-3508-1F80D4970679"/>
+</associations>
+</Column>
+<Column name="CLIENTID" id="0EAD3487-8559-2D65-D4EE-881AF1BC1A4F">
+<createdBy>diego</createdBy>
+<createdTime>2025-05-22 16:22:23 UTC</createdTime>
+<ownerDesignName>schema</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255</dataTypeSize>
+<ownDataTypeParameters>255,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="LATENCY_SUM" id="4BD31ADF-E446-D236-1B6F-8172F28DD0A1">
+<createdBy>diego</createdBy>
+<createdTime>2025-05-22 20:05:30 UTC</createdTime>
+<ownerDesignName>schema</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="LATENCY_CNT" id="543ED7DA-8C7C-9A87-5FA2-86A27346684F">
+<createdBy>diego</createdBy>
+<createdTime>2025-05-22 16:23:04 UTC</createdTime>
+<ownerDesignName>schema</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="MESSAGES_FAILED" id="F5470EE7-67D6-AC7C-61C9-92483A06BC2B">
+<createdBy>diego</createdBy>
+<createdTime>2025-05-22 20:06:10 UTC</createdTime>
+<ownerDesignName>schema</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="MESSAGES_CNT" id="86DEC738-8D8D-A3BE-CC9F-AE85A90AF225">
+<createdBy>diego</createdBy>
+<createdTime>2025-05-22 16:23:04 UTC</createdTime>
+<ownerDesignName>schema</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="LAST_REPUTATION" id="C2BDC5D4-0FD9-1ABE-BCF3-6FD4C30C51E7">
+<createdBy>diego</createdBy>
+<createdTime>2025-05-22 16:23:04 UTC</createdTime>
+<ownerDesignName>schema</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT021</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="9E63F26E-5C04-3127-6F76-33EC1A755FE3" name="DEVICES_PK">
+<createdBy>diego</createdBy>
+<createdTime>2025-05-22 16:22:23 UTC</createdTime>
+<ownerDesignName>schema</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="BB074367-6D34-3CBE-5A4D-A675F3D13D08"/>
+<colUsage columnID="0EAD3487-8559-2D65-D4EE-881AF1BC1A4F"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="89A0390C-7862-D6D3-7726-F893AAF8B4B7" name="DEVICES_CLID_U">
+<createdBy>diego</createdBy>
+<createdTime>2025-05-22 17:18:07 UTC</createdTime>
+<ownerDesignName>schema</ownerDesignName>
+<indexState>Unique Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="0EAD3487-8559-2D65-D4EE-881AF1BC1A4F"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="79ED30AF-DC48-B44D-A95E-525144A74AA6" name="TABLE_2_USERS_FK">
+<createdBy>diego</createdBy>
+<createdTime>2025-05-22 16:22:23 UTC</createdTime>
+<ownerDesignName>schema</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="BB074367-6D34-3CBE-5A4D-A675F3D13D08"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

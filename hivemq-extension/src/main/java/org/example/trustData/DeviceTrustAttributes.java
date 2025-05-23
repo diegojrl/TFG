@@ -57,9 +57,9 @@ public class DeviceTrustAttributes {
         return clientId;
     }
 
-    public double getFailureRate() {
-        double failureRate = ((double) failedPacketCount.get() / totalPacketCount.get());
-        return Math.min(failureRate, 1);
+    public float getFailureRate() {
+        float failureRate = ((float) failedPacketCount.get() / totalPacketCount.get());
+        return Math.min(failureRate, 1F);
     }
 
     public void setFailureRate(int failureRate) {
@@ -113,7 +113,7 @@ public class DeviceTrustAttributes {
     }
 
     private DeviceControlData asDeviceTrustData() {
-        Double failureRate = this.getFailureRate();
+        Float failureRate = this.getFailureRate();
         Integer delay = this.getLatency();
         Integer reputation = this.getReputation();
         DeviceControlData.NetworkType networkType = this.externalNetwork ? DeviceControlData.NetworkType.External

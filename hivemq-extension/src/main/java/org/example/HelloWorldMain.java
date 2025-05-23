@@ -109,11 +109,13 @@ public class HelloWorldMain implements ExtensionMain {
 
             //Set up outbound checks
             clientContext.addPublishOutboundInterceptor(outChecks);
+            clientContext.addPubrecOutboundInterceptor(outChecks);
 
             //Set up Ping
             clientContext.addPingReqInboundInterceptor(ping);
             clientContext.addPubackInboundInterceptor(ping);
             clientContext.addPubrecInboundInterceptor(ping);
+            clientContext.addPubrelInboundInterceptor(ping);
 
             //Set up control mod listener
             clientContext.addPublishInboundInterceptor(modListener);

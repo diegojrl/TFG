@@ -1,0 +1,158 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="1B13E0C7-B921-D1A4-9655-47CC239DEFC0" name="DEVICES">
+<createdBy>diego</createdBy>
+<createdTime>2025-05-22 16:23:43 UTC</createdTime>
+<generatorID>2005BFBE-AE6C-F437-BF71-160C234530A9</generatorID>
+<ownerDesignName>schema</ownerDesignName>
+<engineerTo>
+<item key="1645BB76-F5E0-3DC8-CFB3-A724A59750F6" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="USERID" id="AD82BE8A-AF3D-D071-FAFC-2E777833133F">
+<createdBy>diego</createdBy>
+<createdTime>2025-05-22 16:23:43 UTC</createdTime>
+<generatorID>E84C2C59-2151-D62E-BC6F-1979BCF30600</generatorID>
+<ownerDesignName>schema</ownerDesignName>
+<engineerTo>
+<item key="1645BB76-F5E0-3DC8-CFB3-A724A59750F6" value="true"/>
+</engineerTo>
+<referedAttribute>646859DB-A346-9701-EBCD-CADC0C471ECC</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="CLIENTID" id="F3D47E44-73E1-D7C0-8C8C-BC8E0D1A39B9">
+<createdBy>diego</createdBy>
+<createdTime>2025-05-22 16:23:43 UTC</createdTime>
+<generatorID>0EAD3487-8559-2D65-D4EE-881AF1BC1A4F</generatorID>
+<ownerDesignName>schema</ownerDesignName>
+<engineerTo>
+<item key="1645BB76-F5E0-3DC8-CFB3-A724A59750F6" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255</dataTypeSize>
+<ownDataTypeParameters>255,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="LATENCY CNT" id="3B836369-0E88-A0EC-284E-97C5DC66F57E">
+<createdBy>diego</createdBy>
+<createdTime>2025-05-22 16:23:43 UTC</createdTime>
+<generatorID>543ED7DA-8C7C-9A87-5FA2-86A27346684F</generatorID>
+<ownerDesignName>schema</ownerDesignName>
+<engineerTo>
+<item key="1645BB76-F5E0-3DC8-CFB3-A724A59750F6" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="MESSAGES CNT" id="737534C6-2775-F638-6FD9-D891196EF7AE">
+<createdBy>diego</createdBy>
+<createdTime>2025-05-22 16:23:43 UTC</createdTime>
+<generatorID>86DEC738-8D8D-A3BE-CC9F-AE85A90AF225</generatorID>
+<ownerDesignName>schema</ownerDesignName>
+<engineerTo>
+<item key="1645BB76-F5E0-3DC8-CFB3-A724A59750F6" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="LAST REPUTATION" id="8C9AE0C3-7BD7-F0A3-0DF6-2455CCE09AAC">
+<createdBy>diego</createdBy>
+<createdTime>2025-05-22 16:23:43 UTC</createdTime>
+<generatorID>C2BDC5D4-0FD9-1ABE-BCF3-6FD4C30C51E7</generatorID>
+<ownerDesignName>schema</ownerDesignName>
+<engineerTo>
+<item key="1645BB76-F5E0-3DC8-CFB3-A724A59750F6" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT021</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="LATENCY SUM" id="C125D58E-D12F-1F9F-8277-8CEC88391063">
+<createdBy>diego</createdBy>
+<createdTime>2025-05-22 20:21:49 UTC</createdTime>
+<generatorID>4BD31ADF-E446-D236-1B6F-8172F28DD0A1</generatorID>
+<ownerDesignName>schema</ownerDesignName>
+<engineerTo>
+<item key="1645BB76-F5E0-3DC8-CFB3-A724A59750F6" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="MESSAGES FAILED" id="9D83033B-495F-82AA-5641-135CC2CEF67A">
+<createdBy>diego</createdBy>
+<createdTime>2025-05-22 20:21:49 UTC</createdTime>
+<generatorID>F5470EE7-67D6-AC7C-61C9-92483A06BC2B</generatorID>
+<ownerDesignName>schema</ownerDesignName>
+<engineerTo>
+<item key="1645BB76-F5E0-3DC8-CFB3-A724A59750F6" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="5A9443EC-EFA5-3E56-E74D-151D32164025" name="DEVICES PK">
+<createdBy>diego</createdBy>
+<createdTime>2025-05-22 16:23:43 UTC</createdTime>
+<generatorID>9E63F26E-5C04-3127-6F76-33EC1A755FE3</generatorID>
+<ownerDesignName>schema</ownerDesignName>
+<engineerTo>
+<item key="1645BB76-F5E0-3DC8-CFB3-A724A59750F6" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>AD82BE8A-AF3D-D071-FAFC-2E777833133F</attributeRef>
+<attributeRef>F3D47E44-73E1-D7C0-8C8C-BC8E0D1A39B9</attributeRef>
+</usedAttributes>
+</identifier>
+<identifier id="AD5BEF5E-A844-9CC9-5687-C58E8F6173BB" name="DEVICES  UN">
+<createdBy>diego</createdBy>
+<createdTime>2025-05-22 17:16:47 UTC</createdTime>
+<generatorID>A943B982-CAFE-FE94-56FF-520874149B8F</generatorID>
+<ownerDesignName>schema</ownerDesignName>
+<engineerTo>
+<item key="1645BB76-F5E0-3DC8-CFB3-A724A59750F6" value="true"/>
+</engineerTo>
+<usedAttributes>
+<attributeRef>F3D47E44-73E1-D7C0-8C8C-BC8E0D1A39B9</attributeRef>
+</usedAttributes>
+</identifier>
+<identifier id="5D1F7D67-38C7-7F9A-CF4A-455B07FC8A07" name="DEVICES_CLID_U">
+<createdBy>diego</createdBy>
+<createdTime>2025-05-22 17:18:15 UTC</createdTime>
+<generatorID>89A0390C-7862-D6D3-7726-F893AAF8B4B7</generatorID>
+<ownerDesignName>schema</ownerDesignName>
+<engineerTo>
+<item key="1645BB76-F5E0-3DC8-CFB3-A724A59750F6" value="true"/>
+</engineerTo>
+<usedAttributes>
+<attributeRef>F3D47E44-73E1-D7C0-8C8C-BC8E0D1A39B9</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

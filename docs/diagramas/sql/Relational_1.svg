@@ -1,5 +1,5 @@
 
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"  width="699" height="255">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"  width="746" height="360">
 <defs id="dmw_defs" >
 <svg id="fk_sym" viewBox="0 0 48.665 48.665" style="enable-background:new 0 0 48.665 48.665;" >
 <g>
@@ -22,66 +22,24 @@
 <path fill="black" d="M660.224 422.656c6.976 16.192-0.512 35.008-16.768 42.048-16.128 6.976-34.944-0.448-41.984-16.768-8.448-19.776-20.736-37.696-36.224-53.248-64.64-64.64-177.344-64.64-241.92 0l-145.216 145.28c-66.688 66.688-66.688 175.232 0 241.984 66.688 66.688 175.104 66.752 241.92 0l92.8-92.864c12.48-12.48 32.768-12.48 45.248 0s12.48 32.768 0 45.248l-92.8 92.864c-91.648 91.648-240.832 91.52-332.416 0-91.712-91.648-91.712-240.832 0-332.48l145.216-145.28c44.352-44.416 103.424-68.864 166.272-68.864s121.792 24.448 166.208 68.864c21.248 21.312 38.016 45.952 49.664 73.216zM891.136 401.344l-145.216 145.216c-88.768 88.832-243.712 88.832-332.416 0-21.312-21.312-38.080-45.952-49.728-73.216-7.040-16.256 0.448-35.072 16.704-42.048 16.064-6.784 35.008 0.512 41.984 16.768 8.512 19.776 20.8 37.696 36.288 53.248 64.64 64.64 177.344 64.64 241.92 0l145.216-145.216c66.688-66.688 66.688-175.232 0-241.984-66.752-66.624-175.168-66.688-241.92 0l-92.8 92.864c-12.48 12.48-32.768 12.48-45.248 0s-12.48-32.768 0-45.248l92.8-92.864c45.824-45.824 105.984-68.736 166.208-68.736s120.448 22.912 166.272 68.736c91.584 91.648 91.584 240.768-0.064 332.48z" />
 </g>
 </svg>
-<clipPath clipPathUnits="userSpaceOnUse" id="clipPath2_0_">
-<rect x="0" y="0" width="221" height="140" />
-</clipPath>
 <clipPath clipPathUnits="userSpaceOnUse" id="clipPath1_0_">
-<rect x="0" y="0" width="246" height="193" />
+<rect x="0" y="0" width="235" height="242" />
+</clipPath>
+<clipPath clipPathUnits="userSpaceOnUse" id="clipPath2_0_">
+<rect x="0" y="0" width="201" height="130" />
 </clipPath>
 </defs>
 <g stroke-linecap="butt" >
-<path stroke="rgb(0,0,0)" fill="none" stroke-opacity="1.0"  stroke-width="1" d="M335 153 L453 153" />
-<polygon stroke="rgb(0,0,0)" stroke-dasharray="none" points="335 153 341 150 341 156" fill="rgb(0,0,0)" stroke-width="1" stroke-opacity="1.0"  />
-<path stroke-dasharray="none" d="M453.0 159.0 L441.0 153.0 L453.0 147.0 M440.4000005722046 159.0 L440.4000005722046 147.0" fill="white" stroke-width="1" stroke-opacity="1.0" stroke="rgb(0,0,0)" />
+<path stroke="rgb(0,0,0)" fill="none" stroke-opacity="1.0"  stroke-width="1" d="M336 219 L511 219" />
+<polygon stroke="rgb(0,0,0)" stroke-dasharray="none" points="336 219 342 216 342 222" fill="rgb(0,0,0)" stroke-width="1" stroke-opacity="1.0"  />
+<path stroke-dasharray="none" d="M511.0 225.0 L499.0 219.0 L511.0 213.0 M498.4000005722046 225.0 L498.4000005722046 213.0" fill="white" stroke-width="1" stroke-opacity="1.0" stroke="rgb(0,0,0)" />
 </g>
-<g  fill="rgb(255,255,180)" stroke="rgb(0,0,255)" fill-opacity="1.0" stroke-opacity="1.0" clip-path="url(#clipPath2_0_)" transform="translate(114,83)" >
-<rect x="0" y="0" width="220" height="139" />
-<text id="DA962415-8C117DEB7A66" x="93" y="14" fill="rgb(0,0,255)" font-weight="bold"  fill-opacity="1.0" font-size="10" stroke="none">
-USERS
-</text>
-<line x1="0" y1="18" x2="219" y2="18" fill="none" stroke="rgb(0,0,255)"/>
-<text x="16" y="33" fill="rgb(255,0,0)" fill-opacity="1.0" font-size="10" stroke="none">
-*
-</text>
-<text x="2" y="33" fill="rgb(0,0,255)" fill-opacity="1.0" font-size="10" stroke="none">
-P
-</text>
-<text x="26" y="33" fill="rgb(0,0,0)" fill-opacity="1.0" font-size="10" stroke="none">
-ID
-</text>
-<text x="139" y="33" fill="rgb(0,128,0)" fill-opacity="1.0" font-size="10" stroke="none">
-INTEGER
-</text>
-<text x="16" y="48" fill="rgb(255,0,0)" fill-opacity="1.0" font-size="10" stroke="none">
-*
-</text>
-<text x="26" y="48" fill="rgb(0,0,0)" fill-opacity="1.0" font-size="10" stroke="none">
-USERNAME
-</text>
-<text x="139" y="48" fill="rgb(0,128,0)" fill-opacity="1.0" font-size="10" stroke="none">
-VARCHAR2 (255)
-</text>
-<text x="16" y="63" fill="rgb(255,0,0)" fill-opacity="1.0" font-size="10" stroke="none">
-*
-</text>
-<text x="26" y="63" fill="rgb(0,0,0)" fill-opacity="1.0" font-size="10" stroke="none">
-PASSWORD_HASH
-</text>
-<text x="139" y="63" fill="rgb(0,128,0)" fill-opacity="1.0" font-size="10" stroke="none">
-BLOB
-</text>
-<line x1="0" y1="69" x2="219" y2="69" fill="none" stroke="rgb(0,0,255)"/>
-<use xlink:href="#pk_sym" x="4" y="77" width="8" height="8" fill-opacity="1.0"/>
-<text x="16" y="84" fill="rgb(0,0,0)" fill-opacity="1.0" font-size="10" stroke="none">
-USERS_PK (ID)
-</text>
-</g>
-<g  fill="rgb(255,255,180)" stroke="rgb(0,0,255)" fill-opacity="1.0" stroke-opacity="1.0" clip-path="url(#clipPath1_0_)" transform="translate(453,62)" >
-<rect x="0" y="0" width="245" height="192" />
-<text id="F292E057-3F551CCAE748" x="100" y="14" fill="rgb(0,0,255)" font-weight="bold"  fill-opacity="1.0" font-size="10" stroke="none">
+<g  fill="rgb(255,255,180)" stroke="rgb(0,0,255)" fill-opacity="1.0" stroke-opacity="1.0" clip-path="url(#clipPath1_0_)" transform="translate(511,118)" >
+<rect x="0" y="0" width="234" height="241" />
+<text id="2005BFBE-160C234530A9" x="95" y="14" fill="rgb(0,0,255)" font-weight="bold"  fill-opacity="1.0" font-size="10" stroke="none">
 DEVICES
 </text>
-<line x1="0" y1="18" x2="244" y2="18" fill="none" stroke="rgb(0,0,255)"/>
+<line x1="0" y1="18" x2="233" y2="18" fill="none" stroke="rgb(0,0,255)"/>
 <text x="16" y="33" fill="rgb(255,0,0)" fill-opacity="1.0" font-size="10" stroke="none">
 *
 </text>
@@ -91,7 +49,7 @@ PF
 <text x="26" y="33" fill="rgb(0,0,0)" fill-opacity="1.0" font-size="10" stroke="none">
 USERID
 </text>
-<text x="146" y="33" fill="rgb(0,128,0)" fill-opacity="1.0" font-size="10" stroke="none">
+<text x="147" y="33" fill="rgb(0,128,0)" fill-opacity="1.0" font-size="10" stroke="none">
 INTEGER
 </text>
 <text x="16" y="48" fill="rgb(255,0,0)" fill-opacity="1.0" font-size="10" stroke="none">
@@ -103,46 +61,108 @@ P
 <text x="26" y="48" fill="rgb(0,0,0)" fill-opacity="1.0" font-size="10" stroke="none">
 CLIENTID
 </text>
-<text x="146" y="48" fill="rgb(0,128,0)" fill-opacity="1.0" font-size="10" stroke="none">
+<text x="147" y="48" fill="rgb(0,128,0)" fill-opacity="1.0" font-size="10" stroke="none">
 VARCHAR2 (255)
 </text>
 <text x="16" y="63" fill="rgb(255,0,0)" fill-opacity="1.0" font-size="10" stroke="none">
 
 </text>
 <text x="26" y="63" fill="rgb(0,0,0)" fill-opacity="1.0" font-size="10" stroke="none">
-LATENCY
+LATENCY_SUM
 </text>
-<text x="146" y="63" fill="rgb(0,128,0)" fill-opacity="1.0" font-size="10" stroke="none">
+<text x="147" y="63" fill="rgb(0,128,0)" fill-opacity="1.0" font-size="10" stroke="none">
 INTEGER
 </text>
 <text x="16" y="78" fill="rgb(255,0,0)" fill-opacity="1.0" font-size="10" stroke="none">
 
 </text>
 <text x="26" y="78" fill="rgb(0,0,0)" fill-opacity="1.0" font-size="10" stroke="none">
-FAILURE_RATE
+LATENCY_CNT
 </text>
-<text x="146" y="78" fill="rgb(0,128,0)" fill-opacity="1.0" font-size="10" stroke="none">
+<text x="147" y="78" fill="rgb(0,128,0)" fill-opacity="1.0" font-size="10" stroke="none">
 INTEGER
 </text>
 <text x="16" y="93" fill="rgb(255,0,0)" fill-opacity="1.0" font-size="10" stroke="none">
 
 </text>
 <text x="26" y="93" fill="rgb(0,0,0)" fill-opacity="1.0" font-size="10" stroke="none">
+MESSAGES_FAILED
+</text>
+<text x="147" y="93" fill="rgb(0,128,0)" fill-opacity="1.0" font-size="10" stroke="none">
+INTEGER
+</text>
+<text x="16" y="108" fill="rgb(255,0,0)" fill-opacity="1.0" font-size="10" stroke="none">
+
+</text>
+<text x="26" y="108" fill="rgb(0,0,0)" fill-opacity="1.0" font-size="10" stroke="none">
+MESSAGES_CNT
+</text>
+<text x="147" y="108" fill="rgb(0,128,0)" fill-opacity="1.0" font-size="10" stroke="none">
+INTEGER
+</text>
+<text x="16" y="123" fill="rgb(255,0,0)" fill-opacity="1.0" font-size="10" stroke="none">
+
+</text>
+<text x="26" y="123" fill="rgb(0,0,0)" fill-opacity="1.0" font-size="10" stroke="none">
 LAST_REPUTATION
 </text>
-<text x="146" y="93" fill="rgb(0,128,0)" fill-opacity="1.0" font-size="10" stroke="none">
+<text x="147" y="123" fill="rgb(0,128,0)" fill-opacity="1.0" font-size="10" stroke="none">
 FLOAT
 </text>
-<line x1="0" y1="99" x2="244" y2="99" fill="none" stroke="rgb(0,0,255)"/>
-<use xlink:href="#pk_sym" x="4" y="107" width="8" height="8" fill-opacity="1.0"/>
-<text x="16" y="114" fill="rgb(0,0,0)" fill-opacity="1.0" font-size="10" stroke="none">
+<line x1="0" y1="129" x2="233" y2="129" fill="none" stroke="rgb(0,0,255)"/>
+<use xlink:href="#pk_sym" x="4" y="137" width="8" height="8" fill-opacity="1.0"/>
+<text x="16" y="144" fill="rgb(0,0,0)" fill-opacity="1.0" font-size="10" stroke="none">
 DEVICES_PK (USERID, CLIENTID)
 </text>
-<line x1="0" y1="120" x2="244" y2="120" fill="none" stroke="rgb(0,0,255)"/>
-<use xlink:href="#fk_sym" x="4" y="128" width="8" height="8" fill-opacity="1.0"/><a xlink:href="#DA962415-8C117DEB7A66" >
-<text x="16" y="135" fill="rgb(0,0,0)" fill-opacity="1.0" font-size="10" stroke="none">
-DEVICES_USERS_FK (USERID)
+<use xlink:href="#uk_sym" x="4" y="152" width="8" height="8" fill-opacity="1.0"/>
+<text x="16" y="159" fill="rgb(0,0,0)" fill-opacity="1.0" font-size="10" stroke="none">
+DEVICES_CLID_U (CLIENTID)
+</text>
+<line x1="0" y1="165" x2="233" y2="165" fill="none" stroke="rgb(0,0,255)"/>
+<use xlink:href="#fk_sym" x="4" y="173" width="8" height="8" fill-opacity="1.0"/><a xlink:href="#33C9187C-9DDB9F601059" >
+<text x="16" y="180" fill="rgb(0,0,0)" fill-opacity="1.0" font-size="10" stroke="none">
+TABLE_2_USERS_FK (USERID)
 </text></a>
+</g>
+<g  fill="rgb(255,255,180)" stroke="rgb(0,0,255)" fill-opacity="1.0" stroke-opacity="1.0" clip-path="url(#clipPath2_0_)" transform="translate(135,154)" >
+<rect x="0" y="0" width="200" height="129" />
+<text id="33C9187C-9DDB9F601059" x="83" y="14" fill="rgb(0,0,255)" font-weight="bold"  fill-opacity="1.0" font-size="10" stroke="none">
+USERS
+</text>
+<line x1="0" y1="18" x2="199" y2="18" fill="none" stroke="rgb(0,0,255)"/>
+<text x="16" y="33" fill="rgb(255,0,0)" fill-opacity="1.0" font-size="10" stroke="none">
+*
+</text>
+<text x="2" y="33" fill="rgb(0,0,255)" fill-opacity="1.0" font-size="10" stroke="none">
+P
+</text>
+<text x="26" y="33" fill="rgb(0,0,0)" fill-opacity="1.0" font-size="10" stroke="none">
+ID
+</text>
+<text x="104" y="33" fill="rgb(0,128,0)" fill-opacity="1.0" font-size="10" stroke="none">
+INTEGER
+</text>
+<text x="16" y="48" fill="rgb(255,0,0)" fill-opacity="1.0" font-size="10" stroke="none">
+*
+</text>
+<text x="2" y="48" fill="rgb(0,0,255)" fill-opacity="1.0" font-size="10" stroke="none">
+U
+</text>
+<text x="26" y="48" fill="rgb(0,0,0)" fill-opacity="1.0" font-size="10" stroke="none">
+USERNAME
+</text>
+<text x="104" y="48" fill="rgb(0,128,0)" fill-opacity="1.0" font-size="10" stroke="none">
+VARCHAR2 (255)
+</text>
+<line x1="0" y1="54" x2="199" y2="54" fill="none" stroke="rgb(0,0,255)"/>
+<use xlink:href="#pk_sym" x="4" y="62" width="8" height="8" fill-opacity="1.0"/>
+<text x="16" y="69" fill="rgb(0,0,0)" fill-opacity="1.0" font-size="10" stroke="none">
+USERS_PK (ID)
+</text>
+<use xlink:href="#uk_sym" x="4" y="77" width="8" height="8" fill-opacity="1.0"/>
+<text x="16" y="84" fill="rgb(0,0,0)" fill-opacity="1.0" font-size="10" stroke="none">
+USERS__UN (USERNAME)
+</text>
 </g>
 
 </svg>

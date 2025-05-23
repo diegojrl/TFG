@@ -11,6 +11,9 @@ import com.hivemq.extension.sdk.api.interceptor.puback.parameter.PubackInboundOu
 import com.hivemq.extension.sdk.api.interceptor.pubrec.PubrecInboundInterceptor;
 import com.hivemq.extension.sdk.api.interceptor.pubrec.parameter.PubrecInboundInput;
 import com.hivemq.extension.sdk.api.interceptor.pubrec.parameter.PubrecInboundOutput;
+import com.hivemq.extension.sdk.api.interceptor.pubrel.PubrelInboundInterceptor;
+import com.hivemq.extension.sdk.api.interceptor.pubrel.parameter.PubrelInboundInput;
+import com.hivemq.extension.sdk.api.interceptor.pubrel.parameter.PubrelInboundOutput;
 import com.hivemq.extension.sdk.api.packets.general.Qos;
 import com.hivemq.extension.sdk.api.services.Services;
 import com.hivemq.extension.sdk.api.services.builder.Builders;
@@ -23,7 +26,7 @@ import org.slf4j.LoggerFactory;
 import java.nio.ByteBuffer;
 import java.util.Optional;
 
-public class PingInterceptor implements PingReqInboundInterceptor, PubackInboundInterceptor, PubrecInboundInterceptor {
+public class PingInterceptor implements PingReqInboundInterceptor, PubackInboundInterceptor, PubrecInboundInterceptor, PubrelInboundInterceptor {
     private static final Logger log = LoggerFactory.getLogger(PingInterceptor.class);
 
     private static final String PING_TOPIC = "tmgr/ping";
@@ -48,18 +51,6 @@ public class PingInterceptor implements PingReqInboundInterceptor, PubackInbound
         Services.publishService().publishToClient(pingMsg, clientId).join();
     }
 
-
-    @Override
-    public void onInboundPubrec(@NotNull PubrecInboundInput pubrecInboundInput, @NotNull PubrecInboundOutput pubrecInboundOutput) {
-        log.debug("Received Pubrec {}", pubrecInboundInput.getPubrecPacket().getPacketIdentifier());
-        final long currentTime = System.currentTimeMillis();
-        final String clientId = pubrecInboundInput.getClientInformation().getClientId();
-        final Integer packetId = pubrecInboundInput.getPubrecPacket().getPacketIdentifier();
-        final ConnectionAttributeStore store = pubrecInboundInput.getConnectionInformation().getConnectionAttributeStore();
-
-        updateLatency(store, clientId, packetId, currentTime);
-    }
-
     /**
      *
      */
@@ -73,6 +64,29 @@ public class PingInterceptor implements PingReqInboundInterceptor, PubackInbound
 
         updateLatency(store, clientId, packetId, currentTime);
 
+    }
+
+    @Override
+    public void onInboundPubrec(@NotNull PubrecInboundInput pubrecInboundInput, @NotNull PubrecInboundOutput pubrecInboundOutput) {
+        log.debug("Received Pubrec {}", pubrecInboundInput.getPubrecPacket().getPacketIdentifier());
+        final long currentTime = System.currentTimeMillis();
+        final String clientId = pubrecInboundInput.getClientInformation().getClientId();
+        final Integer packetId = pubrecInboundInput.getPubrecPacket().getPacketIdentifier();
+        final ConnectionAttributeStore store = pubrecInboundInput.getConnectionInformation().getConnectionAttributeStore();
+
+        updateLatency(store, clientId, packetId, currentTime);
+    }
+
+
+    @Override
+    public void onInboundPubrel(@NotNull PubrelInboundInput pubrelInboundInput, @NotNull PubrelInboundOutput pubrelInboundOutput) {
+        log.trace("Received Pubrel {}", pubrelInboundInput.getPubrelPacket().getPacketIdentifier());
+        final long currentTime = System.currentTimeMillis();
+        final String clientId = pubrelInboundInput.getClientInformation().getClientId();
+        final Integer packetId = pubrelInboundInput.getPubrelPacket().getPacketIdentifier();
+        final ConnectionAttributeStore store = pubrelInboundInput.getConnectionInformation().getConnectionAttributeStore();
+
+        updateLatency(store, clientId, packetId, currentTime);
     }
 
     private static void updateLatency(@NotNull final ConnectionAttributeStore store, @NotNull final String clientId, @NotNull final Integer packetId, @NotNull final long currentTime) {
