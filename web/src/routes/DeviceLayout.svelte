@@ -11,9 +11,10 @@
     >
         <div class="flex justify-between">
             <h2><b>{dev.clientid}</b></h2>
-            <button 
+            <button
                 class="hover:text-fuchsia-600 text-purple-800"
-                aria-label="s">
+                aria-label="s"
+            >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
@@ -36,5 +37,6 @@
         <p><b>Tipo de red:</b> {dev.networkType}</p>
         <p><b>Cifrado:</b> {dev.networkSecurity}</p>
         <p><b>Reputación:</b> {dev.reputation}</p>
+        <p><b>Trust:</b> {dev.trust}</p>
     </div>
 {/key}

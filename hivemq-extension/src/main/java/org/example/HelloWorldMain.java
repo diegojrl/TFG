@@ -25,15 +25,20 @@ import com.hivemq.extension.sdk.api.parameter.*;
 import com.hivemq.extension.sdk.api.services.Services;
 import com.hivemq.extension.sdk.api.services.auth.SecurityRegistry;
 import com.hivemq.extension.sdk.api.services.intializer.InitializerRegistry;
+import org.example.configuration.Configuration;
+import org.example.db.Database;
 import org.example.trustControl.ControlSub;
 import org.example.trustControl.ModificationListener;
 import org.example.trustManagement.PingInterceptor;
 import org.example.trustManagement.PublishOutboundChecks;
 import org.example.trustManagement.TrustEvalInterceptor;
+import org.example.trustManagement.fuzzyLogic.FuzzyCtr;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.nio.file.Path;
+import java.sql.SQLException;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -45,24 +50,30 @@ import java.util.concurrent.TimeUnit;
  * @since 4.0.0
  */
 public class HelloWorldMain implements ExtensionMain {
-
+    private static final Path CONFIG_PATH = Path.of("/opt/hivemq/conf/trust.json");
     private static final @NotNull Logger log = LoggerFactory.getLogger(HelloWorldMain.class);
 
     @Override
     public void extensionStart(final @NotNull ExtensionStartInput extensionStartInput, final @NotNull ExtensionStartOutput extensionStartOutput) {
 
         try {
+            Configuration.loadFromFile(CONFIG_PATH);
+            Database.init();
+            FuzzyCtr.getInstance();
             addAuth();
             addClientLifecycleEventListener();
             addPublishModifier();
             //Update control info every 5s
-            Services.extensionExecutorService().scheduleAtFixedRate(ControlSub.controlTask, 10,5, TimeUnit.SECONDS);
+            Services.extensionExecutorService().scheduleAtFixedRate(ControlSub.controlTask, 10, 5, TimeUnit.SECONDS);
             final ExtensionInformation extensionInformation = extensionStartInput.getExtensionInformation();
             log.info("Started {}:{}", extensionInformation.getName(), extensionInformation.getVersion());
         } catch (IOException e) {
             log.error("Failed to read configuration", e);
             extensionStartOutput.preventExtensionStartup("Failed to read configuration: " + e.getMessage());
-        }catch(Exception e) {
+        } catch (SQLException e) {
+            log.error("Error starting datababe ", e);
+            extensionStartOutput.preventExtensionStartup(e.getLocalizedMessage());
+        } catch (Exception e) {
             log.error("Exception thrown at extension start: ", e);
             extensionStartOutput.preventExtensionStartup(e.getLocalizedMessage());
         }
@@ -72,7 +83,7 @@ public class HelloWorldMain implements ExtensionMain {
     public void extensionStop(final @NotNull ExtensionStopInput extensionStopInput, final @NotNull ExtensionStopOutput extensionStopOutput) {
 
         final ExtensionInformation extensionInformation = extensionStopInput.getExtensionInformation();
-        log.info("Stopped " + extensionInformation.getName() + ":" + extensionInformation.getVersion());
+        log.info("Stopped {}:{}", extensionInformation.getName(), extensionInformation.getVersion());
 
     }
 
@@ -92,7 +103,7 @@ public class HelloWorldMain implements ExtensionMain {
 
     }
 
-    private void addPublishModifier() throws IOException {
+    private void addPublishModifier() {
         final InitializerRegistry initializerRegistry = Services.initializerRegistry();
 
         final TrustEvalInterceptor trustEvalInterceptor = new TrustEvalInterceptor();

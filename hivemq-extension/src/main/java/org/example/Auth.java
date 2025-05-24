@@ -1,6 +1,8 @@
 package org.example;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
+
 import com.hivemq.extension.sdk.api.annotations.NotNull;
 import com.hivemq.extension.sdk.api.auth.EnhancedAuthenticator;
 import com.hivemq.extension.sdk.api.auth.parameter.EnhancedAuthConnectInput;
@@ -15,9 +17,11 @@ public class Auth implements EnhancedAuthenticator {
     @Override
     public void onConnect(@NotNull EnhancedAuthConnectInput enhancedAuthConnectInput, @NotNull EnhancedAuthOutput enhancedAuthOutput) {
         String clientId = enhancedAuthConnectInput.getClientInformation().getClientId();
-        if (enhancedAuthConnectInput.getConnectPacket().getUserName().isPresent()) {
+        final Optional<String> username = enhancedAuthConnectInput.getConnectPacket().getUserName();
+        if (username.isPresent()) {
+            enhancedAuthConnectInput.getConnectionInformation().getConnectionAttributeStore().putAsString("username", username.get());
             enhancedAuthOutput.authenticateSuccessfully();
-        }else {
+        } else {
             log.info("New client: {}", clientId);
             final String user_and_passord = "user:pasw";
             enhancedAuthOutput.continueAuthentication(user_and_passord.getBytes(StandardCharsets.UTF_8));

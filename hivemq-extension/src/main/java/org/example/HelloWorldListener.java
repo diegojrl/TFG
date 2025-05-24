@@ -21,12 +21,15 @@ import com.hivemq.extension.sdk.api.events.client.ClientLifecycleEventListener;
 import com.hivemq.extension.sdk.api.events.client.parameters.AuthenticationSuccessfulInput;
 import com.hivemq.extension.sdk.api.events.client.parameters.ConnectionStartInput;
 import com.hivemq.extension.sdk.api.events.client.parameters.DisconnectEventInput;
-import com.hivemq.extension.sdk.api.packets.general.MqttVersion;
+import com.hivemq.extension.sdk.api.services.Services;
+import org.example.db.Database;
+import org.example.db.Device;
 import org.example.trustData.DeviceTrustAttributes;
 import org.example.trustData.TrustStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.SQLException;
 import java.util.Optional;
 
 /**
@@ -42,30 +45,50 @@ public class HelloWorldListener implements ClientLifecycleEventListener {
 
     @Override
     public void onMqttConnectionStart(final @NotNull ConnectionStartInput connectionStartInput) {
-        final MqttVersion version = connectionStartInput.getConnectPacket().getMqttVersion();
-        switch (version) {
-            case V_5:
-                log.debug("MQTT 5 client connected with id: {} ", connectionStartInput.getClientInformation().getClientId());
-                break;
-            case V_3_1_1:
-                log.debug("MQTT 3.1.1 client connected with id: {} ", connectionStartInput.getClientInformation().getClientId());
-                break;
-            case V_3_1:
-                log.debug("MQTT 3.1 client connected with id: {} ", connectionStartInput.getClientInformation().getClientId());
-                break;
-        }
     }
 
     @Override
     public void onAuthenticationSuccessful(final @NotNull AuthenticationSuccessfulInput authenticationSuccessfulInput) {
+        final String clientId = authenticationSuccessfulInput.getClientInformation().getClientId();
         final Optional<String> username = authenticationSuccessfulInput.getConnectionInformation().getConnectionAttributeStore().getAsString("username");
-        final DeviceTrustAttributes device = new DeviceTrustAttributes(authenticationSuccessfulInput.getClientInformation(), authenticationSuccessfulInput.getConnectionInformation());
-        TrustStore.put(device.getClientId(), device);
+        if (username.isPresent()) {
+            try {
+                int userId = Database.insertUser(username.get());
+                Device dev = Database.getDevice(clientId);
+                DeviceTrustAttributes deviceTrust;
+
+                if (dev != null) {
+                    if (dev.userId != userId) {
+                        Database.changeDeviceOwner(clientId, dev.userId);
+                    }
+                    deviceTrust = dev.toTrustAttributes(authenticationSuccessfulInput.getConnectionInformation());
+                } else {
+                    deviceTrust = new DeviceTrustAttributes(authenticationSuccessfulInput.getClientInformation(), authenticationSuccessfulInput.getConnectionInformation());
+                    Database.insertDevice(new Device(deviceTrust, userId));
+                }
+
+                TrustStore.put(clientId, deviceTrust);
+                log.info("Authentication successful, added to truststore");
+            } catch (SQLException e) {
+                log.error("Error creating session for device {}", clientId);
+                log.debug("Exception: ", e);
+                Services.clientService().disconnectClient(clientId).join();
+            }
+        } else {
+            log.error("Client disconnected: No username found");
+            Services.clientService().disconnectClient(clientId).join();
+        }
     }
 
     @Override
     public void onDisconnect(final @NotNull DisconnectEventInput disconnectEventInput) {
-        TrustStore.remove(disconnectEventInput.getClientInformation().getClientId());
+        DeviceTrustAttributes device = TrustStore.remove(disconnectEventInput.getClientInformation().getClientId());
+        try {
+            if (device != null) Database.updateDevice(new Device(device));
+
+        } catch (SQLException e) {
+            log.error("Error saving device {} data to database", device.getClientId());
+        }
         log.info("Client disconnected with id: {} ", disconnectEventInput.getClientInformation().getClientId());
     }
 }

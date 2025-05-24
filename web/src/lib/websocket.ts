@@ -16,8 +16,7 @@ export async function start_mqtt_connection(username: string, password: string, 
         console.log("test")
         let client_options: IClientOptions = {
             username: username,
-            password: password,
-
+            password: password
         };
         client_options.clientId = "web_control_" + Math.random() * 10;
         mqttClient = await mqtt.connectAsync(SERVER.toString(), client_options);

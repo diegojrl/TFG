@@ -28,6 +28,7 @@
             dev.networkSecurity = new_device.networkSecurity;
             dev.networkType = new_device.networkType;
             dev.reputation = new_device.reputation;
+            dev.trust = new_device.trust;
         } else {
             devices.push(new_device);
         }
