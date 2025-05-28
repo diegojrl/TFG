@@ -2,18 +2,20 @@
     import { fade } from "svelte/transition";
     import DeviceLayout from "./DeviceLayout.svelte";
     import Modal from "./modals/ConnectModal.svelte";
-    import { type Device } from "../lib/device";
+    import { type Device } from "$lib/device";
     import {
         start_mqtt_connection,
         stop_mqtt_client,
         SERVER,
-    } from "../lib/websocket";
+    } from "$lib/websocket";
+    import { dev } from "$app/environment";
 
     let devices: Device[] = $state([]);
     let server_name = $state("");
     let username = $state("");
     let password = $state("");
-    let showModal = $state(false);
+    let showLogin = $state(false);
+    let reconecting = $state(false);
 
     function add_information(new_device: Device) {
         console.log("add info");
@@ -36,9 +38,15 @@
     async function connect() {
         try {
             if (
-                await start_mqtt_connection(username, password, add_information)
+                await start_mqtt_connection(
+                    username,
+                    password,
+                    add_information,
+                    onLostConnection,
+                    onReconect,
+                )
             ) {
-                showModal = false;
+                showLogin = false;
                 server_name = SERVER.hostname;
             } else {
                 logout();
@@ -54,16 +62,22 @@
         username = "";
         password = "";
         devices = [];
-        showModal = true;
+        showLogin = true;
+    }
+    function onReconect() {
+        devices = [];
+    }
+    function onLostConnection() {
+        reconecting = false;
     }
 </script>
 
 <Modal
-    open={showModal}
+    open={showLogin}
     bind:username
     bind:password
     onClose={() => {
-        showModal = false;
+        showLogin = false;
     }}
     onLogin={connect}
 ></Modal>
@@ -75,7 +89,7 @@
             <button
                 class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
                 onclick={() => {
-                    showModal = true;
+                    showLogin = true;
                 }}>Login</button
             >
         {:else}

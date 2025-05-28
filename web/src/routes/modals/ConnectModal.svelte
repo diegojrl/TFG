@@ -11,13 +11,15 @@
 
 <Modal {open} {onClose}>
     <h2 class="text-xl font-bold mb-2">Hello from the Modal</h2>
-
+    <br />
     <input
         type="text"
         class="border-gray-300 border-2 rounded-sm"
         bind:value={username}
         placeholder="Username"
     />
+    <br />
+    <br />
     <input
         type="password"
         class="border-gray-300 border-2 rounded-sm"
@@ -32,5 +34,5 @@
         >
             Login
         </button>
-    </div></Modal
->
+    </div>
+</Modal>

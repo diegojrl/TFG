@@ -16,7 +16,7 @@
       transition:fade={{ duration: 100 }}
     ></div>
     <div
-      class="bg-white w-full lg:h-max lg:w-1/2 mx-auto rounded-lg shadow-x1 z-50 overflow-y-auto"
+      class="bg-white w-full lg:h-max w-max mx-auto rounded-lg shadow-x1 z-50 overflow-y-auto p-5"
       onclick={(e) => e.stopPropagation()}
       onkeyup={(e) => {
         if (e.key == "Escape") {

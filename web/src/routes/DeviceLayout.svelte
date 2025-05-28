@@ -30,13 +30,18 @@
                 </svg>
             </button>
         </div>
+    </div>
 
-        <br />
-        <p><b>Latencia:</b> {dev.avgDelay}</p>
-        <p><b>% de errores:</b> {dev.failedInteractionsPercentage}</p>
-        <p><b>Tipo de red:</b> {dev.networkType}</p>
-        <p><b>Cifrado:</b> {dev.networkSecurity}</p>
-        <p><b>Reputación:</b> {dev.reputation}</p>
-        <p><b>Trust:</b> {dev.trust}</p>
+    <br />
+    <p><b>Latencia:</b> {dev.avgDelay}</p>
+    <p><b>% de errores:</b> {dev.failedInteractionsPercentage}</p>
+    <p><b>Tipo de red:</b> {dev.networkType}</p>
+    <p><b>Cifrado:</b> {dev.networkSecurity}</p>
+    <p><b>Reputación:</b> {dev.reputation}</p>
+    <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+        <div
+            class="bg-blue-600 h-2.5 rounded-full"
+            style="width: {dev.trust * 100}%"
+        ></div>
     </div>
 {/key}

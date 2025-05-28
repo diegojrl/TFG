@@ -10,7 +10,7 @@ const PING_TOPIC = "tmgr/ping";
 const DECODER = new Decoder();
 export const SERVER = new URL(PUBLIC_MQTT_HOST);
 
-export async function start_mqtt_connection(username: string, password: string, fn: (dev: Device) => void): Promise<boolean> {
+export async function start_mqtt_connection(username: string, password: string, onDevice: (dev: Device) => void, onLostConnection: () => void, onReconect: () => void): Promise<boolean> {
     try {
         await stop_mqtt_client();
         console.log("test")
@@ -35,8 +35,7 @@ export async function start_mqtt_connection(username: string, password: string, 
                     console.log(payload);
                     let clientid = topic.substring(topic_idx + CONTROL_TOPIC.length);
                     let device: Device = arrayToDevice(DECODER.decode(payload), clientid);
-                    console.log(device)
-                    fn(device);
+                    onDevice(device);
                 } catch (e) {
                     console.error(e);
                 }
@@ -45,11 +44,14 @@ export async function start_mqtt_connection(username: string, password: string, 
         });
 
         mqttClient.on("connect", () => {
-
+            console.log("Connected");
+            onReconect();
         });
         mqttClient.on("reconnect", () => {
-
+            console.log("recon");
+            onReconect();
         });
+
 
         return true;
     } catch (e) {
