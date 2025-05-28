@@ -1,6 +1,6 @@
 
-export enum NetworkType { Internal, External };
-export enum NetworkSecurity { No, TLS };
+export enum NetworkType { Internal, External }
+export enum NetworkSecurity { No, TLS }
 
 export type Device = {
   clientId: String;
