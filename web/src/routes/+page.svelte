@@ -1,30 +1,25 @@
 <script lang="ts">
-    import { fade } from "svelte/transition";
+    import {fade} from "svelte/transition";
     import DeviceLayout from "./DeviceLayout.svelte";
     import Modal from "./modals/ConnectModal.svelte";
-    import { type Device } from "$lib/device";
-    import {
-        start_mqtt_connection,
-        stop_mqtt_client,
-        SERVER,
-    } from "$lib/websocket";
-    import { dev } from "$app/environment";
+    import {type Device} from "$lib/device";
+    import {SERVER, start_mqtt_connection, stop_mqtt_client,} from "$lib/websocket";
 
     let devices: Device[] = $state([]);
     let server_name = $state("");
     let username = $state("");
     let password = $state("");
     let showLogin = $state(false);
-    let reconecting = $state(false);
+    let reconnecting = $state(false);
 
     function add_information(new_device: Device) {
         console.log("add info");
-        let idx = devices.findIndex((d) => d.clientid == new_device.clientid);
+        let idx = devices.findIndex((d) => d.clientId == new_device.clientId);
 
         if (idx >= 0) {
             let dev = devices[idx];
             dev.avgDelay = new_device.avgDelay;
-            dev.clientid = new_device.clientid;
+            dev.clientId = new_device.clientId;
             dev.failedInteractionsPercentage =
                 new_device.failedInteractionsPercentage;
             dev.networkSecurity = new_device.networkSecurity;
@@ -49,11 +44,11 @@
                 showLogin = false;
                 server_name = SERVER.hostname;
             } else {
-                logout();
+                await logout();
             }
         } catch (e) {
             console.log(e);
-            logout();
+            await logout();
         }
     }
     async function logout() {
@@ -68,7 +63,7 @@
         devices = [];
     }
     function onLostConnection() {
-        reconecting = false;
+        reconnecting = false;
     }
 </script>
 
@@ -84,7 +79,7 @@
 
 <div class="mx-auto px-2 sm:px-6 lg:px-8 bg-gray-800">
     <div class="relative flex h-16 items-center justify-between">
-        {#if server_name == ""}
+        {#if server_name === ""}
             <span></span>
             <button
                 class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
@@ -104,12 +99,12 @@
     </div>
 </div>
 
-{#if devices.length == 0}
+{#if devices.length === 0}
     <div class="items-center justify-center fixed inset-9 flex">
         <p>No devices connected</p>
     </div>
 {:else}
-    <div class="grid md:grid-cols-1 lg:grid-cols-3 gap-4 m-4">
+    <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 m-4">
         {#each devices as dev}
             <div transition:fade class="">
                 <DeviceLayout {dev} />

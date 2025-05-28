@@ -46,6 +46,22 @@
             <destName>${artifactId}-${version}.jar</destName>
             <outputDirectory>/${artifactId}/</outputDirectory>
         </file>
+
+        <file>
+            <source>src/conf/trust.json</source>
+            <destName>conf/trust.json</destName>
+            <outputDirectory>/${artifactId}/</outputDirectory>
+        </file>
+        <file>
+            <source>src/conf/trustRules.flc</source>
+            <destName>conf/trustRules.flc</destName>
+            <outputDirectory>/${artifactId}/</outputDirectory>
+        </file>
+        <file>
+            <source>src/conf/accessControl.json</source>
+            <destName>conf/accessControl.json</destName>
+            <outputDirectory>/${artifactId}/</outputDirectory>
+        </file>
     </files>
     <includeBaseDirectory>false</includeBaseDirectory>
 </assembly>

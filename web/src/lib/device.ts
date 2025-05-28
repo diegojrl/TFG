@@ -3,7 +3,7 @@ export enum NetworkType { Internal, External };
 export enum NetworkSecurity { No, TLS };
 
 export type Device = {
-  clientid: String;
+  clientId: String;
   failedInteractionsPercentage: number;
   avgDelay: number;
   networkType: NetworkType;
@@ -27,7 +27,7 @@ export function arrayToDevice(data: unknown, clientId: String): Device {
   ] = data;
 
   return {
-    clientid: clientId,
+    clientId: clientId,
     failedInteractionsPercentage: Number(failedInteractionsPercentage * 100),
     avgDelay: Number(avgDelay),
     networkType: NetworkType[Number(networkType)] as unknown as NetworkType,
