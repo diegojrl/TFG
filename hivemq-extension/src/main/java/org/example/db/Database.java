@@ -2,16 +2,17 @@ package org.example.db;
 
 import org.example.configuration.Configuration;
 
+import java.nio.file.Path;
 import java.sql.*;
 
 public class Database {
-    private static final String H2_PATH = "/opt/hivemq/data/h2_db/database";
+    private static final String H2_PATH = "h2_db/database";
     private static Database Instance;
 
     private final Connection db;
 
-    private Database() throws SQLException {
-        final String dbUrl = "jdbc:h2:" + H2_PATH;
+    private Database(Path folder) throws SQLException {
+        final String dbUrl = "jdbc:h2:" + folder.resolve(H2_PATH).toAbsolutePath();
         db = DriverManager.getConnection(dbUrl);
         final String createUserTable = "CREATE TABLE IF NOT EXISTS USERS (ID INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, USERNAME VARCHAR2(255) UNIQUE NOT NULL)";
         final String createDeviceTable = "CREATE TABLE IF NOT EXISTS DEVICES (USERID INT REFERENCES USERS(ID), CLIENTID VARCHAR2(255) UNIQUE NOT NULL, LATENCY_SUM BIGINT, LATENCY_CNT BIGINT, MESSAGES_FAILED BIGINT, MESSAGES_CNT BIGINT, LAST_REPUTATION FLOAT4, LAST_TRUST FLOAT4 NOT NULL, PRIMARY KEY(USERID, CLIENTID))";
@@ -22,9 +23,9 @@ public class Database {
         db.setAutoCommit(true);
     }
 
-    public static void init() throws SQLException {
+    public static void init(Path folder) throws SQLException {
         if (Instance == null) {
-            Instance = new Database();
+            Instance = new Database(folder);
         }
     }
 

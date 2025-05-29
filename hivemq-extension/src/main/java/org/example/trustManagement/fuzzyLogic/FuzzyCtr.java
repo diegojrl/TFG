@@ -7,7 +7,9 @@ import org.example.trustData.DeviceTrustAttributes;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static fuzzy4j.flc.Term.term;
 import static fuzzy4j.flc.Variable.input;
@@ -25,7 +27,7 @@ public class FuzzyCtr {
 
     public static FuzzyCtr getInstance() throws IOException {
         if (instance == null) {
-            instance = new FuzzyCtr(Path.of("/opt/hivemq/conf/trustRules.flc"));
+            instance = new FuzzyCtr(Configuration.getConfigDir().resolve("trustRules.flc"));
         }
         return instance;
     }

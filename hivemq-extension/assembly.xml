@@ -48,8 +48,8 @@
         </file>
 
         <file>
-            <source>src/conf/trust.json</source>
-            <destName>conf/trust.json</destName>
+            <source>src/conf/config.json</source>
+            <destName>conf/config.json</destName>
             <outputDirectory>/${artifactId}/</outputDirectory>
         </file>
         <file>

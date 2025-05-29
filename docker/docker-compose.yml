@@ -9,9 +9,24 @@ services:
       - ./conf:/opt/hivemq/conf
       - ./extensions:/opt/hivemq/extensions
       - data:/opt/hivemq/data
+    network_mode: host
+    depends_on:
+      - ldap
+
+  ldap:
+    image: lldap/lldap:stable
+    container_name: ldap
     ports:
-      - 127.0.0.1:1883:1883   # MQTT
-      - 127.0.0.1:8883:8883   # MQTT + TLS
-      - 127.0.0.1:8000:8000   # WS
+      # web front-end
+      - 17170:17170
+      - 127.0.0.1:3890:3890
+    volumes:
+      - ./ldap_data:/data
+    environment:
+      TZ: Europe/Madrid
+      LLDAP_LDAP_BASE_DN: dc=example,dc=com
+    env_file:
+      - env
+
 volumes:
   data:

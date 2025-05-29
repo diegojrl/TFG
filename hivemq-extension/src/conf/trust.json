@@ -1,7 +1,0 @@
-	{
-	"delay_max": 500,
-	"delay_min": 20,
-	"trusted_networks": [
-		"192.168.1.0/24", "::1/128", "localhost/24"
-	]
-}

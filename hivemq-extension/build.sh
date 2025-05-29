@@ -20,5 +20,5 @@ fi
 if scp target/hivemq-test-1.0-SNAPSHOT-distribution.zip hivemq.lan:.
 then
     ssh hivemq.lan "./run-server.sh"
-    ssh hivemq.lan "docker compose -f hivemq/docker-compose.yml stop"
+    ssh hivemq.lan "docker compose -f hivemq/docker-compose.yml stop hivemq"
 fi

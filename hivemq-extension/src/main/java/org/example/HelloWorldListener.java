@@ -41,7 +41,7 @@ import java.util.Optional;
  */
 public class HelloWorldListener implements ClientLifecycleEventListener {
 
-    private static final Logger log = LoggerFactory.getLogger(HelloWorldMain.class);
+    private static final Logger log = LoggerFactory.getLogger(HelloWorldListener.class);
 
     @Override
     public void onMqttConnectionStart(final @NotNull ConnectionStartInput connectionStartInput) {
@@ -84,8 +84,8 @@ public class HelloWorldListener implements ClientLifecycleEventListener {
     public void onDisconnect(final @NotNull DisconnectEventInput disconnectEventInput) {
         DeviceTrustAttributes device = TrustStore.remove(disconnectEventInput.getClientInformation().getClientId());
         try {
-            if (device != null) Database.updateDevice(new Device(device));
-
+            if (device != null)
+                Database.updateDevice(new Device(device));
         } catch (SQLException e) {
             log.error("Error saving device {} data to database", device.getClientId());
         }

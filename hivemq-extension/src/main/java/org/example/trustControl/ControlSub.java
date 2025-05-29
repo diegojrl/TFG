@@ -15,6 +15,8 @@ import java.util.concurrent.*;
 
 
 public class ControlSub  {
+    public static final int RUN_INTERVAL_SEC = 15;
+
     private static final String CONTROL_TOPIC = "control";
     private static final String VIEW_TOPIC = CONTROL_TOPIC + "/view/";
     private static final Logger log = LoggerFactory.getLogger(ControlSub.class);
@@ -35,7 +37,9 @@ public class ControlSub  {
                         Publish msg = Builders.publish()
                                 .topic(VIEW_TOPIC+clientId)     //Topic -> "control/view/<clientId>"
                                 .payload(payload)
-                                .qos(Qos.valueOf(2))
+                                .retain(true)
+                                .messageExpiryInterval(RUN_INTERVAL_SEC - 1)
+                                .qos(Qos.EXACTLY_ONCE)
                                 .build();
                         log.trace("Publishing message: {}", msg);
                         //Send the message

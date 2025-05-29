@@ -1,7 +1,7 @@
-import mqtt, { type IClientOptions } from 'mqtt';
-import { arrayToDevice, type Device } from './device';
-import { Decoder } from "@msgpack/msgpack";
-import { PUBLIC_MQTT_HOST } from '$env/static/public';
+import mqtt, {type IClientOptions} from 'mqtt';
+import {arrayToDevice, type Device} from './device';
+import {Decoder} from "@msgpack/msgpack";
+import {PUBLIC_MQTT_HOST} from '$env/static/public';
 
 let mqttClient: mqtt.MqttClient | undefined;
 
@@ -16,15 +16,11 @@ export async function start_mqtt_connection(username: string, password: string, 
         console.log("test")
         let client_options: IClientOptions = {
             username: username,
-            password: password
-        };
-        client_options.clientId = "web_control_" + Math.random() * 10;
+            password: password,
+            protocolVersion: 5
+        }
+        client_options.clientId = "web_control_" + username + "_" + (Math.random() * 100).toFixed(0);
         mqttClient = await mqtt.connectAsync(SERVER.toString(), client_options);
-
-        await mqttClient.subscribeAsync(CONTROL_TOPIC + "+", { qos: 1 });
-        await mqttClient.subscribeAsync(PING_TOPIC, { qos: 1 });
-
-        mqttClient.sendPing();
 
 
         mqttClient.on("message", (topic, payload, packet) => {
@@ -43,6 +39,11 @@ export async function start_mqtt_connection(username: string, password: string, 
             }
         });
 
+        await mqttClient.subscribeAsync(CONTROL_TOPIC + "+", { qos: 1 });
+        await mqttClient.subscribeAsync(PING_TOPIC, { qos: 1 });
+
+        mqttClient.sendPing();
+
         mqttClient.on("connect", () => {
             console.log("Connected");
             onReconect();
@@ -51,7 +52,6 @@ export async function start_mqtt_connection(username: string, password: string, 
             console.log("recon");
             onReconect();
         });
-
 
         return true;
     } catch (e) {

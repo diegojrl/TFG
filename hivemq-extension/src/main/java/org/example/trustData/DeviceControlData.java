@@ -5,14 +5,14 @@ public class DeviceControlData {
     public enum NetworkSecurity { No, TLS }
 
 
-    public Float failedInteractionsPercentage;
-    public Integer avgDelay;
+    public float failedInteractionsPercentage;
+    public int avgDelay;
     public NetworkType networkType;  //One of "Internal" | "External"
     public NetworkSecurity networkSecurity;
-    public Integer reputation;
-    public Float trustValue;
+    public int reputation;
+    public float trustValue;
 
-    public DeviceControlData(Float failedInteractionsPercentage, Integer avgDelay, NetworkType networkType, NetworkSecurity networkSecurity, Integer reputation, Float trustValue) {
+    public DeviceControlData(float failedInteractionsPercentage, int avgDelay, NetworkType networkType, NetworkSecurity networkSecurity, int reputation, float trustValue) {
         this.failedInteractionsPercentage = failedInteractionsPercentage;
         this.avgDelay = avgDelay;
         this.networkType = networkType;

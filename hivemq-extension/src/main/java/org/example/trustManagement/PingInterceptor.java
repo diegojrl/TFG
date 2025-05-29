@@ -15,6 +15,7 @@ import com.hivemq.extension.sdk.api.interceptor.pubrel.PubrelInboundInterceptor;
 import com.hivemq.extension.sdk.api.interceptor.pubrel.parameter.PubrelInboundInput;
 import com.hivemq.extension.sdk.api.interceptor.pubrel.parameter.PubrelInboundOutput;
 import com.hivemq.extension.sdk.api.packets.general.Qos;
+import com.hivemq.extension.sdk.api.services.ManagedExtensionExecutorService;
 import com.hivemq.extension.sdk.api.services.Services;
 import com.hivemq.extension.sdk.api.services.builder.Builders;
 import com.hivemq.extension.sdk.api.services.publish.Publish;
@@ -24,10 +25,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.util.Optional;
 
 public class PingInterceptor implements PingReqInboundInterceptor, PubackInboundInterceptor, PubrecInboundInterceptor, PubrelInboundInterceptor {
     private static final Logger log = LoggerFactory.getLogger(PingInterceptor.class);
+    private static final ManagedExtensionExecutorService executor = Services.extensionExecutorService();
 
     private static final String PING_TOPIC = "tmgr/ping";
 
@@ -60,10 +63,14 @@ public class PingInterceptor implements PingReqInboundInterceptor, PubackInbound
         final long currentTime = System.currentTimeMillis();
         final String clientId = pubackInboundInput.getClientInformation().getClientId();
         final Integer packetId = pubackInboundInput.getPubackPacket().getPacketIdentifier();
-        final ConnectionAttributeStore store = pubackInboundInput.getConnectionInformation().getConnectionAttributeStore();
 
-        updateLatency(store, clientId, packetId, currentTime);
+        final var output = pubackInboundOutput.async(Duration.ofMillis(50));
+        executor.submit(() -> {
+            final ConnectionAttributeStore store = pubackInboundInput.getConnectionInformation().getConnectionAttributeStore();
 
+            updateLatency(store, clientId, packetId, currentTime);
+            output.resume();
+        });
     }
 
     @Override
@@ -72,9 +79,14 @@ public class PingInterceptor implements PingReqInboundInterceptor, PubackInbound
         final long currentTime = System.currentTimeMillis();
         final String clientId = pubrecInboundInput.getClientInformation().getClientId();
         final Integer packetId = pubrecInboundInput.getPubrecPacket().getPacketIdentifier();
-        final ConnectionAttributeStore store = pubrecInboundInput.getConnectionInformation().getConnectionAttributeStore();
 
-        updateLatency(store, clientId, packetId, currentTime);
+        final var output = pubrecInboundOutput.async(Duration.ofMillis(50));
+        executor.submit(() -> {
+            final ConnectionAttributeStore store = pubrecInboundInput.getConnectionInformation().getConnectionAttributeStore();
+
+            updateLatency(store, clientId, packetId, currentTime);
+            output.resume();
+        });
     }
 
 
@@ -84,9 +96,14 @@ public class PingInterceptor implements PingReqInboundInterceptor, PubackInbound
         final long currentTime = System.currentTimeMillis();
         final String clientId = pubrelInboundInput.getClientInformation().getClientId();
         final Integer packetId = pubrelInboundInput.getPubrelPacket().getPacketIdentifier();
-        final ConnectionAttributeStore store = pubrelInboundInput.getConnectionInformation().getConnectionAttributeStore();
 
-        updateLatency(store, clientId, packetId, currentTime);
+        final var output = pubrelInboundOutput.async(Duration.ofMillis(50));
+        executor.submit(() -> {
+            final ConnectionAttributeStore store = pubrelInboundInput.getConnectionInformation().getConnectionAttributeStore();
+
+            updateLatency(store, clientId, packetId, currentTime);
+            output.resume();
+        });
     }
 
     private static void updateLatency(@NotNull final ConnectionAttributeStore store, @NotNull final String clientId, @NotNull final Integer packetId, @NotNull final long currentTime) {

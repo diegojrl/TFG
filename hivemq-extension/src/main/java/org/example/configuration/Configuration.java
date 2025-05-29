@@ -15,8 +15,11 @@ import java.nio.file.Path;
 public class Configuration {
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static final Logger log = LoggerFactory.getLogger(Configuration.class);
+
+    private static Path configDir;
     private static int DELAY_MAX = 500;
     private static int DELAY_MIN = 20;
+    private static File.Ldap ldap;
     private static Network[] trustedNetworks;
 
     public static int getDelayMax() {
@@ -33,11 +36,33 @@ public class Configuration {
         return false;
     }
 
-    public static void loadFromFile(Path filename) throws IOException {
+    public static String getLdapUrl() {
+        return ldap.url;
+    }
+
+    public static String getLdapAuth() {
+        return ldap.auth;
+    }
+
+    public static String getLdapBaseDn() {
+        return ldap.baseDn;
+    }
+
+    public static Path getConfigDir() {
+        return configDir;
+    }
+
+    public static void setFolder(java.io.File folder) throws IOException {
+        configDir = folder.toPath().resolve("conf");
+        loadFromFile(configDir.resolve("config.json"));
+    }
+
+    private static void loadFromFile(Path filename) throws IOException {
         try {
             File fileConf = objectMapper.readValue(filename.toFile(), File.class);
             DELAY_MAX = fileConf.delay_max;
             DELAY_MIN = fileConf.delay_min;
+            ldap = fileConf.ldap;
             trustedNetworks = new Network[fileConf.trusted_networks.length];
             int idx = 0;
             for (String net : fileConf.trusted_networks) {
@@ -49,4 +74,5 @@ public class Configuration {
         }
 
     }
+
 }

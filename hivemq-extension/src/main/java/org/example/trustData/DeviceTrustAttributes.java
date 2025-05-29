@@ -168,12 +168,12 @@ public class DeviceTrustAttributes {
     }
 
     private DeviceControlData asDeviceTrustData() {
-        Float failureRate = this.getFailureRate();
-        Integer delay = this.getLatency();
-        Integer reputation = this.getReputation();
+        float failureRate = this.getFailureRate();
+        int delay = this.getLatency();
+        int reputation = this.getReputation();
         DeviceControlData.NetworkType networkType = this.externalNetwork ? DeviceControlData.NetworkType.External : DeviceControlData.NetworkType.Internal;
         DeviceControlData.NetworkSecurity networkSecurity = this.usedTLS ? DeviceControlData.NetworkSecurity.TLS : DeviceControlData.NetworkSecurity.No;
-        Float trust = Float.intBitsToFloat(trustValue.get());
+        float trust = Float.intBitsToFloat(trustValue.get());
 
         return new DeviceControlData(failureRate, delay, networkType, networkSecurity, reputation, trust);
     }

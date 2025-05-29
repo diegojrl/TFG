@@ -19,12 +19,13 @@ package org.example;
 
 import com.hivemq.extension.sdk.api.ExtensionMain;
 import com.hivemq.extension.sdk.api.annotations.NotNull;
-import com.hivemq.extension.sdk.api.auth.EnhancedAuthenticator;
+import com.hivemq.extension.sdk.api.auth.SimpleAuthenticator;
 import com.hivemq.extension.sdk.api.events.EventRegistry;
 import com.hivemq.extension.sdk.api.parameter.*;
 import com.hivemq.extension.sdk.api.services.Services;
 import com.hivemq.extension.sdk.api.services.auth.SecurityRegistry;
 import com.hivemq.extension.sdk.api.services.intializer.InitializerRegistry;
+import org.example.authentication.Auth;
 import org.example.configuration.Configuration;
 import org.example.db.Database;
 import org.example.trustControl.ControlSub;
@@ -50,28 +51,29 @@ import java.util.concurrent.TimeUnit;
  * @since 4.0.0
  */
 public class HelloWorldMain implements ExtensionMain {
-    private static final Path CONFIG_PATH = Path.of("/opt/hivemq/conf/trust.json");
     private static final @NotNull Logger log = LoggerFactory.getLogger(HelloWorldMain.class);
-
     @Override
     public void extensionStart(final @NotNull ExtensionStartInput extensionStartInput, final @NotNull ExtensionStartOutput extensionStartOutput) {
-
+        final Path dataPath = extensionStartInput.getServerInformation().getDataFolder().toPath();
+        final ExtensionInformation extensionInformation = extensionStartInput.getExtensionInformation();
         try {
-            Configuration.loadFromFile(CONFIG_PATH);
-            Database.init();
+            //Load config from file
+            Configuration.setFolder(extensionInformation.getExtensionHomeFolder());
+
+            Database.init(dataPath);
+            //Init the fuzzy controller
             FuzzyCtr.getInstance();
             addAuth();
             addClientLifecycleEventListener();
             addPublishModifier();
             //Update control info every 5s
-            Services.extensionExecutorService().scheduleAtFixedRate(ControlSub.controlTask, 10, 5, TimeUnit.SECONDS);
-            final ExtensionInformation extensionInformation = extensionStartInput.getExtensionInformation();
+            Services.extensionExecutorService().scheduleAtFixedRate(ControlSub.controlTask, 2, ControlSub.RUN_INTERVAL_SEC, TimeUnit.SECONDS);
             log.info("Started {}:{}", extensionInformation.getName(), extensionInformation.getVersion());
         } catch (IOException e) {
             log.error("Failed to read configuration", e);
             extensionStartOutput.preventExtensionStartup("Failed to read configuration: " + e.getMessage());
         } catch (SQLException e) {
-            log.error("Error starting datababe ", e);
+            log.error("Error starting database ", e);
             extensionStartOutput.preventExtensionStartup(e.getLocalizedMessage());
         } catch (Exception e) {
             log.error("Exception thrown at extension start: ", e);
@@ -89,8 +91,8 @@ public class HelloWorldMain implements ExtensionMain {
 
     private void addAuth() {
         final SecurityRegistry securityRegistry = Services.securityRegistry();
-        final EnhancedAuthenticator auth = new Auth();
-        securityRegistry.setEnhancedAuthenticatorProvider(in -> auth);
+        final SimpleAuthenticator auth = new Auth();
+        securityRegistry.setAuthenticatorProvider(in -> auth);
     }
 
     private void addClientLifecycleEventListener() {
