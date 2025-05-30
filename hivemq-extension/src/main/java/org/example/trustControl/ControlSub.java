@@ -14,7 +14,7 @@ import java.nio.ByteBuffer;
 import java.util.concurrent.*;
 
 
-public class ControlSub  {
+public class ControlSub {
     public static final int RUN_INTERVAL_SEC = 15;
 
     private static final String CONTROL_TOPIC = "control";
@@ -35,7 +35,7 @@ public class ControlSub  {
 
                         //Build message
                         Publish msg = Builders.publish()
-                                .topic(VIEW_TOPIC+clientId)     //Topic -> "control/view/<clientId>"
+                                .topic(VIEW_TOPIC + clientId)     //Topic -> "control/view/<clientId>"
                                 .payload(payload)
                                 .retain(true)
                                 .messageExpiryInterval(RUN_INTERVAL_SEC - 1)
@@ -50,7 +50,7 @@ public class ControlSub  {
                         }
 
                     } catch (JsonProcessingException e) {
-                        log.error("Error encoding trust attributes for client {}",clientId);
+                        log.error("Error encoding trust attributes for client {}", clientId);
                     }
                 }
             }

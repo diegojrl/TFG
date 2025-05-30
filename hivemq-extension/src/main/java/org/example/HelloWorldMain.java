@@ -52,6 +52,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class HelloWorldMain implements ExtensionMain {
     private static final @NotNull Logger log = LoggerFactory.getLogger(HelloWorldMain.class);
+
     @Override
     public void extensionStart(final @NotNull ExtensionStartInput extensionStartInput, final @NotNull ExtensionStartOutput extensionStartOutput) {
         final Path dataPath = extensionStartInput.getServerInformation().getDataFolder().toPath();

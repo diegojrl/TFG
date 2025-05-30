@@ -8,11 +8,14 @@ import com.hivemq.extension.sdk.api.events.client.parameters.DisconnectEventInpu
 
 public class ReputationInterceptor implements ClientLifecycleEventListener {
     @Override
-    public void onMqttConnectionStart(@NotNull ConnectionStartInput connectionStartInput) {}
+    public void onMqttConnectionStart(@NotNull ConnectionStartInput connectionStartInput) {
+    }
 
     @Override
-    public void onAuthenticationSuccessful(@NotNull AuthenticationSuccessfulInput authenticationSuccessfulInput) {}
+    public void onAuthenticationSuccessful(@NotNull AuthenticationSuccessfulInput authenticationSuccessfulInput) {
+    }
 
     @Override
-    public void onDisconnect(@NotNull DisconnectEventInput disconnectEventInput) {}
+    public void onDisconnect(@NotNull DisconnectEventInput disconnectEventInput) {
+    }
 }

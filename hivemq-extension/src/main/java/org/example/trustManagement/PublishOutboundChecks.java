@@ -60,7 +60,7 @@ public class PublishOutboundChecks implements PublishOutboundInterceptor, Pubrec
         if (store.get(packetId).isPresent()) {
             log.debug("Packet resend");
             TrustStore.get(clientId).addFailedPacket();
-        }else {
+        } else {
             log.trace("Packet sent");
             TrustStore.get(clientId).addSentPacket();
         }

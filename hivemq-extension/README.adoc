@@ -17,9 +17,7 @@
 
 === Purpose
 
-This Hello World extension sets a ClientLifecycleEventListener which logs
-the MQTT Version and identifier of every connecting and disconnecting client and
-registers a PublishInboundInterceptor to modify the payload of every Publish with the topic 'hello/world' to 'Hello World!'.
+This Hello World extension sets a ClientLifecycleEventListener which logs the MQTT Version and identifier of every connecting and disconnecting client and registers a PublishInboundInterceptor to modify the payload of every Publish with the topic 'hello/world' to 'Hello World!'.
 
 There is {hivemq-extension-docs-archetype-link}[a Maven Archetype available]
 to generate a basic extension from the IDE.
@@ -39,7 +37,8 @@ to grasp the core concepts of HiveMQ extension development.
 
 ==== Manual Testing
 
-Connect with an {hivemq-blog-tools}[MQTT client] of your choice. You should see a log message with its identifier and MQTT version.
+Connect with an {hivemq-blog-tools}[MQTT client] of your choice.
+You should see a log message with its identifier and MQTT version.
 
 ==== Automatic Testing
 
@@ -56,4 +55,5 @@ Now read the {hivemq-extension-docs-link}[HiveMQ Extension Documentation] to see
 
 === Need help?
 
-If you encounter any problems, we are happy to help. The best place to get in contact is our {hivemq-support}[support].
+If you encounter any problems, we are happy to help.
+The best place to get in contact is our {hivemq-support}[support].

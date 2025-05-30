@@ -39,8 +39,8 @@ export async function start_mqtt_connection(username: string, password: string, 
             }
         });
 
-        await mqttClient.subscribeAsync(CONTROL_TOPIC + "+", { qos: 1 });
-        await mqttClient.subscribeAsync(PING_TOPIC, { qos: 1 });
+        await mqttClient.subscribeAsync(CONTROL_TOPIC + "+", {qos: 1});
+        await mqttClient.subscribeAsync(PING_TOPIC, {qos: 1});
 
         mqttClient.sendPing();
 

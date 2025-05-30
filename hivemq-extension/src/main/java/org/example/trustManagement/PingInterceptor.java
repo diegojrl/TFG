@@ -116,7 +116,7 @@ public class PingInterceptor implements PingReqInboundInterceptor, PubackInbound
             final long latency = rtt / 2;
 
             final DeviceTrustAttributes trustAttributes = TrustStore.get(clientId);
-            if (trustAttributes != null){
+            if (trustAttributes != null) {
                 trustAttributes.addLatency(latency);
                 log.debug("{} latency: {}", clientId, latency);
             } else {

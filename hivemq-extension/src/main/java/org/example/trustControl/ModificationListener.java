@@ -16,14 +16,15 @@ import java.util.Optional;
 public class ModificationListener implements PublishInboundInterceptor {
     private static final Logger log = LoggerFactory.getLogger(ModificationListener.class);
     private static final String MOD_TOPIC = "control/mod/";
+
     @Override
     public void onInboundPublish(@NotNull PublishInboundInput publishInboundInput, @NotNull PublishInboundOutput publishInboundOutput) {
         final String topic = publishInboundInput.getPublishPacket().getTopic();
-        if (topic.startsWith(MOD_TOPIC)){
+        if (topic.startsWith(MOD_TOPIC)) {
 
             final int clientIdIdx = topic.indexOf('/', MOD_TOPIC.length());
 
-            if (clientIdIdx != -1){
+            if (clientIdIdx != -1) {
 
                 final String clientId = topic.substring(MOD_TOPIC.length(), clientIdIdx);
                 final String attr = topic.substring(clientIdIdx + 1);
@@ -32,7 +33,7 @@ public class ModificationListener implements PublishInboundInterceptor {
                 if (trustAttributes != null) {
 
                     Optional<ByteBuffer> payload = publishInboundInput.getPublishPacket().getPayload();
-                    switch (attr){
+                    switch (attr) {
                         case "ping":
                             if (payload.isPresent() && payload.get().remaining() == 4) {
                                 int latency = payload.get().getInt();

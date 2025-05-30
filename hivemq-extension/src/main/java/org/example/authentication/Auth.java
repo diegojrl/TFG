@@ -61,7 +61,8 @@ public class Auth implements SimpleAuthenticator {
 
         }
     }
-    private boolean authenticate(final String username, final String password)  {
+
+    private boolean authenticate(final String username, final String password) {
         Properties env = (Properties) this.env.clone();
         env.put(Context.SECURITY_PRINCIPAL, "cn=" + username + "," + Configuration.getLdapBaseDn());
         env.put(Context.SECURITY_CREDENTIALS, password);

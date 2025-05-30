@@ -26,7 +26,7 @@ public class TrustEvalInterceptor implements PublishOutboundInterceptor, Publish
         final DeviceTrustAttributes trust = TrustStore.get(sender);
         final double trustValue = trust.getTrustValue();
         final long duration = System.nanoTime() - time;
-        log.info("Sent by: {}, {}, took: {}ms", sender, trustValue, duration/1_000_000D);
+        log.info("Sent by: {}, {}, took: {}ms", sender, trustValue, duration / 1_000_000D);
         log.trace(trust.toString());
 
     }

@@ -3,8 +3,9 @@ package org.example.authorization;
 import java.util.List;
 
 public class File {
-    enum Action { SUBSCRIBE, PUBLISH, ALL }
-    enum Retention { YES, NO, ANY }
+    enum Action {SUBSCRIBE, PUBLISH, ALL}
+
+    enum Retention {YES, NO, ANY}
 
     public static class Permission {
         public String topic;

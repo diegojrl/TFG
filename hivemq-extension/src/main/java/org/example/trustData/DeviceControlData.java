@@ -2,7 +2,8 @@ package org.example.trustData;
 
 public class DeviceControlData {
     public enum NetworkType {Internal, External}
-    public enum NetworkSecurity { No, TLS }
+
+    public enum NetworkSecurity {No, TLS}
 
 
     public float failedInteractionsPercentage;

@@ -30,6 +30,7 @@
             devices.push(new_device);
         }
     }
+
     async function connect() {
         try {
             if (
@@ -51,6 +52,7 @@
             await logout();
         }
     }
+
     async function logout() {
         await stop_mqtt_client();
         server_name = "";
@@ -59,22 +61,24 @@
         devices = [];
         showLogin = true;
     }
+
     function onReconect() {
         devices = [];
     }
+
     function onLostConnection() {
         reconnecting = false;
     }
 </script>
 
 <Modal
-    open={showLogin}
-    bind:username
-    bind:password
-    onClose={() => {
+        open={showLogin}
+        bind:username
+        bind:password
+        onClose={() => {
         showLogin = false;
     }}
-    onLogin={connect}
+        onLogin={connect}
 ></Modal>
 
 <div class="mx-auto px-2 sm:px-6 lg:px-8 bg-gray-800">
@@ -82,18 +86,20 @@
         {#if server_name === ""}
             <span></span>
             <button
-                class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
-                onclick={() => {
+                    class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+                    onclick={() => {
                     showLogin = true;
-                }}>Login</button
+                }}>Login
+            </button
             >
         {:else}
             <div class="bg-green-900 rounded px-3 py-1 text-white">
                 {server_name}
             </div>
             <button
-                class="bg-red-500 hover:bg-red-600 rounded px-3 py-1 text-white"
-                onclick={logout}>Logout</button
+                    class="bg-red-500 hover:bg-red-600 rounded px-3 py-1 text-white"
+                    onclick={logout}>Logout
+            </button
             >
         {/if}
     </div>
@@ -107,7 +113,7 @@
     <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 m-4">
         {#each devices as dev}
             <div transition:fade class="">
-                <DeviceLayout {dev} />
+                <DeviceLayout {dev}/>
             </div>
         {/each}
     </div>

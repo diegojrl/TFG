@@ -1,86 +1,87 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
-<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="C91921D3-997C-76AD-5035-11136DF4B2E5" name="USERS">
-<createdBy>diego</createdBy>
-<createdTime>2025-05-22 16:23:43 UTC</createdTime>
-<generatorID>33C9187C-46A3-FDAC-E288-9DDB9F601059</generatorID>
-<ownerDesignName>schema</ownerDesignName>
-<engineerTo>
-<item key="1645BB76-F5E0-3DC8-CFB3-A724A59750F6" value="true"/>
-</engineerTo>
-<adequatelyNormalized>NO</adequatelyNormalized>
-<expectedVolumes>0</expectedVolumes>
-<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
-<growthPercent>0</growthPercent>
-<growthType>Year</growthType>
-<maxVolumes>9999999</maxVolumes>
-<minVolumes>0</minVolumes>
-<normalForm>Third</normalForm>
-<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
-<Attribute name="ID" id="646859DB-A346-9701-EBCD-CADC0C471ECC">
-<createdBy>diego</createdBy>
-<createdTime>2025-05-22 16:23:43 UTC</createdTime>
-<generatorID>331F2C4E-3E52-198A-3508-1F80D4970679</generatorID>
-<ownerDesignName>schema</ownerDesignName>
-<engineerTo>
-<item key="1645BB76-F5E0-3DC8-CFB3-A724A59750F6" value="true"/>
-</engineerTo>
-<useDomainConstraints>false</useDomainConstraints>
-<use>1</use>
-<logicalDatatype>LOGDT011</logicalDatatype>
-<ownDataTypeParameters>,,</ownDataTypeParameters>
-</Attribute>
-<Attribute name="USERNAME" id="7871E697-8121-FAA6-A8B3-56315C01A4BD">
-<createdBy>diego</createdBy>
-<createdTime>2025-05-22 16:23:43 UTC</createdTime>
-<generatorID>70E35166-0D8E-891E-C053-4B9102505D1E</generatorID>
-<ownerDesignName>schema</ownerDesignName>
-<engineerTo>
-<item key="1645BB76-F5E0-3DC8-CFB3-A724A59750F6" value="true"/>
-</engineerTo>
-<useDomainConstraints>false</useDomainConstraints>
-<use>1</use>
-<logicalDatatype>LOGDT024</logicalDatatype>
-<dataTypeSize>255</dataTypeSize>
-<ownDataTypeParameters>255,,</ownDataTypeParameters>
-</Attribute>
-</attributes>
-<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
-<identifier id="515B5887-DDAF-CBE9-A614-B658A6998493" name="USERS PK">
-<createdBy>diego</createdBy>
-<createdTime>2025-05-22 16:23:43 UTC</createdTime>
-<generatorID>3F22840D-4A78-CFA1-7129-1E9BDB112482</generatorID>
-<ownerDesignName>schema</ownerDesignName>
-<engineerTo>
-<item key="1645BB76-F5E0-3DC8-CFB3-A724A59750F6" value="true"/>
-</engineerTo>
-<pk>true</pk>
-<usedAttributes>
-<attributeRef>646859DB-A346-9701-EBCD-CADC0C471ECC</attributeRef>
-</usedAttributes>
-</identifier>
-<identifier id="824D40B1-05C9-8B4C-436D-8409F2C77DB3" name="Key_2">
-<createdBy>diego</createdBy>
-<createdTime>2025-05-22 17:17:15 UTC</createdTime>
-<ownerDesignName>schema</ownerDesignName>
-<engineerTo>
-<item key="1645BB76-F5E0-3DC8-CFB3-A724A59750F6" value="true"/>
-</engineerTo>
-<newElementsIDs>7871E697-8121-FAA6-A8B3-56315C01A4BD</newElementsIDs>
-<usedAttributes>
-<attributeRef>7871E697-8121-FAA6-A8B3-56315C01A4BD</attributeRef>
-</usedAttributes>
-</identifier>
-<identifier id="FE3D8592-716B-1597-1613-D88282E8C935" name="USERS  UN">
-<createdBy>diego</createdBy>
-<createdTime>2025-05-22 17:18:15 UTC</createdTime>
-<generatorID>BCAFF8B5-3B65-D56F-932B-82060B2584C0</generatorID>
-<ownerDesignName>schema</ownerDesignName>
-<engineerTo>
-<item key="1645BB76-F5E0-3DC8-CFB3-A724A59750F6" value="true"/>
-</engineerTo>
-<usedAttributes>
-<attributeRef>7871E697-8121-FAA6-A8B3-56315C01A4BD</attributeRef>
-</usedAttributes>
-</identifier>
-</identifiers>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0"
+        id="C91921D3-997C-76AD-5035-11136DF4B2E5" name="USERS">
+    <createdBy>diego</createdBy>
+    <createdTime>2025-05-22 16:23:43 UTC</createdTime>
+    <generatorID>33C9187C-46A3-FDAC-E288-9DDB9F601059</generatorID>
+    <ownerDesignName>schema</ownerDesignName>
+    <engineerTo>
+        <item key="1645BB76-F5E0-3DC8-CFB3-A724A59750F6" value="true"/>
+    </engineerTo>
+    <adequatelyNormalized>NO</adequatelyNormalized>
+    <expectedVolumes>0</expectedVolumes>
+    <fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+    <growthPercent>0</growthPercent>
+    <growthType>Year</growthType>
+    <maxVolumes>9999999</maxVolumes>
+    <minVolumes>0</minVolumes>
+    <normalForm>Third</normalForm>
+    <attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+        <Attribute name="ID" id="646859DB-A346-9701-EBCD-CADC0C471ECC">
+            <createdBy>diego</createdBy>
+            <createdTime>2025-05-22 16:23:43 UTC</createdTime>
+            <generatorID>331F2C4E-3E52-198A-3508-1F80D4970679</generatorID>
+            <ownerDesignName>schema</ownerDesignName>
+            <engineerTo>
+                <item key="1645BB76-F5E0-3DC8-CFB3-A724A59750F6" value="true"/>
+            </engineerTo>
+            <useDomainConstraints>false</useDomainConstraints>
+            <use>1</use>
+            <logicalDatatype>LOGDT011</logicalDatatype>
+            <ownDataTypeParameters>,,</ownDataTypeParameters>
+        </Attribute>
+        <Attribute name="USERNAME" id="7871E697-8121-FAA6-A8B3-56315C01A4BD">
+            <createdBy>diego</createdBy>
+            <createdTime>2025-05-22 16:23:43 UTC</createdTime>
+            <generatorID>70E35166-0D8E-891E-C053-4B9102505D1E</generatorID>
+            <ownerDesignName>schema</ownerDesignName>
+            <engineerTo>
+                <item key="1645BB76-F5E0-3DC8-CFB3-A724A59750F6" value="true"/>
+            </engineerTo>
+            <useDomainConstraints>false</useDomainConstraints>
+            <use>1</use>
+            <logicalDatatype>LOGDT024</logicalDatatype>
+            <dataTypeSize>255</dataTypeSize>
+            <ownDataTypeParameters>255,,</ownDataTypeParameters>
+        </Attribute>
+    </attributes>
+    <identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+        <identifier id="515B5887-DDAF-CBE9-A614-B658A6998493" name="USERS PK">
+            <createdBy>diego</createdBy>
+            <createdTime>2025-05-22 16:23:43 UTC</createdTime>
+            <generatorID>3F22840D-4A78-CFA1-7129-1E9BDB112482</generatorID>
+            <ownerDesignName>schema</ownerDesignName>
+            <engineerTo>
+                <item key="1645BB76-F5E0-3DC8-CFB3-A724A59750F6" value="true"/>
+            </engineerTo>
+            <pk>true</pk>
+            <usedAttributes>
+                <attributeRef>646859DB-A346-9701-EBCD-CADC0C471ECC</attributeRef>
+            </usedAttributes>
+        </identifier>
+        <identifier id="824D40B1-05C9-8B4C-436D-8409F2C77DB3" name="Key_2">
+            <createdBy>diego</createdBy>
+            <createdTime>2025-05-22 17:17:15 UTC</createdTime>
+            <ownerDesignName>schema</ownerDesignName>
+            <engineerTo>
+                <item key="1645BB76-F5E0-3DC8-CFB3-A724A59750F6" value="true"/>
+            </engineerTo>
+            <newElementsIDs>7871E697-8121-FAA6-A8B3-56315C01A4BD</newElementsIDs>
+            <usedAttributes>
+                <attributeRef>7871E697-8121-FAA6-A8B3-56315C01A4BD</attributeRef>
+            </usedAttributes>
+        </identifier>
+        <identifier id="FE3D8592-716B-1597-1613-D88282E8C935" name="USERS  UN">
+            <createdBy>diego</createdBy>
+            <createdTime>2025-05-22 17:18:15 UTC</createdTime>
+            <generatorID>BCAFF8B5-3B65-D56F-932B-82060B2584C0</generatorID>
+            <ownerDesignName>schema</ownerDesignName>
+            <engineerTo>
+                <item key="1645BB76-F5E0-3DC8-CFB3-A724A59750F6" value="true"/>
+            </engineerTo>
+            <usedAttributes>
+                <attributeRef>7871E697-8121-FAA6-A8B3-56315C01A4BD</attributeRef>
+            </usedAttributes>
+        </identifier>
+    </identifiers>
 </Entity>

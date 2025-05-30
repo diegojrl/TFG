@@ -30,10 +30,9 @@ public final class RulesFile {
     }
 
 
-
     //Line format: IF (var) (value) THEN (var) (value)
     private static IfThenRule parseLine(final String line, final Map<String, VariableWithTerms> variablesTerms) throws IOException {
-        try(final Scanner scanner = new Scanner(line)) {
+        try (final Scanner scanner = new Scanner(line)) {
             scanner.useDelimiter("[ ]");
             //Skip IF
             if (!scanner.next().equalsIgnoreCase("if"))
@@ -60,8 +59,8 @@ public final class RulesFile {
                 return null;
 
             return new IfThenRule(is(v1.getVariable(), term1), is(v2.getVariable(), term2));
-        }catch (NoSuchElementException e) {
-            log.error("Error reading rules file, line: {}  -  error: {}",line, e.getMessage());
+        } catch (NoSuchElementException e) {
+            log.error("Error reading rules file, line: {}  -  error: {}", line, e.getMessage());
             throw new IOException(e);
         }
     }
