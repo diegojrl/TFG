@@ -3,19 +3,29 @@ package org.example.authorization;
 import java.util.List;
 
 public class File {
-    enum Action {SUBSCRIBE, PUBLISH, ALL}
+    enum Action {subscribe, publish, all}
 
-    enum Retention {YES, NO, ANY}
+    enum Retention {yes, no, any}
 
     public static class Permission {
         public String topic;
-        public float trust;
+        public Float trust;
         public String clientId;
         public String username;
         public Action action;
-        public int qos;
+        public Integer qos;
         public Retention retention;
+
+        @Override
+        public String toString() {
+            return String.format("topic: %s, trust: %f, id: %s, usn: %s, action: %s, qos: %d, ret: %s", topic, trust, clientId, username, action, qos, retention);
+        }
     }
 
     public List<Permission> permissions;
+
+    @Override
+    public String toString() {
+        return permissions.toString();
+    }
 }

@@ -1,0 +1,13 @@
+{
+  "permissions": [
+    {
+      "topic": "control/view/+",
+      "action": "subscribe"
+    },
+    {
+      "topic": "tmgr/ping",
+      "action": "subscribe",
+      "qos": 2
+    }
+  ]
+}
