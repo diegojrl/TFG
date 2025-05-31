@@ -12,6 +12,7 @@ import org.example.configuration.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.naming.AuthenticationException;
 import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.naming.directory.DirContext;
@@ -22,13 +23,12 @@ import java.time.Duration;
 import java.util.Optional;
 import java.util.Properties;
 
-public class Auth implements SimpleAuthenticator {
-    private static final Logger log = LoggerFactory.getLogger(Auth.class);
+public class LdapAuth implements SimpleAuthenticator {
+    private static final Logger log = LoggerFactory.getLogger(LdapAuth.class);
     private final ManagedExtensionExecutorService executor = Services.extensionExecutorService();
     private final Properties env = new Properties(5);
 
-    public Auth() {
-        //https://www.baeldung.com/java-ldap-auth
+    public LdapAuth() {
         this.env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
         this.env.put(Context.PROVIDER_URL, Configuration.getLdapUrl());
         this.env.put(Context.SECURITY_AUTHENTICATION, Configuration.getLdapAuth());
@@ -70,10 +70,12 @@ public class Auth implements SimpleAuthenticator {
             DirContext dir = new InitialDirContext(env);
             dir.close();
             return true;
+        } catch (AuthenticationException e) {
+            log.info("{} not logged in: {}", username, e.getMessage());
         } catch (NamingException e) {
             log.error("Auth threw and exception", e);
-            return false;
         }
+        return false;
     }
 
 }

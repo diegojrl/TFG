@@ -49,6 +49,11 @@
             <artifactId>hivemq-extension-sdk</artifactId>
             <version>4.6.3</version>
         </dependency>
+        <dependency>
+            <groupId>com.hivemq</groupId>
+            <artifactId>hivemq-mqtt-client</artifactId>
+            <version>1.3.5</version>
+        </dependency>
 
         <!-- MessagePack -->
         <dependency>
@@ -62,7 +67,11 @@
             <artifactId>fuzzy4j</artifactId>
             <version>1.4</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-yaml</artifactId>
+            <version>2.19.0</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
         <dependency>
             <groupId>com.h2database</groupId>

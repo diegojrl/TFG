@@ -48,8 +48,8 @@
         </file>
 
         <file>
-            <source>src/conf/config.json</source>
-            <destName>conf/config.json</destName>
+            <source>src/conf/config.yaml</source>
+            <destName>conf/config.yaml</destName>
             <outputDirectory>/${artifactId}/</outputDirectory>
         </file>
         <file>
@@ -58,8 +58,8 @@
             <outputDirectory>/${artifactId}/</outputDirectory>
         </file>
         <file>
-            <source>src/conf/accessControl.json</source>
-            <destName>conf/accessControl.json</destName>
+            <source>src/conf/accessControl.yaml</source>
+            <destName>conf/accessControl.yaml</destName>
             <outputDirectory>/${artifactId}/</outputDirectory>
         </file>
     </files>

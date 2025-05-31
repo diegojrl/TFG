@@ -19,13 +19,15 @@ package org.example;
 
 import com.hivemq.extension.sdk.api.ExtensionMain;
 import com.hivemq.extension.sdk.api.annotations.NotNull;
+import com.hivemq.extension.sdk.api.auth.Authorizer;
 import com.hivemq.extension.sdk.api.auth.SimpleAuthenticator;
 import com.hivemq.extension.sdk.api.events.EventRegistry;
 import com.hivemq.extension.sdk.api.parameter.*;
 import com.hivemq.extension.sdk.api.services.Services;
 import com.hivemq.extension.sdk.api.services.auth.SecurityRegistry;
 import com.hivemq.extension.sdk.api.services.intializer.InitializerRegistry;
-import org.example.authentication.Auth;
+import org.example.authentication.LdapAuth;
+import org.example.authorization.PolicyEnforcementPoint;
 import org.example.configuration.Configuration;
 import org.example.db.Database;
 import org.example.trustControl.ControlSub;
@@ -64,7 +66,8 @@ public class HelloWorldMain implements ExtensionMain {
             Database.init(dataPath);
             //Init the fuzzy controller
             FuzzyCtr.getInstance();
-            addAuth();
+            addAuthn();
+            addAuthz();
             addClientLifecycleEventListener();
             addPublishModifier();
             //Update control info every 5s
@@ -90,10 +93,16 @@ public class HelloWorldMain implements ExtensionMain {
 
     }
 
-    private void addAuth() {
+    private void addAuthn() {
         final SecurityRegistry securityRegistry = Services.securityRegistry();
-        final SimpleAuthenticator auth = new Auth();
-        securityRegistry.setAuthenticatorProvider(in -> auth);
+        final SimpleAuthenticator authn = new LdapAuth();
+        securityRegistry.setAuthenticatorProvider(in -> authn);
+    }
+
+    private void addAuthz() throws IOException {
+        final SecurityRegistry securityRegistry = Services.securityRegistry();
+        final Authorizer authz = new PolicyEnforcementPoint();
+        securityRegistry.setAuthorizerProvider(in -> authz);
     }
 
     private void addClientLifecycleEventListener() {

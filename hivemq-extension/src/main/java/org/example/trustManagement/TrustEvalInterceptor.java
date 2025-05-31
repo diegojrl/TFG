@@ -28,7 +28,6 @@ public class TrustEvalInterceptor implements PublishOutboundInterceptor, Publish
         final long duration = System.nanoTime() - time;
         log.info("Sent by: {}, {}, took: {}ms", sender, trustValue, duration / 1_000_000D);
         log.trace(trust.toString());
-
     }
 
     @Override

@@ -3,6 +3,7 @@ package org.example.configuration;
 import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import com.hivemq.extension.sdk.api.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +14,6 @@ import java.net.UnknownHostException;
 import java.nio.file.Path;
 
 public class Configuration {
-    private static final ObjectMapper objectMapper = new ObjectMapper();
     private static final Logger log = LoggerFactory.getLogger(Configuration.class);
 
     private static Path configDir;
@@ -54,11 +54,12 @@ public class Configuration {
 
     public static void setFolder(java.io.File folder) throws IOException {
         configDir = folder.toPath().resolve("conf");
-        loadFromFile(configDir.resolve("config.json"));
+        loadFromFile(configDir.resolve("config.yaml"));
     }
 
     private static void loadFromFile(Path filename) throws IOException {
         try {
+            ObjectMapper objectMapper = new YAMLMapper();
             File fileConf = objectMapper.readValue(filename.toFile(), File.class);
             DELAY_MAX = fileConf.delay_max;
             DELAY_MIN = fileConf.delay_min;
