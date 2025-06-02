@@ -6,7 +6,6 @@ import {PUBLIC_MQTT_HOST} from '$env/static/public';
 let mqttClient: mqtt.MqttClient | undefined;
 
 const CONTROL_TOPIC = "control/view/";
-const PING_TOPIC = "tmgr/ping";
 const DECODER = new Decoder();
 export const SERVER = new URL(PUBLIC_MQTT_HOST);
 
@@ -39,10 +38,10 @@ export async function start_mqtt_connection(username: string, password: string, 
             }
         });
 
-        await mqttClient.subscribeAsync(CONTROL_TOPIC + "+", {qos: 1});
-        await mqttClient.subscribeAsync(PING_TOPIC, {qos: 1});
-
         mqttClient.sendPing();
+
+        await mqttClient.subscribeAsync(CONTROL_TOPIC + "+", {qos: 1});
+
 
         mqttClient.on("connect", () => {
             console.log("Connected");
@@ -50,7 +49,7 @@ export async function start_mqtt_connection(username: string, password: string, 
         });
         mqttClient.on("reconnect", () => {
             console.log("recon");
-            onReconect();
+            onLostConnection();
         });
 
         return true;
@@ -67,4 +66,19 @@ export async function stop_mqtt_client() {
         await mqttClient.endAsync();
         mqttClient = undefined;
     }
+}
+
+export async function updateOpinion(clientId: string, opinion: number) {
+    if (opinion < 0 || opinion > 1) {
+        throw new Error("opinion out of range, " + opinion);
+    }
+    if (mqttClient != undefined) {
+        const buf: ArrayBuffer = new ArrayBuffer(4);
+        const v = new DataView(buf);
+        v.setFloat32(0, opinion)
+        await mqttClient.publishAsync("tmgr/rep/" + clientId, new Uint8Array(buf));
+    } else {
+        throw new Error("Not connected to mqtt server");
+    }
+
 }

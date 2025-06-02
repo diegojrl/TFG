@@ -1,0 +1,27 @@
+permissions:
+  - topic: control/view/+
+    rules:
+      - action: subscribe
+  - topic: control/mod/+
+    rules:
+      - action: publish
+        username: admin
+  - topic: tmgr/ping
+    rules:
+      - action: subscribe
+        qos: one_two
+  - topic: "tmgr/rep/${{clientid}}"
+    rules:
+      - allow: false
+  - topic: "tmgr/rep/+"
+    rules:
+      - action: publish
+        allow: false
+  - topic: test/#
+    rules:
+      - clientId: cli
+        username: test
+        trust: 0.5
+      - username: paco
+        allow: false
+      - username: admin
