@@ -1,15 +1,20 @@
 package trustControl;
 
+import authorization.PolicyDecisionPoint;
 import com.hivemq.extension.sdk.api.annotations.NotNull;
+import com.hivemq.extension.sdk.api.client.parameter.ClientInformation;
+import com.hivemq.extension.sdk.api.client.parameter.ConnectionInformation;
 import com.hivemq.extension.sdk.api.interceptor.publish.PublishInboundInterceptor;
 import com.hivemq.extension.sdk.api.interceptor.publish.parameter.PublishInboundInput;
 import com.hivemq.extension.sdk.api.interceptor.publish.parameter.PublishInboundOutput;
 import com.hivemq.extension.sdk.api.packets.publish.AckReasonCode;
+import com.hivemq.extension.sdk.api.packets.publish.PublishPacket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import trustData.DeviceTrustAttributes;
 import trustData.TrustStore;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Optional;
 
@@ -17,9 +22,27 @@ public class ModificationListener implements PublishInboundInterceptor {
     private static final Logger log = LoggerFactory.getLogger(ModificationListener.class);
     private static final String MOD_TOPIC = "control/mod/";
 
+    private final PolicyDecisionPoint pdp;
+
+    public ModificationListener() {
+        try {
+            pdp = PolicyDecisionPoint.getInstance();
+        } catch (IOException e) {
+            log.error(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public void onInboundPublish(@NotNull PublishInboundInput publishInboundInput, @NotNull PublishInboundOutput publishInboundOutput) {
-        final String topic = publishInboundInput.getPublishPacket().getTopic();
+        final PublishPacket pub = publishInboundInput.getPublishPacket();
+        final ClientInformation clientInfo = publishInboundInput.getClientInformation();
+        final ConnectionInformation connInfo = publishInboundInput.getConnectionInformation();
+
+        if (!pdp.authorizePublish(clientInfo, connInfo, pub))
+            return;
+
+        final String topic = pub.getTopic();
         if (topic.startsWith(MOD_TOPIC)) {
 
             final int clientIdIdx = topic.indexOf('/', MOD_TOPIC.length());

@@ -20,8 +20,11 @@ public final class Network {
         byte[] ip = address.getAddress();
         boolean match = true;
         int idx = mask / 8;
-        for (int i = 0; match && i < idx; i++)
-            if (prefix[i] != ip[i]) match = false;
+        for (int i = 0; i < idx; i++)
+            if (prefix[i] != ip[i]) {
+                match = false;
+                break;
+            }
 
         if (match && mask % 8 != 0) {
             int shift = ((8 * prefix.length) - mask) % 8;

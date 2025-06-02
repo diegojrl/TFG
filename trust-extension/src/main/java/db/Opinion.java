@@ -9,9 +9,8 @@ public class Opinion {
 
     @Override
     public final boolean equals(Object o) {
-        if (!(o instanceof Opinion)) return false;
+        if (!(o instanceof Opinion opinion1)) return false;
 
-        Opinion opinion1 = (Opinion) o;
         return Float.compare(opinion, opinion1.opinion) == 0 && Float.compare(reputation, opinion1.reputation) == 0 && Objects.equals(sourceId, opinion1.sourceId);
     }
 

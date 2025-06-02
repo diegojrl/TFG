@@ -18,13 +18,24 @@ import java.util.List;
 
 public class PolicyDecisionPoint {
     private static final Logger log = LoggerFactory.getLogger(PolicyDecisionPoint.class);
+
+    private static PolicyDecisionPoint instance;
+
     private final PolicyAdministrationPoint pap;
     private final PolicyInformationPoint pip;
 
-    public PolicyDecisionPoint() throws IOException {
+    private PolicyDecisionPoint() throws IOException {
         Path policyPath = Configuration.getConfigDir().resolve("accessControl.yaml");
         this.pap = new PolicyAdministrationPoint(policyPath);
         this.pip = new PolicyInformationPoint();
+        instance = this;
+    }
+
+    public static PolicyDecisionPoint getInstance() throws IOException {
+        if (instance == null) {
+            instance = new PolicyDecisionPoint();
+        }
+        return instance;
     }
 
     public boolean authorizeSubscription(ClientInformation clientInfo, ConnectionInformation conInfo, Subscription sub) {

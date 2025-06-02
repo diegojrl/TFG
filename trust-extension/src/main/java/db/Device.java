@@ -48,9 +48,8 @@ public class Device {
 
     @Override
     public final boolean equals(Object o) {
-        if (!(o instanceof Device)) return false;
+        if (!(o instanceof Device device)) return false;
 
-        Device device = (Device) o;
         return userId.equals(device.userId) && clientId.equals(device.clientId);
     }
 

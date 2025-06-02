@@ -37,7 +37,7 @@ import java.util.Optional;
 
 import static trustControl.ControlSub.VIEW_TOPIC;
 import static trustManagement.PingInterceptor.PING_TOPIC;
-import static trustManagement.ReputationInterceptor.REPUTATION_TOPIC;
+import static trustManagement.ReputationListener.REPUTATION_TOPIC;
 
 /**
  * This is a very simple {@link ClientLifecycleEventListener}

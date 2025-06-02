@@ -28,7 +28,7 @@ public class PolicyEnforcementPoint implements SubscriptionAuthorizer, PublishAu
     private final PolicyDecisionPoint pdp;
 
     public PolicyEnforcementPoint() throws IOException {
-        pdp = new PolicyDecisionPoint();
+        pdp = PolicyDecisionPoint.getInstance();
     }
 
     @Override
@@ -53,7 +53,6 @@ public class PolicyEnforcementPoint implements SubscriptionAuthorizer, PublishAu
 
     @Override
     public void authorizePublish(@NotNull PublishAuthorizerInput publishAuthorizerInput, @NotNull PublishAuthorizerOutput publishAuthorizerOutput) {
-        log.debug("Auth pub: {}", publishAuthorizerInput.getPublishPacket().getTopic());
         final ClientInformation clientInfo = publishAuthorizerInput.getClientInformation();
         final ConnectionInformation conInfo = publishAuthorizerInput.getConnectionInformation();
         final PublishPacket pub = publishAuthorizerInput.getPublishPacket();

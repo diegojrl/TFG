@@ -34,8 +34,7 @@ import trustControl.ControlSub;
 import trustControl.ModificationListener;
 import trustManagement.PingInterceptor;
 import trustManagement.PublishOutboundChecks;
-import trustManagement.ReputationInterceptor;
-import trustManagement.TrustEvalInterceptor;
+import trustManagement.ReputationListener;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -101,6 +100,7 @@ public class ExtensionMain implements com.hivemq.extension.sdk.api.ExtensionMain
         final SecurityRegistry securityRegistry = Services.securityRegistry();
         final Authorizer authz = new PolicyEnforcementPoint();
         securityRegistry.setAuthorizerProvider(in -> authz);
+        final InitializerRegistry initializerRegistry = Services.initializerRegistry();
         log.info("Added authorizer");
     }
 
@@ -117,17 +117,11 @@ public class ExtensionMain implements com.hivemq.extension.sdk.api.ExtensionMain
     private void addPublishModifier() {
         final InitializerRegistry initializerRegistry = Services.initializerRegistry();
 
-        final TrustEvalInterceptor trustEvalInterceptor = new TrustEvalInterceptor();
         final PingInterceptor ping = new PingInterceptor();
         final PublishOutboundChecks outChecks = new PublishOutboundChecks();
         final ModificationListener modListener = new ModificationListener();
-        final ReputationInterceptor reputation = new ReputationInterceptor();
+        final ReputationListener reputation = new ReputationListener();
         initializerRegistry.setClientInitializer((initializerInput, clientContext) -> {
-
-            //Setup Authorization checks
-            clientContext.addPublishInboundInterceptor(trustEvalInterceptor);
-            clientContext.addPublishOutboundInterceptor(trustEvalInterceptor);
-
 
             //Set up outbound checks
             clientContext.addPublishOutboundInterceptor(outChecks);

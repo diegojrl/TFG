@@ -137,7 +137,7 @@ public class Database {
         ResultSet rs = stm.executeQuery();
         if (rs.next()) {
             float oldOpinion = rs.getFloat(1);
-            if (opinion ==  oldOpinion) {
+            if (opinion == oldOpinion) {
                 return false;
             } else {
                 stm = Instance.db.prepareStatement("UPDATE OPINIONS SET OPINION = ? WHERE SOURCEID = ? AND TARGETID = ?");

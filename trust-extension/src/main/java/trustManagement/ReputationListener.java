@@ -1,6 +1,9 @@
 package trustManagement;
 
+import authorization.PolicyDecisionPoint;
 import com.hivemq.extension.sdk.api.annotations.NotNull;
+import com.hivemq.extension.sdk.api.client.parameter.ClientInformation;
+import com.hivemq.extension.sdk.api.client.parameter.ConnectionInformation;
 import com.hivemq.extension.sdk.api.interceptor.publish.PublishInboundInterceptor;
 import com.hivemq.extension.sdk.api.interceptor.publish.parameter.PublishInboundInput;
 import com.hivemq.extension.sdk.api.interceptor.publish.parameter.PublishInboundOutput;
@@ -17,22 +20,39 @@ import org.slf4j.LoggerFactory;
 import trustData.DeviceTrustAttributes;
 import trustData.TrustStore;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
 
-public class ReputationInterceptor implements PublishInboundInterceptor, SubscribeInboundInterceptor {
+public class ReputationListener implements PublishInboundInterceptor, SubscribeInboundInterceptor {
     public static final String REPUTATION_TOPIC = "tmgr/rep/";
     public static final ManagedExtensionExecutorService executor = Services.extensionExecutorService();
-    private static final Logger log = LoggerFactory.getLogger(ReputationInterceptor.class);
+    private static final Logger log = LoggerFactory.getLogger(ReputationListener.class);
+    private final PolicyDecisionPoint pdp;
+
+    public ReputationListener() {
+        try {
+            pdp = PolicyDecisionPoint.getInstance();
+        } catch (IOException e) {
+            log.error(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
 
     @Override
     public void onInboundPublish(@NotNull PublishInboundInput publishInboundInput, @NotNull PublishInboundOutput publishInboundOutput) {
         final PublishPacket pub = publishInboundInput.getPublishPacket();
+        final ClientInformation clientInfo = publishInboundInput.getClientInformation();
+        final ConnectionInformation connInfo = publishInboundInput.getConnectionInformation();
+
+        if (!pdp.authorizePublish(clientInfo, connInfo, pub))
+            return;
+
         final String topic = pub.getTopic();
-        final var output = publishInboundOutput.async(Duration.ofMillis(150));
         if (topic.startsWith(REPUTATION_TOPIC)) {
+            final var output = publishInboundOutput.async(Duration.ofMillis(150));
             executor.submit(() -> {
                 final String clientId = publishInboundInput.getClientInformation().getClientId();
                 final String target = topic.substring(REPUTATION_TOPIC.length());
@@ -64,14 +84,18 @@ public class ReputationInterceptor implements PublishInboundInterceptor, Subscri
 
     @Override
     public void onInboundSubscribe(@NotNull SubscribeInboundInput subscribeInboundInput, @NotNull SubscribeInboundOutput subscribeInboundOutput) {
+        final ClientInformation clientInfo = subscribeInboundInput.getClientInformation();
+        final ConnectionInformation connInfo = subscribeInboundInput.getConnectionInformation();
         final List<Subscription> subs = subscribeInboundInput.getSubscribePacket().getSubscriptions();
         for (Subscription sub : subs) {
             if (sub.getTopicFilter().startsWith(REPUTATION_TOPIC)) {
-                final String target = sub.getTopicFilter().substring(REPUTATION_TOPIC.length());
-                if (target.equals("+")) {
-                    //Todo
-                } else {
-                    //Todo
+                if (pdp.authorizeSubscription(clientInfo, connInfo, sub)) {
+                    final String target = sub.getTopicFilter().substring(REPUTATION_TOPIC.length());
+                    if (target.equals("+")) {
+                        //Todo
+                    } else {
+                        //Todo
+                    }
                 }
             }
         }
