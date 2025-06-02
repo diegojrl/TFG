@@ -1,11 +1,13 @@
 <script lang="ts">
     import {fade} from "svelte/transition";
-    import DeviceLayout from "./DeviceLayout.svelte";
-    import Modal from "./modals/ConnectModal.svelte";
+    import DeviceLayout from "$lib/DeviceLayout.svelte";
+    import LoginModal from "$lib/modals/ConnectModal.svelte";
+    import EditModal from "$lib/modals/DeviceEdit.svelte"
     import {type Device} from "$lib/device";
     import {SERVER, start_mqtt_connection, stop_mqtt_client,} from "$lib/websocket";
 
     let devices: Device[] = $state([]);
+    let editDevice: Device | undefined = $state(undefined);
     let server_name = $state("");
     let username = $state("");
     let password = $state("");
@@ -63,23 +65,30 @@
     }
 
     function onReconect() {
-        devices = [];
+        reconnecting = false;
     }
 
     function onLostConnection() {
-        reconnecting = false;
+        reconnecting = true;
+        devices = [];
     }
 </script>
-
-<Modal
-        open={showLogin}
-        bind:username
-        bind:password
-        onClose={() => {
+{#if showLogin}
+    <LoginModal
+            bind:username
+            bind:password
+            onClose={() => {
         showLogin = false;
-    }}
-        onLogin={connect}
-></Modal>
+        }}
+            onLogin={connect}
+    ></LoginModal>
+{/if}
+
+
+{#if editDevice !== undefined}
+    <EditModal dev={editDevice} onClose={()=>{ editDevice=undefined;}}></EditModal>
+{/if}
+
 
 <div class="mx-auto px-2 sm:px-6 lg:px-8 bg-gray-800">
     <div class="relative flex h-16 items-center justify-between">
@@ -93,9 +102,15 @@
             </button
             >
         {:else}
-            <div class="bg-green-900 rounded px-3 py-1 text-white">
-                {server_name}
-            </div>
+            {#if reconnecting}
+                <div class="bg-red-900 rounded px-3 py-1 text-white">
+                    Reconnecting
+                </div>
+            {:else}
+                <div class="bg-green-900 rounded px-3 py-1 text-white">
+                    {server_name}
+                </div>
+            {/if}
             <button
                     class="bg-red-500 hover:bg-red-600 rounded px-3 py-1 text-white"
                     onclick={logout}>Logout
@@ -113,7 +128,7 @@
     <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 m-4">
         {#each devices as dev}
             <div transition:fade class="">
-                <DeviceLayout {dev}/>
+                <DeviceLayout dev={dev} bind:editDevice={editDevice}/>
             </div>
         {/each}
     </div>

@@ -2,7 +2,12 @@
     import {fly} from "svelte/transition";
     import type {Device} from "$lib/device";
 
-    let {dev}: { dev: Device } = $props();
+    let {dev, editDevice = $bindable()}: { dev: Device, editDevice: Device | undefined } = $props();
+
+    function edit() {
+        editDevice = dev;
+        console.log("Edit")
+    }
 </script>
 
 {#key dev}
@@ -13,6 +18,7 @@
             <button
                     class="hover:text-fuchsia-600 text-purple-800"
                     aria-label="s"
+                    onclick={edit}
             >
                 <svg
                         xmlns="http://www.w3.org/2000/svg"

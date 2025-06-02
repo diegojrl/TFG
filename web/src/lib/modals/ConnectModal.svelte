@@ -4,28 +4,27 @@
     let {
         username = $bindable(),
         password = $bindable(),
-        open,
         onClose,
         onLogin,
     } = $props();
 </script>
 
-<Modal {open} {onClose}>
+<Modal {onClose}>
     <h2 class="text-xl font-bold mb-2">Hello from the Modal</h2>
     <br/>
     <input
-            type="text"
-            class="border-gray-300 border-2 rounded-sm"
             bind:value={username}
+            class="border-gray-300 border-2 rounded-sm"
             placeholder="Username"
+            type="text"
     />
     <br/>
     <br/>
     <input
-            type="password"
-            class="border-gray-300 border-2 rounded-sm"
             bind:value={password}
+            class="border-gray-300 border-2 rounded-sm"
             placeholder="Password"
+            type="password"
     />
 
     <div class="mt-4 flex justify-end">
