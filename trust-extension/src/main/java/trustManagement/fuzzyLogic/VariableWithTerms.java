@@ -1,4 +1,4 @@
-package fuzzyLogic;
+package trustManagement.fuzzyLogic;
 
 import fuzzy4j.flc.Term;
 import fuzzy4j.flc.Variable;
@@ -6,7 +6,7 @@ import fuzzy4j.flc.Variable;
 import java.util.Arrays;
 import java.util.List;
 
-public class VariableWithTerms {
+public final class VariableWithTerms {
     private final Variable variable;
     private final List<Term> terms;
 

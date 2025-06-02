@@ -8,10 +8,10 @@ import com.hivemq.extension.sdk.api.client.parameter.Listener;
 import configuration.Configuration;
 import db.Database;
 import db.Opinion;
-import fuzzyLogic.FuzzyCtr;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import trustControl.ControlMapper;
+import trustManagement.fuzzyLogic.FuzzyCtr;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -32,15 +32,15 @@ public class DeviceTrustAttributes {
     private final AtomicLong latencyNum; // Number of latency data points
     private boolean usedTLS;
     private boolean externalNetwork;
-    private final AtomicInteger reputation;
+    private final AtomicInteger reputation; //This holds a float value
 
     private final AtomicInteger trustValue; //This holds a float value
 
     public DeviceTrustAttributes(@NotNull final ClientInformation clientInfo, @NotNull final ConnectionInformation connInfo) {
-        this(clientInfo.getClientId(), isTLSUsed(connInfo), isExternalNetwork(connInfo), 50);
+        this(clientInfo.getClientId(), isTLSUsed(connInfo), isExternalNetwork(connInfo), 0.5F);
     }
 
-    public DeviceTrustAttributes(String clientId, long failedPacketCount, long totalPacketCount, long latencySum, long latencyNum, int reputation, float trustValue) {
+    public DeviceTrustAttributes(String clientId, long failedPacketCount, long totalPacketCount, long latencySum, long latencyNum, float reputation, float trustValue) {
         this.usedTLS = false;
         this.externalNetwork = false;
         this.clientId = clientId;
@@ -48,11 +48,11 @@ public class DeviceTrustAttributes {
         this.totalPacketCount = new AtomicLong(totalPacketCount);
         this.latencySum = new AtomicLong(latencySum);
         this.latencyNum = new AtomicLong(latencyNum);
-        this.reputation = new AtomicInteger(reputation);
+        this.reputation = new AtomicInteger(Float.floatToIntBits(reputation));
         this.trustValue = new AtomicInteger(Float.floatToIntBits(trustValue));
     }
 
-    public DeviceTrustAttributes(String clientId, boolean usedTLS, boolean externalNetwork, int reputation) {
+    public DeviceTrustAttributes(String clientId, boolean usedTLS, boolean externalNetwork, float reputation) {
         this.clientId = clientId;
         this.failedPacketCount = new AtomicLong(1);
         this.totalPacketCount = new AtomicLong(2);
@@ -60,7 +60,7 @@ public class DeviceTrustAttributes {
         this.latencyNum = new AtomicLong();
         this.usedTLS = usedTLS;
         this.externalNetwork = externalNetwork;
-        this.reputation = new AtomicInteger(reputation);
+        this.reputation = new AtomicInteger(Float.floatToIntBits(reputation));
         this.trustValue = new AtomicInteger(0);
         updateTrust();
     }
@@ -173,13 +173,14 @@ public class DeviceTrustAttributes {
 
     }
 
-    public int getReputation() {
-        return reputation.get();
+    public float getReputation() {
+        return Float.intBitsToFloat(reputation.get());
     }
 
     private void updateTrust() {
         try {
             float trust = (float) FuzzyCtr.getInstance().evaluate(this);
+            log.trace("New trust: {}", trust);
             trustValue.set(Float.floatToIntBits(trust));
         } catch (IOException ignored) {
         }
@@ -188,7 +189,7 @@ public class DeviceTrustAttributes {
     private DeviceControlData asDeviceTrustData() {
         float failureRate = this.getFailureRate();
         int delay = this.getLatency();
-        int reputation = this.getReputation();
+        float reputation = this.getReputation();
         DeviceControlData.NetworkType networkType = this.externalNetwork ? DeviceControlData.NetworkType.External : DeviceControlData.NetworkType.Internal;
         DeviceControlData.NetworkSecurity networkSecurity = this.usedTLS ? DeviceControlData.NetworkSecurity.TLS : DeviceControlData.NetworkSecurity.No;
         float trust = Float.intBitsToFloat(trustValue.get());
@@ -235,13 +236,12 @@ public class DeviceTrustAttributes {
             double sum = 0;
             for (Opinion o : opinions) {
                 DeviceTrustAttributes dev = TrustStore.get(o.sourceId);
-                if (dev == null) {
-                    sum += o.reputation * o.opinion;
-                } else {
-                    sum += dev.getReputation() * o.opinion;
-                }
+                float rep = dev == null ? o.trust : dev.getTrustValue();
+                sum += rep * o.opinion;
+                log.trace("{} opinion {} * {} reputation", o.sourceId, rep, o.opinion);
             }
             float newRep = (float) (sum / opinions.size());
+            log.info("New reputation: {}", newRep);
             this.reputation.set(Float.floatToIntBits(newRep));
         } catch (SQLException e) {
             log.error(e.getMessage());

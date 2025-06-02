@@ -1,4 +1,4 @@
-package fuzzyLogic;
+package trustManagement.fuzzyLogic;
 
 import fuzzy4j.flc.IfThenRule;
 import fuzzy4j.flc.Term;

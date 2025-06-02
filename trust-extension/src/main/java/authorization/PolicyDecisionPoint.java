@@ -41,11 +41,11 @@ public class PolicyDecisionPoint {
     public boolean authorizeSubscription(ClientInformation clientInfo, ConnectionInformation conInfo, Subscription sub) {
         final PolicyInformationPoint.AuthzData data = pip.getAuthzData(clientInfo, conInfo, sub);
 
-        List<Rule> rules = pap.getPolicy(sub.getTopicFilter(), data.clientId, data.username);
+        List<Rule> rules = pap.getPolicy(sub.getTopicFilter(), data.clientId(), data.username());
 
 
         for (Rule rule : rules)
-            if (matchRule(rule, Action.subscribe, data.clientId, data.username, data.qos, data.retain, data.trust))
+            if (matchRule(rule, Action.subscribe, data.clientId(), data.username(), data.qos(), data.retain(), data.trust()))
                 return rule.allow;
 
         return false;
@@ -54,10 +54,10 @@ public class PolicyDecisionPoint {
     public boolean authorizePublish(ClientInformation clientInfo, ConnectionInformation conInfo, PublishPacket pub) {
         final PolicyInformationPoint.AuthzData data = pip.getAuthzData(clientInfo, conInfo, pub);
 
-        List<Rule> rules = pap.getPolicy(pub.getTopic(), data.clientId, data.username);
+        List<Rule> rules = pap.getPolicy(pub.getTopic(), data.clientId(), data.username());
 
         for (Rule rule : rules)
-            if (matchRule(rule, Action.publish, data.clientId, data.username, data.qos, data.retain, data.trust))
+            if (matchRule(rule, Action.publish, data.clientId(), data.username(), data.qos(), data.retain(), data.trust()))
                 return rule.allow;
 
         return false;

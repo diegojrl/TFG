@@ -2,7 +2,7 @@ package authorization.configuration;
 
 import java.util.List;
 
-public class Policy {
+public final class Policy {
     public String topic;
     public List<Rule> rules;
 

@@ -116,7 +116,7 @@ public class ReputationListener implements PublishInboundInterceptor, SubscribeI
                                             .build();
                                     Services.publishService().publishToClient(pub, clientId).join();
                                 }
-                            },executor);
+                            }, executor);
                         } else {
                             if (Services.clientService().isClientConnected(target).join()) {
                                 Publish pub = Builders.publish()

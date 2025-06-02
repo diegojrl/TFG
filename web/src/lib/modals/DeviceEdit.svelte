@@ -6,7 +6,7 @@
         dev,
         onClose,
     } = $props();
-    let opinion = $state(dev.reputation);
+    let opinion = $state(dev.reputation * 100);
     async function sendChanges() {
         await updateOpinion(dev.clientId, opinion / 100);
         onClose();

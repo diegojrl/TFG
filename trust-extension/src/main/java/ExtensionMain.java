@@ -27,7 +27,6 @@ import com.hivemq.extension.sdk.api.services.auth.SecurityRegistry;
 import com.hivemq.extension.sdk.api.services.intializer.InitializerRegistry;
 import configuration.Configuration;
 import db.Database;
-import fuzzyLogic.FuzzyCtr;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import trustControl.ControlSub;
@@ -35,6 +34,7 @@ import trustControl.ModificationListener;
 import trustManagement.PingInterceptor;
 import trustManagement.PublishOutboundChecks;
 import trustManagement.ReputationListener;
+import trustManagement.fuzzyLogic.FuzzyCtr;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -100,7 +100,6 @@ public class ExtensionMain implements com.hivemq.extension.sdk.api.ExtensionMain
         final SecurityRegistry securityRegistry = Services.securityRegistry();
         final Authorizer authz = new PolicyEnforcementPoint();
         securityRegistry.setAuthorizerProvider(in -> authz);
-        final InitializerRegistry initializerRegistry = Services.initializerRegistry();
         log.info("Added authorizer");
     }
 

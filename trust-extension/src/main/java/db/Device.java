@@ -41,7 +41,7 @@ public class Device {
     }
 
     public DeviceTrustAttributes toTrustAttributes(ConnectionInformation connectionInformation) {
-        DeviceTrustAttributes device = new DeviceTrustAttributes(clientId, messageFailed, messageCnt, latencySum, latencyCnt, (int) reputation, trust);
+        DeviceTrustAttributes device = new DeviceTrustAttributes(clientId, messageFailed, messageCnt, latencySum, latencyCnt, reputation, trust);
         device.updateClientInformation(connectionInformation);
         return device;
     }

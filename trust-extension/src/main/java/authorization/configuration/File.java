@@ -2,7 +2,7 @@ package authorization.configuration;
 
 import java.util.List;
 
-public class File {
+public final class File {
     public List<Policy> permissions;
 
     @Override

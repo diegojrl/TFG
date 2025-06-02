@@ -32,20 +32,7 @@ public class PolicyInformationPoint {
         return new AuthzData(clientId, trust, username, qos, retain);
     }
 
-    public static class AuthzData {
-        public final String clientId;
-        public final float trust;
-        public final String username;
-        public final int qos;
-        public final boolean retain;
-
-        public AuthzData(String clientId, float trust, String username, int qos, boolean retain) {
-            this.clientId = clientId;
-            this.trust = trust;
-            this.username = username;
-            this.qos = qos;
-            this.retain = retain;
-        }
+    public record AuthzData(String clientId, float trust, String username, int qos, boolean retain) {
     }
 
 

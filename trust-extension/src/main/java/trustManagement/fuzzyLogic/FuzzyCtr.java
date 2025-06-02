@@ -1,4 +1,4 @@
-package fuzzyLogic;
+package trustManagement.fuzzyLogic;
 
 import configuration.Configuration;
 import fuzzy4j.flc.*;

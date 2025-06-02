@@ -1,6 +1,6 @@
 package authorization.configuration;
 
-public class Rule implements Cloneable {
+public final class Rule implements Cloneable {
     public Boolean allow;
     public Float trust;
     public String clientId;
