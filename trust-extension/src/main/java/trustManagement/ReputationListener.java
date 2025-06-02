@@ -10,11 +10,14 @@ import com.hivemq.extension.sdk.api.interceptor.publish.parameter.PublishInbound
 import com.hivemq.extension.sdk.api.interceptor.subscribe.SubscribeInboundInterceptor;
 import com.hivemq.extension.sdk.api.interceptor.subscribe.parameter.SubscribeInboundInput;
 import com.hivemq.extension.sdk.api.interceptor.subscribe.parameter.SubscribeInboundOutput;
+import com.hivemq.extension.sdk.api.packets.general.Qos;
 import com.hivemq.extension.sdk.api.packets.publish.AckReasonCode;
 import com.hivemq.extension.sdk.api.packets.publish.PublishPacket;
 import com.hivemq.extension.sdk.api.packets.subscribe.Subscription;
 import com.hivemq.extension.sdk.api.services.ManagedExtensionExecutorService;
 import com.hivemq.extension.sdk.api.services.Services;
+import com.hivemq.extension.sdk.api.services.builder.Builders;
+import com.hivemq.extension.sdk.api.services.publish.Publish;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import trustData.DeviceTrustAttributes;
@@ -25,10 +28,13 @@ import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class ReputationListener implements PublishInboundInterceptor, SubscribeInboundInterceptor {
     public static final String REPUTATION_TOPIC = "tmgr/rep/";
-    public static final ManagedExtensionExecutorService executor = Services.extensionExecutorService();
+    private static final ManagedExtensionExecutorService extensionExecutor = Services.extensionExecutorService();
+    private static final Executor executor = Executors.newFixedThreadPool(2);
     private static final Logger log = LoggerFactory.getLogger(ReputationListener.class);
     private final PolicyDecisionPoint pdp;
 
@@ -53,7 +59,7 @@ public class ReputationListener implements PublishInboundInterceptor, SubscribeI
         final String topic = pub.getTopic();
         if (topic.startsWith(REPUTATION_TOPIC)) {
             final var output = publishInboundOutput.async(Duration.ofMillis(150));
-            executor.submit(() -> {
+            extensionExecutor.submit(() -> {
                 final String clientId = publishInboundInput.getClientInformation().getClientId();
                 final String target = topic.substring(REPUTATION_TOPIC.length());
                 if (!clientId.equals(target)) {
@@ -87,16 +93,44 @@ public class ReputationListener implements PublishInboundInterceptor, SubscribeI
         final ClientInformation clientInfo = subscribeInboundInput.getClientInformation();
         final ConnectionInformation connInfo = subscribeInboundInput.getConnectionInformation();
         final List<Subscription> subs = subscribeInboundInput.getSubscribePacket().getSubscriptions();
+        final String clientId = clientInfo.getClientId();
         for (Subscription sub : subs) {
             if (sub.getTopicFilter().startsWith(REPUTATION_TOPIC)) {
-                if (pdp.authorizeSubscription(clientInfo, connInfo, sub)) {
-                    final String target = sub.getTopicFilter().substring(REPUTATION_TOPIC.length());
-                    if (target.equals("+")) {
-                        //Todo
-                    } else {
-                        //Todo
+                executor.execute(() -> {
+                    log.debug("Waiting to send conneced client info");
+                    try {
+                        // Wait for the client to finish the subscription
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        log.error(e.getMessage());
                     }
-                }
+                    if (pdp.authorizeSubscription(clientInfo, connInfo, sub)) {
+                        final String target = sub.getTopicFilter().substring(REPUTATION_TOPIC.length());
+                        if (target.equals("+") || target.startsWith("#")) {
+                            Services.clientService().iterateAllClients((it, s) -> {
+                                if (!s.getClientIdentifier().equals(clientId)) {
+                                    Publish pub = Builders.publish()
+                                            .payload(ByteBuffer.allocate(0))
+                                            .topic(REPUTATION_TOPIC + s.getClientIdentifier())
+                                            .qos(Qos.AT_LEAST_ONCE)
+                                            .build();
+                                    Services.publishService().publishToClient(pub, clientId).join();
+                                }
+                            },executor);
+                        } else {
+                            if (Services.clientService().isClientConnected(target).join()) {
+                                Publish pub = Builders.publish()
+                                        .payload(ByteBuffer.allocate(0))
+                                        .topic(REPUTATION_TOPIC + target)
+                                        .qos(Qos.AT_LEAST_ONCE)
+                                        .build();
+                                Services.publishService().publishToClient(pub, clientId).join();
+                            }
+                        }
+                    }
+                    log.debug("Finished sending client info to {}", clientId);
+                });
+
             }
         }
     }

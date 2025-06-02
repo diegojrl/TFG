@@ -13,10 +13,10 @@ permissions:
   - topic: "tmgr/rep/${{clientid}}"
     rules:
       - allow: false
+        action: publish
   - topic: "tmgr/rep/+"
     rules:
-      - action: publish
-        allow: false
+      - allow: true
   - topic: test/#
     rules:
       - clientId: cli
