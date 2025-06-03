@@ -92,7 +92,7 @@ public class DeviceTrustAttributes {
         if (failureRate > 100) failureRate = 100;
         else if (failureRate < 0) failureRate = 0;
         failedPacketCount.set(failureRate);
-        totalPacketCount.set(1);
+        totalPacketCount.set(100);
         updateTrust();
     }
 
@@ -173,6 +173,27 @@ public class DeviceTrustAttributes {
 
     }
 
+    public void updateReputation() {
+        try {
+            List<Opinion> opinions = Database.getOpinions(clientId);
+            double sum = 0;
+            for (Opinion o : opinions) {
+                DeviceTrustAttributes dev = TrustStore.get(o.sourceId);
+                float rep = dev == null ? o.trust : dev.getTrustValue();
+                sum += rep * o.opinion;
+                log.trace("{} opinion {} * {} reputation", o.sourceId, rep, o.opinion);
+            }
+            int sz = opinions.size();
+            float newRep = sz > 0 ? (float) (sum / opinions.size()) : 0f;
+            log.info("New reputation: {}", newRep);
+            this.reputation.set(Float.floatToIntBits(newRep));
+            updateTrust();
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+        }
+    }
+
+
     public float getReputation() {
         return Float.intBitsToFloat(reputation.get());
     }
@@ -227,24 +248,6 @@ public class DeviceTrustAttributes {
             return !Configuration.isTrustedNetworks(address);
         } else {
             return true;
-        }
-    }
-
-    private void updateReputation() {
-        try {
-            List<Opinion> opinions = Database.getOpinions(clientId);
-            double sum = 0;
-            for (Opinion o : opinions) {
-                DeviceTrustAttributes dev = TrustStore.get(o.sourceId);
-                float rep = dev == null ? o.trust : dev.getTrustValue();
-                sum += rep * o.opinion;
-                log.trace("{} opinion {} * {} reputation", o.sourceId, rep, o.opinion);
-            }
-            float newRep = (float) (sum / opinions.size());
-            log.info("New reputation: {}", newRep);
-            this.reputation.set(Float.floatToIntBits(newRep));
-        } catch (SQLException e) {
-            log.error(e.getMessage());
         }
     }
 

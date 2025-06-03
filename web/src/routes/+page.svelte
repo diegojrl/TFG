@@ -62,6 +62,7 @@
         password = "";
         devices = [];
         showLogin = true;
+        editDevice = undefined;
     }
 
     function onReconect() {
@@ -70,6 +71,7 @@
 
     function onLostConnection() {
         reconnecting = true;
+        editDevice = undefined;
         devices = [];
     }
 </script>

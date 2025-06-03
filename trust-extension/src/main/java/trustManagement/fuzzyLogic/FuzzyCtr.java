@@ -1,6 +1,7 @@
 package trustManagement.fuzzyLogic;
 
 import configuration.Configuration;
+import fuzzy4j.aggregation.OWA;
 import fuzzy4j.flc.*;
 import fuzzy4j.sets.TrapezoidalFunction;
 import trustData.DeviceTrustAttributes;
@@ -43,7 +44,7 @@ public class FuzzyCtr {
         //Todo
         //controller.defuzzifier(new Maximum(Maximum.MinOfMax));
         controller.activationFunction(fuzzy4j.aggregation.Minimum.INSTANCE);
-        controller.accumulationFunction(fuzzy4j.aggregation.ArithmeticMean.INSTANCE);
+        controller.accumulationFunction(OWA.FACTORY.create(0.3, .15, .3, .25));
 
         for (var rule : rules) {
             controller.addRule(rule);

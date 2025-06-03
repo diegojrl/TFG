@@ -2,7 +2,7 @@ permissions:
   - topic: control/view/+
     rules:
       - action: subscribe
-  - topic: control/mod/+
+  - topic: control/mod/#
     rules:
       - action: publish
         username: admin

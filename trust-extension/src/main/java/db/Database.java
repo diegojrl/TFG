@@ -155,6 +155,12 @@ public class Database {
         }
     }
 
+    public static void deleteAllOpinions(String clientId) throws SQLException {
+        PreparedStatement stm = Instance.db.prepareStatement("DELETE FROM OPINIONS WHERE TARGETID = ?");
+        stm.setString(1, clientId);
+        stm.executeUpdate();
+    }
+
     public static List<Opinion> getOpinions(final String clientId) throws SQLException {
         PreparedStatement stm = Instance.db.prepareStatement("SELECT O.SOURCEID, O.OPINION, D.LAST_TRUST FROM OPINIONS O JOIN DEVICES D on o.SOURCEID = D.CLIENTID WHERE O.TARGETID = ?");
         stm.setString(1, clientId);
