@@ -18,7 +18,7 @@ export async function start_mqtt_connection(username: string, password: string, 
             password: password,
             protocolVersion: 5
         }
-        client_options.clientId = "web_control_" + username + "_" + (Math.random() * 100).toFixed(0);
+        client_options.clientId = "web control " + username; //+ "_" + (Math.random() * 100).toFixed(0);
         mqttClient = await mqtt.connectAsync(SERVER.toString(), client_options);
 
 
@@ -68,7 +68,7 @@ export async function stop_mqtt_client() {
     }
 }
 
-export async function updateOpinion(clientId: string, opinion: number) {
+export async function update_opinion(clientId: string, opinion: number) {
     if (opinion < 0 || opinion > 1) {
         throw new Error("opinion out of range, " + opinion);
     }
@@ -76,9 +76,44 @@ export async function updateOpinion(clientId: string, opinion: number) {
         const buf: ArrayBuffer = new ArrayBuffer(4);
         const v = new DataView(buf);
         v.setFloat32(0, opinion)
+        // @ts-ignore
         await mqttClient.publishAsync("tmgr/rep/" + clientId, new Uint8Array(buf));
     } else {
         throw new Error("Not connected to mqtt server");
     }
+}
 
+export async function reset_reputation(clientId: string) {
+    if (mqttClient != undefined) {
+        await mqttClient.publishAsync("control/mod/" + clientId + "/rep", "");
+    }
+}
+
+export async function update_failPct(clientId: string, value: number) {
+    if (0 > value || value > 100) {
+        throw new Error("failPct value out of range, " + value);
+    }
+
+    if (mqttClient != undefined) {
+        const buf: ArrayBuffer = new ArrayBuffer(4);
+        const v = new DataView(buf);
+        v.setInt32(0, value)
+        // @ts-ignore
+        await mqttClient.publishAsync("control/mod/" + clientId + "/failPctr", new Uint8Array(buf));
+    } else {
+        throw new Error("Not connected to mqtt server");
+    }
+
+}
+
+export async function update_latency(clientId: string, value: number) {
+    if (mqttClient != undefined) {
+        const buf: ArrayBuffer = new ArrayBuffer(4);
+        const v = new DataView(buf);
+        v.setInt32(0, value)
+        // @ts-ignore
+        await mqttClient.publishAsync("control/mod/" + clientId + "/ping", new Uint8Array(buf));
+    } else {
+        throw new Error("Not connected to mqtt server");
+    }
 }

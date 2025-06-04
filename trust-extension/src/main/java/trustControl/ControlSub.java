@@ -29,31 +29,35 @@ public class ControlSub {
                 final DeviceTrustAttributes trustAttributes = TrustStore.get(clientId);
                 if (trustAttributes != null) {
                     try {
-                        //Encode data to byteBuffer
-                        final ByteBuffer payload = trustAttributes.encodeToControlFormat();
-
-                        //Build message
-                        Publish msg = Builders.publish()
-                                .topic(VIEW_TOPIC + clientId)     //Topic -> "control/view/<clientId>"
-                                .payload(payload)
-                                .retain(true)
-                                .messageExpiryInterval(RUN_INTERVAL_SEC - 1)
-                                .qos(Qos.EXACTLY_ONCE)
-                                .build();
-                        log.trace("Publishing message: {}", msg);
-                        //Send the message
-                        try {
-                            Services.publishService().publish(msg).get(5, TimeUnit.SECONDS);
-                        } catch (ExecutionException | InterruptedException | TimeoutException e) {
-                            log.error("Cant send control message, took too long");
-                        }
-
-                    } catch (JsonProcessingException e) {
-                        log.error("Error encoding trust attributes for client {}", clientId);
+                        publishDevice(trustAttributes).get(5, TimeUnit.SECONDS);
+                    } catch (ExecutionException | InterruptedException | TimeoutException e) {
+                        log.error("Cant send control message, took too long");
                     }
                 }
             }
         }, executor).join();
         log.debug("Trust control update done");
     };
+
+    public static CompletableFuture<Void> publishDevice(DeviceTrustAttributes device) {
+        try {
+            //Encode data to byteBuffer
+            final ByteBuffer payload = device.encodeToControlFormat();
+
+            //Build message
+            Publish msg = Builders.publish()
+                    .topic(VIEW_TOPIC + device.getClientId())     //Topic -> "control/view/<clientId>"
+                    .payload(payload)
+                    .retain(true)
+                    .messageExpiryInterval(RUN_INTERVAL_SEC - 1)
+                    .qos(Qos.EXACTLY_ONCE)
+                    .build();
+            log.trace("Publishing message: {}", msg);
+            //Send the message
+            return Services.publishService().publish(msg);
+        } catch (JsonProcessingException e) {
+            log.error("Error encoding trust attributes for client {}", device.getClientId());
+        }
+        return CompletableFuture.completedFuture(null);
+    }
 }

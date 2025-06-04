@@ -28,6 +28,7 @@ import db.Database;
 import db.Device;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import trustControl.ControlSub;
 import trustData.DeviceTrustAttributes;
 import trustData.TrustStore;
 
@@ -89,6 +90,7 @@ public class LifeCycleListener implements ClientLifecycleEventListener {
                         .payload(ByteBuffer.allocate(0))
                         .build();
                 Services.publishService().publish(pub).join();
+                ControlSub.publishDevice(deviceTrust);
                 log.debug("Broadcast {} connected", clientId);
             } catch (SQLException e) {
                 log.error("Error creating session for device {}", clientId);

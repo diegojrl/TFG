@@ -52,6 +52,7 @@ public class ModificationListener implements PublishInboundInterceptor {
                 if (!pdp.authorizePublish(clientInfo, connInfo, pub)) {
                     output.getOutput().preventPublishDelivery(AckReasonCode.NOT_AUTHORIZED);
                     output.resume();
+                    log.error("modification authz error, client: {}, topic: {}", clientInfo.getClientId(), topic);
                     return;
                 }
 
@@ -63,7 +64,7 @@ public class ModificationListener implements PublishInboundInterceptor {
                     final String clientId = topic.substring(MOD_TOPIC.length(), clientIdIdx);
                     final String attr = topic.substring(clientIdIdx + 1);
                     final DeviceTrustAttributes trustAttributes = TrustStore.get(clientId);
-                    log.debug("mod accion: {}", attr);
+                    log.debug("mod action: {}", attr);
                     if (trustAttributes != null) {
 
                         log.debug("mod dev: {}", trustAttributes.getClientId());
