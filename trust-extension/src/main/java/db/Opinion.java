@@ -7,6 +7,12 @@ public final class Opinion {
     public final float opinion;
     public final float trust;
 
+    public Opinion(String sourceId, float opinion, float reputation) {
+        this.sourceId = sourceId;
+        this.opinion = opinion;
+        this.trust = reputation;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Opinion opinion1)) return false;
@@ -20,11 +26,5 @@ public final class Opinion {
         result = 31 * result + Float.hashCode(opinion);
         result = 31 * result + Float.hashCode(trust);
         return result;
-    }
-
-    public Opinion(String sourceId, float opinion, float reputation) {
-        this.sourceId = sourceId;
-        this.opinion = opinion;
-        this.trust = reputation;
     }
 }

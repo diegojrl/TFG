@@ -30,11 +30,10 @@ public class DeviceTrustAttributes {
     private final AtomicLong totalPacketCount;
     private final AtomicLong latencySum; // Total sum of
     private final AtomicLong latencyNum; // Number of latency data points
+    private final AtomicInteger reputation; //This holds a float value
+    private final AtomicInteger trustValue; //This holds a float value
     private boolean usedTLS;
     private boolean externalNetwork;
-    private final AtomicInteger reputation; //This holds a float value
-
-    private final AtomicInteger trustValue; //This holds a float value
 
     public DeviceTrustAttributes(@NotNull final ClientInformation clientInfo, @NotNull final ConnectionInformation connInfo) {
         this(clientInfo.getClientId(), isTLSUsed(connInfo), isExternalNetwork(connInfo), 0.5F);
@@ -63,6 +62,30 @@ public class DeviceTrustAttributes {
         this.reputation = new AtomicInteger(Float.floatToIntBits(reputation));
         this.trustValue = new AtomicInteger(0);
         updateTrust();
+    }
+
+    private static boolean isTLSUsed(ConnectionInformation connectionInformation) {
+        Optional<Listener> optionalListener = connectionInformation.getListener();
+        if (optionalListener.isPresent()) {
+            Listener listener = optionalListener.get();
+            switch (listener.getListenerType()) {
+                case TLS_TCP_LISTENER:
+                case TLS_WEBSOCKET_LISTENER:
+                    return true;
+            }
+        }
+        return false;
+
+    }
+
+    private static boolean isExternalNetwork(ConnectionInformation connectionInformation) {
+        Optional<InetAddress> optionalListener = connectionInformation.getInetAddress();
+        if (optionalListener.isPresent()) {
+            InetAddress address = optionalListener.get();
+            return !Configuration.isTrustedNetworks(address);
+        } else {
+            return true;
+        }
     }
 
     public void addLatency(long latency) {
@@ -112,6 +135,14 @@ public class DeviceTrustAttributes {
 
     }
 
+    public void setLatency(int latency) {
+        if (latency > Configuration.getDelayMax()) latency = Configuration.getDelayMax();
+        else if (latency < Configuration.getDelayMin()) latency = Configuration.getDelayMin();
+        latencySum.set(latency);
+        latencyNum.set(1);
+        updateTrust();
+    }
+
     public float getTrustValue() {
         return Float.intBitsToFloat(trustValue.get());
     }
@@ -138,14 +169,6 @@ public class DeviceTrustAttributes {
         updateTrust();
     }
 
-    public void setLatency(int latency) {
-        if (latency > Configuration.getDelayMax()) latency = Configuration.getDelayMax();
-        else if (latency < Configuration.getDelayMin()) latency = Configuration.getDelayMin();
-        latencySum.set(latency);
-        latencyNum.set(1);
-        updateTrust();
-    }
-
     public int getSecurity() {
         if (usedTLS || !externalNetwork) {
             return 1;
@@ -164,13 +187,11 @@ public class DeviceTrustAttributes {
 
     public void addOpinion(String clientId, float opinion) {
         try {
-            if (Database.insertOpinion(clientId, this.clientId, opinion)) {
-                updateReputation();
-            }
+            Database.insertOpinion(clientId, this.clientId, opinion);
+            updateReputation();
         } catch (SQLException e) {
             log.error("Failed to add opinion", e);
         }
-
     }
 
     public void updateReputation() {
@@ -192,7 +213,6 @@ public class DeviceTrustAttributes {
             log.error(e.getMessage());
         }
     }
-
 
     public float getReputation() {
         return Float.intBitsToFloat(reputation.get());
@@ -225,30 +245,6 @@ public class DeviceTrustAttributes {
     @Override
     public String toString() {
         return clientId + ", " + "delay: " + getLatency() + "ms, " + "fail: " + getFailureRate() + "%, " + "sec: " + (getSecurity() == 1) + ", " + "rep: " + getReputation() + "%";
-    }
-
-    private static boolean isTLSUsed(ConnectionInformation connectionInformation) {
-        Optional<Listener> optionalListener = connectionInformation.getListener();
-        if (optionalListener.isPresent()) {
-            Listener listener = optionalListener.get();
-            switch (listener.getListenerType()) {
-                case TLS_TCP_LISTENER:
-                case TLS_WEBSOCKET_LISTENER:
-                    return true;
-            }
-        }
-        return false;
-
-    }
-
-    private static boolean isExternalNetwork(ConnectionInformation connectionInformation) {
-        Optional<InetAddress> optionalListener = connectionInformation.getInetAddress();
-        if (optionalListener.isPresent()) {
-            InetAddress address = optionalListener.get();
-            return !Configuration.isTrustedNetworks(address);
-        } else {
-            return true;
-        }
     }
 
 }

@@ -29,10 +29,31 @@ import java.time.Duration;
 import java.util.Optional;
 
 public class PingInterceptor implements PingReqInboundInterceptor, PubackInboundInterceptor, PubrecInboundInterceptor, PubrelInboundInterceptor {
+    public static final String PING_TOPIC = "tmgr/ping";
     private static final Logger log = LoggerFactory.getLogger(PingInterceptor.class);
     private static final ManagedExtensionExecutorService executor = Services.extensionExecutorService();
 
-    public static final String PING_TOPIC = "tmgr/ping";
+    private static void updateLatency(@NotNull final ConnectionAttributeStore store, @NotNull final String clientId, @NotNull final Integer packetId, @NotNull final long currentTime) {
+        log.debug("Updating latency for clientId: {} packetId: {}", clientId, packetId);
+        Optional<ByteBuffer> timeData = store.remove(packetId.toString());
+        if (timeData.isPresent()) {
+            final long timestamp = timeData.get().getLong();
+            //Round trip time
+            final long rtt = (currentTime - timestamp);
+            final long latency = rtt / 2;
+
+            final DeviceTrustAttributes trustAttributes = TrustStore.get(clientId);
+            if (trustAttributes != null) {
+                trustAttributes.addLatency(latency);
+                log.debug("{} latency: {}", clientId, latency);
+            } else {
+                log.error("No client with id {} found", clientId);
+            }
+
+        } else {
+            log.debug("No time data for packet {}, client {}", packetId, clientId);
+        }
+    }
 
     /**
      *
@@ -89,7 +110,6 @@ public class PingInterceptor implements PingReqInboundInterceptor, PubackInbound
         });
     }
 
-
     @Override
     public void onInboundPubrel(@NotNull PubrelInboundInput pubrelInboundInput, @NotNull PubrelInboundOutput pubrelInboundOutput) {
         log.trace("Received Pubrel {}", pubrelInboundInput.getPubrelPacket().getPacketIdentifier());
@@ -104,28 +124,6 @@ public class PingInterceptor implements PingReqInboundInterceptor, PubackInbound
             updateLatency(store, clientId, packetId, currentTime);
             output.resume();
         });
-    }
-
-    private static void updateLatency(@NotNull final ConnectionAttributeStore store, @NotNull final String clientId, @NotNull final Integer packetId, @NotNull final long currentTime) {
-        log.debug("Updating latency for clientId: {} packetId: {}", clientId, packetId);
-        Optional<ByteBuffer> timeData = store.remove(packetId.toString());
-        if (timeData.isPresent()) {
-            final long timestamp = timeData.get().getLong();
-            //Round trip time
-            final long rtt = (currentTime - timestamp);
-            final long latency = rtt / 2;
-
-            final DeviceTrustAttributes trustAttributes = TrustStore.get(clientId);
-            if (trustAttributes != null) {
-                trustAttributes.addLatency(latency);
-                log.debug("{} latency: {}", clientId, latency);
-            } else {
-                log.error("No client with id {} found", clientId);
-            }
-
-        } else {
-            log.debug("No time data for packet {}, client {}", packetId, clientId);
-        }
     }
 
 }

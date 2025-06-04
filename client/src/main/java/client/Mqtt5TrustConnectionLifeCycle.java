@@ -12,8 +12,7 @@ import com.hivemq.client.mqtt.mqtt5.message.subscribe.Mqtt5Subscribe;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.ByteBuffer;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 public class Mqtt5TrustConnectionLifeCycle implements MqttClientConnectedListener, MqttClientDisconnectedListener {
     private static final Executor executor = Executors.newVirtualThreadPerTaskExecutor();
@@ -51,12 +50,16 @@ public class Mqtt5TrustConnectionLifeCycle implements MqttClientConnectedListene
                         final ByteBuffer payload = ByteBuffer.allocate(Float.BYTES);
                         payload.putFloat(opinion);
                         payload.position(0);
-                        client.publishWith()
-                                .topic(topic)
-                                .qos(MqttQos.AT_LEAST_ONCE)
-                                .payload(payload)
-                                .send()
-                                .join();
+                        try {
+                            client.publishWith()
+                                    .topic(topic)
+                                    .qos(MqttQos.AT_LEAST_ONCE)
+                                    .payload(payload)
+                                    .send()
+                                    .get(5, TimeUnit.SECONDS);
+                        } catch (Exception e) {
+                            System.err.println("Error publishing opinion: " + e.getLocalizedMessage());
+                        }
                     }
                 }
 

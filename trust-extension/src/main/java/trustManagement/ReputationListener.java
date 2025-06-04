@@ -53,13 +53,15 @@ public class ReputationListener implements PublishInboundInterceptor, SubscribeI
         final ClientInformation clientInfo = publishInboundInput.getClientInformation();
         final ConnectionInformation connInfo = publishInboundInput.getConnectionInformation();
 
-        if (!pdp.authorizePublish(clientInfo, connInfo, pub))
-            return;
-
         final String topic = pub.getTopic();
         if (topic.startsWith(REPUTATION_TOPIC)) {
             final var output = publishInboundOutput.async(Duration.ofMillis(150));
             extensionExecutor.submit(() -> {
+                if (!pdp.authorizePublish(clientInfo, connInfo, pub)) {
+                    output.getOutput().preventPublishDelivery(AckReasonCode.NOT_AUTHORIZED);
+                    output.resume();
+                    return;
+                }
                 final String clientId = publishInboundInput.getClientInformation().getClientId();
                 final String target = topic.substring(REPUTATION_TOPIC.length());
                 if (!clientId.equals(target)) {

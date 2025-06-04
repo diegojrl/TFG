@@ -18,21 +18,12 @@ import static fuzzy4j.flc.Variable.output;
 
 public class FuzzyCtr {
     public static final Map<String, VariableWithTerms> variables = new HashMap<>();
-    private static FuzzyCtr instance;
-
     private static final VariableWithTerms security = createSecurity();
     private static final VariableWithTerms delay = createDelay();
     private static final VariableWithTerms failedPctr = createFailedPctr();
     private static final VariableWithTerms reputation = createReputation();
     private static final VariableWithTerms trust = createTrust();
-
-    public static FuzzyCtr getInstance() throws IOException {
-        if (instance == null) {
-            instance = new FuzzyCtr(Configuration.getConfigDir().resolve("trustRules.flc"));
-        }
-        return instance;
-    }
-
+    private static FuzzyCtr instance;
     private final FLC controller;
 
     private FuzzyCtr(final Path file) throws IOException {
@@ -53,16 +44,11 @@ public class FuzzyCtr {
         this.controller = controller.create();
     }
 
-
-    public double evaluate(final DeviceTrustAttributes device) {
-        final double latency = (device.getLatency() - Configuration.getDelayMin()) /
-                (double) (Configuration.getDelayMax() - Configuration.getDelayMin());
-        InputInstance input = new InputInstance()
-                .is(delay.getVariable(), latency)
-                .is(security.getVariable(), device.getSecurity())
-                .is(reputation.getVariable(), device.getReputation())
-                .is(failedPctr.getVariable(), device.getFailureRate());
-        return controller.apply(input).get(trust.getVariable());
+    public static FuzzyCtr getInstance() throws IOException {
+        if (instance == null) {
+            instance = new FuzzyCtr(Configuration.getConfigDir().resolve("trustRules.flc"));
+        }
+        return instance;
     }
 
     private static VariableWithTerms createSecurity() {
@@ -113,6 +99,17 @@ public class FuzzyCtr {
         VariableWithTerms variable = new VariableWithTerms(trust, tLow, tMedium, tHigh);
         variables.put("trust", new VariableWithTerms(trust, tLow, tMedium, tHigh));
         return variable;
+    }
+
+    public double evaluate(final DeviceTrustAttributes device) {
+        final double latency = (device.getLatency() - Configuration.getDelayMin()) /
+                (double) (Configuration.getDelayMax() - Configuration.getDelayMin());
+        InputInstance input = new InputInstance()
+                .is(delay.getVariable(), latency)
+                .is(security.getVariable(), device.getSecurity())
+                .is(reputation.getVariable(), device.getReputation())
+                .is(failedPctr.getVariable(), device.getFailureRate());
+        return controller.apply(input).get(trust.getVariable());
     }
 
 

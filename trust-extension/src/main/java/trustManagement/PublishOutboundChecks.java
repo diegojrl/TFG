@@ -22,6 +22,26 @@ public class PublishOutboundChecks implements PublishOutboundInterceptor, Pubrec
     private static final Logger log = LoggerFactory.getLogger(PublishOutboundChecks.class);
     private static final ManagedExtensionExecutorService executor = Services.extensionExecutorService();
 
+    private static void timestamp_checks(final String packetId, final String clientId, final ConnectionAttributeStore store) {
+        // Check for packet resends
+        if (store.get(packetId).isPresent()) {
+            log.debug("Packet resend");
+            TrustStore.get(clientId).addFailedPacket();
+        } else {
+            log.trace("Packet sent");
+            TrustStore.get(clientId).addSentPacket();
+        }
+        // Store timestamp for Latency calculation
+        final long timestamp = System.currentTimeMillis();
+
+        //Store timestamp and packetId in session store
+        ByteBuffer timeData = ByteBuffer.allocate(Long.BYTES);
+        timeData.putLong(timestamp);
+        timeData.position(0);
+        store.put(packetId, timeData);
+
+    }
+
     @Override
     public void onOutboundPublish(@NotNull PublishOutboundInput publishOutboundInput, @NotNull PublishOutboundOutput publishOutboundOutput) {
         log.trace("Running outbound checks");
@@ -52,26 +72,6 @@ public class PublishOutboundChecks implements PublishOutboundInterceptor, Pubrec
             timestamp_checks(packetId, clientId, store);
             output.resume();
         });
-
-    }
-
-    private static void timestamp_checks(final String packetId, final String clientId, final ConnectionAttributeStore store) {
-        // Check for packet resends
-        if (store.get(packetId).isPresent()) {
-            log.debug("Packet resend");
-            TrustStore.get(clientId).addFailedPacket();
-        } else {
-            log.trace("Packet sent");
-            TrustStore.get(clientId).addSentPacket();
-        }
-        // Store timestamp for Latency calculation
-        final long timestamp = System.currentTimeMillis();
-
-        //Store timestamp and packetId in session store
-        ByteBuffer timeData = ByteBuffer.allocate(Long.BYTES);
-        timeData.putLong(timestamp);
-        timeData.position(0);
-        store.put(packetId, timeData);
 
     }
 }

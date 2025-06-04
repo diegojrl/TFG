@@ -42,6 +42,16 @@ public class PolicyAdministrationPoint {
 
     }
 
+    private static boolean matches(final Policy policy, final String messageTopic, final String clientId, final String username) {
+        String policyTopic = policy.topic;
+
+        //Substitutions for clientId & username
+        policyTopic = policyTopic.replaceAll(USERNAME_SUBSTITUTION, username);
+        policyTopic = policyTopic.replaceAll(CLIENTID_SUBSTITUTION, clientId);
+
+        return MqttTopicFilter.of(policyTopic).matches(MqttTopicFilter.of(messageTopic));
+    }
+
     /**
      * @param topic HiveMQ topic filter
      * @return List with the rules matching the topic, might be empty
@@ -51,15 +61,5 @@ public class PolicyAdministrationPoint {
         for (Policy policy : policies)
             if (matches(policy, topic, clientId, username)) rules.addAll(policy.rules);
         return rules;
-    }
-
-    private static boolean matches(final Policy policy, final String messageTopic, final String clientId, final String username) {
-        String policyTopic = policy.topic;
-
-        //Substitutions for clientId & username
-        policyTopic = policyTopic.replaceAll(USERNAME_SUBSTITUTION, username);
-        policyTopic = policyTopic.replaceAll(CLIENTID_SUBSTITUTION, clientId);
-
-        return MqttTopicFilter.of(policyTopic).matches(MqttTopicFilter.of(messageTopic));
     }
 }
