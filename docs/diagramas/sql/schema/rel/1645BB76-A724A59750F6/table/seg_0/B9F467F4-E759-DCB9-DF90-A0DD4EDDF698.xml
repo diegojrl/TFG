@@ -1,0 +1,84 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="B9F467F4-E759-DCB9-DF90-A0DD4EDDF698" name="OPINIONS">
+<createdBy>diego</createdBy>
+<createdTime>2025-06-07 18:19:16 UTC</createdTime>
+<ownerDesignName>schema</ownerDesignName>
+<ordsAlias>table_4</ordsAlias>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="SOURCE_ID" id="A14E06CC-884D-E6FD-FD96-A5D0B8110B1F">
+<createdBy>diego</createdBy>
+<createdTime>2025-06-07 18:21:09 UTC</createdTime>
+<ownerDesignName>schema</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255</dataTypeSize>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="BA878650-B62A-E801-2BFB-D197E207FF10" referredColumn="0EAD3487-8559-2D65-D4EE-881AF1BC1A4F"/>
+</associations>
+</Column>
+<Column name="TARGET_ID" id="7F6F3DD3-2BC5-1AB0-1622-B21E44BA49CF">
+<createdBy>diego</createdBy>
+<createdTime>2025-06-07 18:21:09 UTC</createdTime>
+<ownerDesignName>schema</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255</dataTypeSize>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="5C83905B-31E4-51CB-9AE6-C7CAF7846986" referredColumn="0EAD3487-8559-2D65-D4EE-881AF1BC1A4F"/>
+</associations>
+</Column>
+<Column name="OPINION" id="65B6C26C-FED0-32BC-C9ED-421E25D04FB9">
+<createdBy>diego</createdBy>
+<createdTime>2025-06-07 18:21:09 UTC</createdTime>
+<ownerDesignName>schema</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT021</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="77195F26-3AB6-EDE3-988E-D7671D4DAC94" name="OPINIONS_PK">
+<createdBy>diego</createdBy>
+<createdTime>2025-06-07 18:27:17 UTC</createdTime>
+<ownerDesignName>schema</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="A14E06CC-884D-E6FD-FD96-A5D0B8110B1F"/>
+<colUsage columnID="7F6F3DD3-2BC5-1AB0-1622-B21E44BA49CF"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="28C0C96E-15C4-8AD1-8AFB-ECBED2371CB1" name="OPINIONS_SOURCE_FK">
+<createdBy>diego</createdBy>
+<createdTime>2025-06-07 18:28:01 UTC</createdTime>
+<ownerDesignName>schema</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="A14E06CC-884D-E6FD-FD96-A5D0B8110B1F"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="B431D835-9853-C4CE-AFFA-5B654FB2B7F7" name="OPINIONS_TARGET_FK">
+<createdBy>diego</createdBy>
+<createdTime>2025-06-07 18:28:01 UTC</createdTime>
+<ownerDesignName>schema</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="7F6F3DD3-2BC5-1AB0-1622-B21E44BA49CF"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

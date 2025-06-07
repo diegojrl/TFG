@@ -1,0 +1,79 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="06A24A7A-D5D0-3418-92B3-2BFECADAEA13" name="OPINIONS">
+<createdBy>diego</createdBy>
+<createdTime>2025-06-07 18:29:07 UTC</createdTime>
+<generatorID>B9F467F4-E759-DCB9-DF90-A0DD4EDDF698</generatorID>
+<ownerDesignName>schema</ownerDesignName>
+<engineerTo>
+<item key="1645BB76-F5E0-3DC8-CFB3-A724A59750F6" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="SOURCE ID" id="AAA0022E-9798-F58A-5220-DDF701680A04">
+<createdBy>diego</createdBy>
+<createdTime>2025-06-07 18:29:07 UTC</createdTime>
+<generatorID>1FA6373E-5550-2D24-F1CB-41B4D05C9482</generatorID>
+<ownerDesignName>schema</ownerDesignName>
+<engineerTo>
+<item key="1645BB76-F5E0-3DC8-CFB3-A724A59750F6" value="true"/>
+</engineerTo>
+<referedAttribute>F3D47E44-73E1-D7C0-8C8C-BC8E0D1A39B9</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255</dataTypeSize>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="TARGET ID" id="07748262-2B80-CDCE-BF6A-94FEC78BB1E4">
+<createdBy>diego</createdBy>
+<createdTime>2025-06-07 18:29:07 UTC</createdTime>
+<generatorID>76E57512-7345-2748-0395-744C33BEB17F</generatorID>
+<ownerDesignName>schema</ownerDesignName>
+<engineerTo>
+<item key="1645BB76-F5E0-3DC8-CFB3-A724A59750F6" value="true"/>
+</engineerTo>
+<referedAttribute>F3D47E44-73E1-D7C0-8C8C-BC8E0D1A39B9</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255</dataTypeSize>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="OPINION" id="5F2BBC60-72AC-5008-A89E-A25FB963EEAD">
+<createdBy>diego</createdBy>
+<createdTime>2025-06-07 18:29:07 UTC</createdTime>
+<generatorID>65B6C26C-FED0-32BC-C9ED-421E25D04FB9</generatorID>
+<ownerDesignName>schema</ownerDesignName>
+<engineerTo>
+<item key="1645BB76-F5E0-3DC8-CFB3-A724A59750F6" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT021</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="25119777-A7B7-2D8A-E71B-649F0E8ED35B" name="OPINIONS PK">
+<createdBy>diego</createdBy>
+<createdTime>2025-06-07 18:29:07 UTC</createdTime>
+<generatorID>77195F26-3AB6-EDE3-988E-D7671D4DAC94</generatorID>
+<ownerDesignName>schema</ownerDesignName>
+<engineerTo>
+<item key="1645BB76-F5E0-3DC8-CFB3-A724A59750F6" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>AAA0022E-9798-F58A-5220-DDF701680A04</attributeRef>
+<attributeRef>07748262-2B80-CDCE-BF6A-94FEC78BB1E4</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

@@ -1,20 +1,20 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
-<Relation class="oracle.dbtools.crest.model.design.logical.Relation" name="TABLE_2_USERS_FK" directorySegmentName="seg_0" id="E84C2C59-2151-D62E-BC6F-1979BCF30600">
+<Relation class="oracle.dbtools.crest.model.design.logical.Relation" name="OPINIONS_SOURCE_FK" directorySegmentName="seg_0" id="1FA6373E-5550-2D24-F1CB-41B4D05C9482">
 <createdBy>diego</createdBy>
-<createdTime>2025-05-22 16:23:43 UTC</createdTime>
-<generatorID>57B57142-255E-1B6E-6E38-4F32810D95B9</generatorID>
+<createdTime>2025-06-07 18:29:07 UTC</createdTime>
+<generatorID>BA878650-B62A-E801-2BFB-D197E207FF10</generatorID>
 <ownerDesignName>schema</ownerDesignName>
 <engineerTo>
 <item key="1645BB76-F5E0-3DC8-CFB3-A724A59750F6" value="true"/>
 </engineerTo>
-<sourcePk>515B5887-DDAF-CBE9-A614-B658A6998493</sourcePk>
+<sourcePk>5D1F7D67-38C7-7F9A-CF4A-455B07FC8A07</sourcePk>
 <identifying>true</identifying>
 <optionalSource>true</optionalSource>
 <optionalTarget>false</optionalTarget>
 <sourceCardinality>1</sourceCardinality>
-<sourceEntity>C91921D3-997C-76AD-5035-11136DF4B2E5</sourceEntity>
+<sourceEntity>1B13E0C7-B921-D1A4-9655-47CC239DEFC0</sourceEntity>
 <targetCardinalityString>*</targetCardinalityString>
-<targetEntity>1B13E0C7-B921-D1A4-9655-47CC239DEFC0</targetEntity>
+<targetEntity>06A24A7A-D5D0-3418-92B3-2BFECADAEA13</targetEntity>
 <transferable>true</transferable>
 <deleteRule>NO ACTION</deleteRule>
 </Relation>
