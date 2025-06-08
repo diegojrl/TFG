@@ -1,6 +1,7 @@
 <script lang="ts">
     import Modal from "./modal.svelte";
-    import {reset_reputation, update_failPct, update_latency, update_opinion} from "$lib/websocket";
+    import {reset_reputation, update_failPct, update_latency, update_opinion} from "$lib/websocket/websocket";
+    import {focus} from "$lib/focus";
 
     let {
         dev,
@@ -34,11 +35,11 @@
 <Modal {onClose}>
     <h2 class="text-xl font-bold mb-2 truncate">Editar {dev.clientId}</h2>
     <br/>
-    <table class="table-auto text-center">
+    <table class="table-auto">
         <tbody>
         <tr class="mb-2">
             <td>Ping</td>
-            <td><input bind:value={ping} min="0" max="10000" type="number" class="mr-2 ml-2"></td>
+            <td><input bind:value={ping} class="mr-2 ml-2" max="10000" min="0" type="number" use:focus></td>
             <td>
                 <button class="bg-blue-500 text-white px-1 py-0 rounded hover:bg-blue-600" onclick={send_ping}>
                     Mod
@@ -47,7 +48,7 @@
         </tr>
         <tr>
             <td>Tasa de errores</td>
-            <td><input bind:value={failPct} max="100" min="0" type="range" class="mr-2 ml-2"></td>
+            <td><input bind:value={failPct} class="mr-2 ml-2" max="100" min="0" type="range"></td>
             <td>
                 <button class="bg-blue-500 text-white px-1 py-0 rounded hover:bg-blue-600" onclick={send_failPct}>
                     Mod
@@ -66,7 +67,7 @@
         </tr>
         <tr>
             <td>Opinion</td>
-            <td><input bind:value={opinion} max="100" min="0" type="range" class="mr-2 ml-2"></td>
+            <td><input bind:value={opinion} class="mr-2 ml-2" max="100" min="0" type="range"></td>
             <td>
                 <button class="bg-blue-500 text-white px-1 py-0 rounded hover:bg-blue-600" onclick={send_opinion}>
                     Opinar
@@ -86,3 +87,20 @@
         </button>
     </div>
 </Modal>
+
+
+<style lang="postcss">
+    table tr {
+        td:nth-child(1) {
+            text-align: start;
+        }
+
+        td:nth-child(2) {
+            text-align: center;
+        }
+
+        td:nth-child(3) {
+            text-align: end;
+        }
+    }
+</style>

@@ -1,13 +1,13 @@
 import mqtt, {type IClientOptions} from 'mqtt';
-import {arrayToDevice, type Device} from './device';
+import {arrayToDevice, type Device} from '$lib/device';
 import {Decoder} from "@msgpack/msgpack";
 import {PUBLIC_MQTT_HOST} from '$env/static/public';
 
 let mqttClient: mqtt.MqttClient | undefined;
 
-const CONTROL_TOPIC = "control/view/";
-const DECODER = new Decoder();
-export const SERVER = new URL(PUBLIC_MQTT_HOST);
+const CONTROL_TOPIC: string = "control/view/";
+const DECODER: Decoder = new Decoder();
+const SERVER: URL = new URL(PUBLIC_MQTT_HOST);
 
 export async function start_mqtt_connection(username: string, password: string, onDevice: (dev: Device) => void, onLostConnection: () => void, onReconect: () => void): Promise<boolean> {
     try {
@@ -22,7 +22,7 @@ export async function start_mqtt_connection(username: string, password: string, 
         mqttClient = await mqtt.connectAsync(SERVER.toString(), client_options);
 
 
-        mqttClient.on("message", (topic, payload, packet) => {
+        mqttClient.on("message", (topic, payload) => {
             console.log("new msg");
             let topic_idx = topic.indexOf(CONTROL_TOPIC);
             if (topic_idx != -1) {
@@ -74,7 +74,7 @@ export async function update_opinion(clientId: string, opinion: number) {
     }
     if (mqttClient != undefined) {
         const buf: ArrayBuffer = new ArrayBuffer(4);
-        const v = new DataView(buf);
+        const v: DataView = new DataView(buf);
         v.setFloat32(0, opinion)
         // @ts-ignore
         await mqttClient.publishAsync("tmgr/rep/" + clientId, new Uint8Array(buf));
@@ -96,7 +96,7 @@ export async function update_failPct(clientId: string, value: number) {
 
     if (mqttClient != undefined) {
         const buf: ArrayBuffer = new ArrayBuffer(4);
-        const v = new DataView(buf);
+        const v: DataView = new DataView(buf);
         v.setInt32(0, value)
         // @ts-ignore
         await mqttClient.publishAsync("control/mod/" + clientId + "/failPctr", new Uint8Array(buf));
@@ -109,7 +109,7 @@ export async function update_failPct(clientId: string, value: number) {
 export async function update_latency(clientId: string, value: number) {
     if (mqttClient != undefined) {
         const buf: ArrayBuffer = new ArrayBuffer(4);
-        const v = new DataView(buf);
+        const v: DataView = new DataView(buf);
         v.setInt32(0, value)
         // @ts-ignore
         await mqttClient.publishAsync("control/mod/" + clientId + "/ping", new Uint8Array(buf));

@@ -1,144 +1,27 @@
 <script lang="ts">
-    import {fade} from "svelte/transition";
-    import DeviceLayout from "$lib/DeviceLayout.svelte";
     import LoginModal from "$lib/modals/ConnectModal.svelte";
-    import EditModal from "$lib/modals/DeviceEdit.svelte"
-    import {type Device} from "$lib/device";
-    import {SERVER, start_mqtt_connection, stop_mqtt_client,} from "$lib/websocket";
+    import {connect} from "$lib/websocket/connection";
 
-    let devices: Device[] = $state([]);
-    let editDevice: Device | undefined = $state(undefined);
-    let server_name = $state("");
     let username = $state("");
     let password = $state("");
-    let showLogin = $state(false);
-    let reconnecting = $state(false);
 
-    function add_information(new_device: Device) {
-        console.log("add info");
-        let idx = devices.findIndex((d) => d.clientId == new_device.clientId);
-
-        if (idx >= 0) {
-            let dev = devices[idx];
-            dev.avgDelay = new_device.avgDelay;
-            dev.clientId = new_device.clientId;
-            dev.failedInteractionsPercentage =
-                new_device.failedInteractionsPercentage;
-            dev.networkSecurity = new_device.networkSecurity;
-            dev.networkType = new_device.networkType;
-            dev.reputation = new_device.reputation;
-            dev.trust = new_device.trust;
-        } else {
-            devices.push(new_device);
-        }
-    }
-
-    async function connect() {
-        try {
-            if (
-                await start_mqtt_connection(
-                    username,
-                    password,
-                    add_information,
-                    onLostConnection,
-                    onReconect,
-                )
-            ) {
-                showLogin = false;
-                server_name = SERVER.hostname;
-            } else {
-                await logout();
-            }
-        } catch (e) {
-            console.log(e);
-            await logout();
-        }
-    }
-
-    async function logout() {
-        await stop_mqtt_client();
-        server_name = "";
-        username = "";
-        password = "";
-        devices = [];
-        showLogin = true;
-        editDevice = undefined;
-    }
-
-    function onReconect() {
-        reconnecting = false;
-    }
-
-    function onLostConnection() {
-        reconnecting = true;
-        editDevice = undefined;
-        devices = [];
+    async function login() {
+        await connect(username, password);
+        password = ""
     }
 </script>
-{#if showLogin}
-    <LoginModal
-            bind:username
-            bind:password
-            onClose={() => {
-        showLogin = false;
-        }}
-            onLogin={connect}
-    ></LoginModal>
-{/if}
 
+<LoginModal
+        bind:password
+        bind:username
+        onClose={() => {}}
+        onLogin={login}>
+</LoginModal>
 
-{#if editDevice !== undefined}
-    <EditModal dev={editDevice} onClose={()=>{ editDevice=undefined;}}></EditModal>
-{/if}
-
-
-<div class="mx-auto px-2 sm:px-6 lg:px-8 bg-gray-800">
-    <div class="relative flex h-16 items-center justify-between">
-        {#if server_name === ""}
-            <span></span>
-            <button
-                    class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
-                    onclick={() => {
-                    showLogin = true;
-                }}>Login
-            </button
-            >
-        {:else}
-            {#if reconnecting}
-                <div class="bg-red-900 rounded px-3 py-1 text-white">
-                    Reconnecting
-                </div>
-            {:else}
-                <div class="bg-green-900 rounded px-3 py-1 text-white">
-                    {server_name}
-                </div>
-            {/if}
-            <button
-                    class="bg-red-500 hover:bg-red-600 rounded px-3 py-1 text-white"
-                    onclick={logout}>Logout
-            </button
-            >
-        {/if}
-    </div>
-</div>
-
-{#if devices.length === 0}
-    <div class="items-center justify-center fixed inset-9 flex">
-        <p>No devices connected</p>
-    </div>
-{:else}
-    <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 m-4">
-        {#each devices as dev}
-            <div transition:fade class="">
-                <DeviceLayout dev={dev} bind:editDevice={editDevice}/>
-            </div>
-        {/each}
-    </div>
-{/if}
 
 <style lang="postcss">
     @reference "tailwindcss";
     :global(html) {
-        background-color: theme(--color-gray-100);
+        background-color: theme(--color-gray-500);
     }
 </style>
