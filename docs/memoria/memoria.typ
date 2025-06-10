@@ -69,8 +69,25 @@ no existe un sistema que ofrezca la capacidad de integrarse fácilmente en un en
 
 
 = Desarrollo del proyecto
+== Requisitos
+=== Funcionales
+Estos son los requisitos definidos para la página web.
+- RF1: Un usuario y contraseña válidos serán necesarios para acceder a la web.
+- RF2: Se podrá acceder a la web desde cualquier dispositivo.
+- RF3: Desde la vista principal se podrán observar todos los dispositivos conectados al servidor desde que inicia la conexión.
+- RF4: Cada dispositivo tiene asociados datos sobre la confianza.
+- RF5: Desde cada dispositivo se puede entrar en su menú de configuración.
+- RF6:   
 
 
+=== No funcionales
+- RNF1: Tiempos de carga de la web bajos
+- RNF2: Seguridad en el acceso, la conexión será cifrada.
+- RNF3: Seguridad de la contraseña de los usuarios.
+- RNF4: Facilidad de uso.
+
+
+== Casos de uso
 #bibliography("bibliografia.bib", style: "ieee")
 
 #show: anexo
