@@ -17,7 +17,8 @@
   )
   par(justify: false)[
     *Resumen* \
-    Test
+    Test \
+    *Palabras clave:* _MQTT, HiveMq, Autorización, Confianza, LDAP, Aplicación Web, Java, Svelte, TypeScript, ...._ 
   ]
 }
 //#pagebreak()
@@ -40,7 +41,9 @@ fads
 == Motivación
 == Objetivos
 == Tecnologías utilizadas
-=== Extensión HiveMq
+=== HiveMq
+HiveMq@hiveMq es un servidor creado especialmente para gestionar los mensajes del protocolo MQTT. Este tipo de servidor se conoce comunmente como _broker_, 
+ya que hace de intermediario para todos los mensajes que se envian.
 === Cliente web
 === Herramientas comunes
 
