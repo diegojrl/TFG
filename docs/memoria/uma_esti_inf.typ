@@ -94,12 +94,8 @@
   if elems.len() != 0 and elems.first().location().page() == here().page() {
     return false
   } else {
-    elems = query(selector(heading.where(level: 1)).before(here()))
-    if elems.len() != 0 {
       return true
-    }
   }
-  return true
 }
 
 // Template
@@ -148,15 +144,12 @@
     date,
   )
 
-
   // Layout
   set page(
     paper: "a4",
     margin: 2.5cm,
-    footer: context {
-      set align(center)
-      counter(page).display()
-    },
+    number-align: center,
+    numbering: "I"
   )
   // Code listings styling
   show raw: it => {
@@ -205,10 +198,11 @@
   show heading.where(level: 4): set text(weight: "medium")
 
   // Cada apartado aparece en una página nueva e impar
-  show heading: it => if it.level == 1 { pagebreak(weak: true) + it } else { it }
-  //show heading: it => if it.level == 1 { pagebreak(to: "odd", weak: true) + it } else { it }
+  show heading.where(level: 1): it => pagebreak(weak: true) + it
+  //show heading.where(level: 1): it => pagebreak(to: "odd", weak: true) + it
 
   // Abstract, index, body and references
+  page(header: none, [], numbering: none)
   counter(page).update(1)
   if abstract != none {
     page(
@@ -247,11 +241,12 @@
 
   counter(page).update(1)
   //Indice
-  outline(target: heading.where(numbering: "1."))
+  outline(target: heading.where(numbering: "1."), depth: 3)
   //Apendice
   outline(target: heading.where(numbering: "A."), title: [Anexo])
 
   set page(
+    numbering: "1",
     header: context {
       if showHeader() {
         if calc.rem(here().page(), 2) == 0 [
@@ -265,6 +260,9 @@
       }
     },
   )
+
+  show heading.where(level: 1): set text(weight: "bold", size: 25pt)
+  show heading.where(level: 1): it => it + line(length: 100%, stroke: 0.5pt)
 
   counter(page).update(1)
   body
