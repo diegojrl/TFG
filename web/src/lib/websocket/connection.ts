@@ -15,15 +15,15 @@ export async function connect(username: string, password: string) {
         ) {
             await goto("/main");
         } else {
-            await logout();
+            await close_connection();
         }
     } catch (e) {
         console.log(e);
-        await logout();
+        await close_connection();
     }
 }
 
-async function logout() {
+export async function close_connection() {
     await stop_mqtt_client();
     devices.length = 0;
 }

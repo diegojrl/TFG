@@ -3,11 +3,11 @@
     import EditModal from "$lib/modals/DeviceEdit.svelte"
     import {type Device} from "$lib/device";
     import {devices} from "$lib/websocket/devices.svelte";
-    import {stop_mqtt_client} from "$lib/websocket/websocket";
+    import {close_connection} from "$lib/websocket/connection";
     import {goto} from "$app/navigation";
 
     async function logout() {
-        await stop_mqtt_client();
+        await close_connection();
         await goto("/");
     }
 
@@ -20,7 +20,8 @@
     <EditModal dev={editDevice} onClose={()=>{ editDevice=undefined;}}></EditModal>
 {/if}
 
-<div class="px-2 sm:px-6 lg:px-8 bg-gray-800 flex h-16 items-center justify-between">
+<div class="px-2 sm:px-6 lg:px-8 bg-gray-700 flex h-16 items-center justify-between">
+    <wbr>
     <button
             class="bg-red-600 hover:bg-red-800 rounded-md px-3 py-1 text-white" onclick={logout}
     >Logout
