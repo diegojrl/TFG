@@ -1,34 +1,31 @@
-#set heading(numbering: "1.")
-#set text(font: "Arial", size: 12pt, lang: "es")
-#set page(numbering: "1", paper: "a4", margin: 2.5cm)
-#set par(leading: 0.75em, justify: true, first-line-indent: (amount: 2em, all: true))
+#import "uma_esti_inf.typ": memoria
+
+#show: memoria.with(
+    degree: "El título de mi grado o máster",
+    title: "Autorización basada en la confianza para el protocolo MQTT",
+    title_en: "Trust based authorization for the MQTT protocol",
+    author: "Diego Jesús Romero Luque",
+    tutors: "Davide Ferraris",
+    department: " Lenguajes y Ciencias de la Computación",
+    date: "20-07-2025",
+    abstract: [
+      Mi trabajo se resume en este texto. #lorem(200)
+    ],
+    keywords: ("MQTT", "HiveMq", "Autorización", "Confianza", "LDAP", "Aplicación Web", "Java", "Svelte", "TypeScript"),
+    abstract_en: [#lorem(200)],
+    keywords_en: ("MQTT", "HiveMq", "Authorization", "Trust", "LDAP", "Web Application", "Java", "Svelte", "TypeScript"),
+)
+
+
+//#set page(numbering: "1", paper: "a4", margin: 2.5cm)
 #let anexo(text) = {
   set heading(numbering: "A.", supplement: [Anexo])
   counter(heading).update(0)
   text
 }
-#{
-  set align(center)
-  text(size: 17pt, weight: "bold", "Autorización basada en la confianza para el protocolo MQTT")
-  grid(
-    columns: 1,
-    row-gutter: 24pt,
-    "Diego Jesús Romero Luque",
-  )
-  par(justify: false)[
-    *Resumen* \
-    Test \
-    *Palabras clave:* _MQTT, HiveMq, Autorización, Confianza, LDAP, Aplicación Web, Java, Svelte, TypeScript, ...._ 
-  ]
-}
-//#pagebreak()
-//Indice
-#outline(target: heading.where(numbering: "1."))
-//Apendice
-#outline(target: heading.where(numbering: "A."), title: [Anexo])
 
-// Cada apartado aparece en una página nueva e impar
-#show heading: it => if it.level == 1 { pagebreak(to: "odd", weak: true) + it } else { it }
+
+//#pagebreak()
 
 
 = Introducción
@@ -91,8 +88,6 @@ Estos son los requisitos definidos para la página web.
 
 
 == Casos de uso
-#bibliography("bibliografia.bib", style: "ieee")
 
 #show: anexo
-
 = Anexo1 <a1>
