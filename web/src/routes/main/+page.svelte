@@ -3,7 +3,13 @@
     import EditModal from "$lib/modals/DeviceEdit.svelte"
     import {type Device} from "$lib/device";
     import {devices} from "$lib/websocket/devices.svelte";
+    import {stop_mqtt_client} from "$lib/websocket/websocket";
+    import {goto} from "$app/navigation";
 
+    async function logout() {
+        await stop_mqtt_client();
+        await goto("/");
+    }
 
     let editDevice: Device | undefined = $state(undefined);
 
@@ -13,6 +19,14 @@
 {#if editDevice }
     <EditModal dev={editDevice} onClose={()=>{ editDevice=undefined;}}></EditModal>
 {/if}
+
+<div class="px-2 sm:px-6 lg:px-8 bg-gray-800 flex h-16 items-center justify-between">
+    <button
+            class="bg-red-600 hover:bg-red-800 rounded-md px-3 py-1 text-white" onclick={logout}
+    >Logout
+    </button
+    >
+</div>
 
 
 {#if devices.length === 0}
@@ -26,10 +40,3 @@
         {/each}
     </div>
 {/if}
-
-<style lang="postcss">
-    @reference "tailwindcss";
-    :global(html) {
-        background-color: theme(--color-gray-100);
-    }
-</style>

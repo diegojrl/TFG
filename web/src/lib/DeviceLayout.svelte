@@ -10,13 +10,13 @@
     }
 </script>
 
-<div class="overflow-hidden bg-blue-200 rounded-md p-4"
+<div class="overflow-hidden bg-gray-200 border-2 border-gray-300 rounded-md p-4"
      transition:fade>
     <div class="flex justify-between">
-        <b class="truncate">{dev.clientId}</b>
+        <h2 class="truncate font-bold text-lg">{dev.clientId}</h2>
         <button
                 aria-label="s"
-                class="hover:text-fuchsia-600 text-purple-800"
+                class="hover:bg-gray-300 text-blue-600 rounded-md"
                 onclick={edit}
         >
             <svg
@@ -37,13 +37,34 @@
 
 
     <br/>
-    <p><b>Latencia:</b> {dev.avgDelay}</p>
-    <p><b>% de errores:</b> {dev.failedInteractionsPercentage.toFixed(2)}</p>
-    <p><b>Tipo de red:</b> {dev.networkType}</p>
-    <p><b>Cifrado:</b> {dev.networkSecurity}</p>
-    <p><b>Reputación:</b> {dev.reputation}</p>
+    <table class="table-auto w-full">
+        <tbody>
+        <tr>
+            <td>Latency:</td>
+            <td>{dev.avgDelay}ms</td>
+        </tr>
+        <tr>
+            <td>Errors(%):</td>
+            <td>{dev.failedInteractionsPercentage.toFixed(2)}%</td>
+        </tr>
+        <tr>
+            <td>Network type:</td>
+            <td>{dev.networkType}</td>
+        </tr>
+        <tr>
+            <td>Encryption:</td>
+            <td>{dev.networkSecurity}</td>
+        </tr>
+        <tr>
+            <td>Reputation(%):</td>
+            <td>{dev.reputation.toFixed(4)}%</td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+    <p><b>Trust</b></p>
     <div class="text-end flex items-center">
-        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700 ">
+        <div class="w-full bg-gray-400 rounded-full h-2.5 dark:bg-gray-700 ">
             <div
                     class="bg-blue-600 h-2.5 rounded-full"
                     style="width: {dev.trust * 100}%"
@@ -53,3 +74,17 @@
         <div class="pl-2">{(dev.trust * 100).toFixed(2)}%</div>
     </div>
 </div>
+
+
+<style lang="postcss">
+    @reference "tailwindcss";
+    table tr {
+        td:nth-child(1) {
+            font-weight: 600;
+        }
+
+        td:nth-child(2) {
+            text-align: end;
+        }
+    }
+</style>

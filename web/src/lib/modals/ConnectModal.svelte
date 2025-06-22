@@ -11,34 +11,34 @@
 </script>
 
 <Modal {onClose}>
-    <h2 class="text-xl font-bold mb-2">Hello from the Modal</h2>
-    <br/>
-
-    <form onsubmit={() => {console.log("dfsf")}}>
-        <input
-                bind:value={username}
-                class="border-gray-300 border-2 rounded-sm"
-                placeholder="Username"
-                type="text"
-                use:focus
-        />
-        <br/>
-        <br/>
-        <input
-                bind:value={password}
-                class="border-gray-300 border-2 rounded-sm"
-                placeholder="Password"
-                type="password"
-        />
-        <div class="mt-4 flex justify-end">
+    <div class="p-5">
+        <h2 class="text-xl font-bold mb-2">Sing in</h2>
+        <br>
+        <form>
+            <input
+                    bind:value={username}
+                    class="border-gray-300 border-2 py-1 rounded-md"
+                    placeholder="Username"
+                    type="text"
+                    use:focus
+            />
+            <br>
+            <br>
+            <input
+                    bind:value={password}
+                    class="border-gray-300 border-2 py-1 rounded-md"
+                    placeholder="Password"
+                    type="password"
+            />
+            <br>
+            <br>
             <button
-                    class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+                    class="mt-4 w-full bg-blue-500 text-white py-1 rounded-md hover:bg-blue-600"
                     onclick={onLogin}
             >
                 Login
             </button>
-        </div>
-    </form>
-
+        </form>
+    </div>
 
 </Modal>

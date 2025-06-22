@@ -37,70 +37,56 @@
     <br/>
     <table class="table-auto">
         <tbody>
-        <tr class="mb-2">
+        <tr>
             <td>Ping</td>
-            <td><input bind:value={ping} class="mr-2 ml-2" max="10000" min="0" type="number" use:focus></td>
+            <td><input bind:value={ping}
+                       class="[appearance:textfield] mr-2 ml-2 rounded-md text-center border-gray-300 border-2"
+                       max="10000" min="0" oninput={send_ping} type="number"
+                       use:focus></td>
+        </tr>
+        <tr>
             <td>
-                <button class="bg-blue-500 text-white px-1 py-0 rounded hover:bg-blue-600" onclick={send_ping}>
-                    Mod
-                </button>
+                <wbr>
             </td>
         </tr>
         <tr>
             <td>Tasa de errores</td>
-            <td><input bind:value={failPct} class="mr-2 ml-2" max="100" min="0" type="range"></td>
+            <td><input bind:value={failPct} class="mr-2 ml-2 " max="100" min="0" oninput={send_failPct} type="range">
+            </td>
+        </tr>
+        <tr>
             <td>
-                <button class="bg-blue-500 text-white px-1 py-0 rounded hover:bg-blue-600" onclick={send_failPct}>
-                    Mod
-                </button>
+                <wbr>
             </td>
         </tr>
         <tr>
             <td>Reputación</td>
-            <td></td>
             <td>
-                <button class="bg-blue-500 text-white px-1 py-0 rounded hover:bg-blue-600"
+                <button class="bg-blue-500 text-white px-1 py-0 rounded-md hover:bg-blue-600"
                         onclick={send_reset_reputation}>
                     Resetear
                 </button>
             </td>
         </tr>
         <tr>
-            <td>Opinion</td>
-            <td><input bind:value={opinion} class="mr-2 ml-2" max="100" min="0" type="range"></td>
             <td>
-                <button class="bg-blue-500 text-white px-1 py-0 rounded hover:bg-blue-600" onclick={send_opinion}>
-                    Opinar
-                </button>
+                <wbr>
+            </td>
+        </tr>
+        <tr>
+            <td>Opinion</td>
+            <td><input bind:value={opinion} class="mr-2 ml-2 " max="100" min="0" oninput={send_opinion} type="range">
             </td>
         </tr>
         </tbody>
     </table>
 
 
-    <div class="mt-4 flex justify-end">
-        <button
-                class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
-                onclick={onClose}
-        >
-            Ok
-        </button>
-    </div>
+    <button
+            class="bg-blue-500 text-white mt-4 px-3 py-1 rounded-md hover:bg-blue-600"
+            onclick={onClose}
+    >
+        Close
+    </button>
+
 </Modal>
-
-
-<style lang="postcss">
-    table tr {
-        td:nth-child(1) {
-            text-align: start;
-        }
-
-        td:nth-child(2) {
-            text-align: center;
-        }
-
-        td:nth-child(3) {
-            text-align: end;
-        }
-    }
-</style>

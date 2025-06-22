@@ -1,1 +1,21 @@
 @import "tailwindcss";
+
+html {
+    background-color: theme(--color-gray-100);
+    accent-color: theme(--color-blue-500);
+}
+
+table tr {
+    td:nth-child(1) {
+        text-align: start;
+    }
+
+    td:nth-child(2) {
+        text-align: center;
+        padding-left: 1em;
+    }
+
+    td:nth-child(3) {
+        text-align: end;
+    }
+}

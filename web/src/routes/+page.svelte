@@ -19,9 +19,4 @@
 </LoginModal>
 
 
-<style lang="postcss">
-    @reference "tailwindcss";
-    :global(html) {
-        background-color: theme(--color-gray-500);
-    }
-</style>
+
