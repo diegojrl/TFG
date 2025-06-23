@@ -39,7 +39,7 @@ public class Main {
                 .applySimpleAuth()
                 .identifier(conf.getClientId() == null ? UUID.randomUUID().toString() : conf.getClientId())
                 .automaticReconnectWithDefaultConfig();
-        final Mqtt5Client client = new Mqtt5TrustClient(clientBuilder, conf);
+        final Mqtt5Client client = new Mqtt5TrustClient(clientBuilder, conf, conf);
         final Mqtt5AsyncClient asyncClient = client.toAsync();
         try {
             asyncClient.connectWith()

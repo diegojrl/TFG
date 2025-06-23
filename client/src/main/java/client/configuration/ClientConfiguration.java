@@ -5,8 +5,9 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.List;
 
-public class ClientConfiguration implements Opinions {
+public class ClientConfiguration implements Opinions, Messages {
     private final File configFile;
 
     public ClientConfiguration(Path file) throws IOException {
@@ -33,7 +34,7 @@ public class ClientConfiguration implements Opinions {
 
     public boolean useTls() {
         if (configFile.tls != null) {
-            return configFile.tls.useTls == null ? true : configFile.tls.useTls;
+            return configFile.tls.useTls == null || configFile.tls.useTls;
         } else {
             return true;
         }
@@ -49,5 +50,9 @@ public class ClientConfiguration implements Opinions {
 
     public Float getOpinion(String clientId) {
         return configFile.getOpinion(clientId);
+    }
+
+    public List<PeriodicMessage> getPeriodicMessages() {
+        return configFile.messages;
     }
 }

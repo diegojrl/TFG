@@ -3,6 +3,7 @@ package client.configuration;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Map;
 
 public final class File {
@@ -12,6 +13,7 @@ public final class File {
     public String password;
     @JsonProperty("opinions")
     public Map<String, Float> opinions;
+    public List<PeriodicMessage> messages;
     public Tls tls;
 
     public void removeInvalidOpinions() {
