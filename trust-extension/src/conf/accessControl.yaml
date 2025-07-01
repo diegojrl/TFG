@@ -25,3 +25,6 @@ permissions:
       - username: paco
         allow: false
       - username: admin
+  - topic: my/#
+    rules:
+      - username: test

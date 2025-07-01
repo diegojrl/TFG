@@ -1,7 +1,7 @@
 host: "hivemq.lan"
 username: "test"
 password: "12345678"
-clientId: trust-cli
+#clientId: trust-cli
 tls:
   useTls: true
   certificate: "/home/diego/Documents/TFG/client/src/main/resources/client-trust-store.jks"
