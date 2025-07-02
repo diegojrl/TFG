@@ -3,6 +3,7 @@
 function check_dependencies() {
   if ! which unzip > /dev/null; then echo "El comando unzip es necesario para la instalación"; exit 20; fi;
   if ! which docker > /dev/null; then echo "El comando docker es necesario para la instalación"; exit 21; fi;
+  if ! which hostname > /dev/null; then echo "El comando hostname es necesario para la instalación"; exit 21; fi;
 }
 
 function setup_extension() {
