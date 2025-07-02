@@ -22,8 +22,8 @@
             <tls>
                 <keystore>
                     <path>conf/hivemq.jks</path>
-                    <password>example</password>
-                    <private-key-password>example</private-key-password>
+                    <password>${pass}</password>
+                    <private-key-password>${pass}</private-key-password>
                 </keystore>
 
                 <client-authentication-mode>NONE</client-authentication-mode>

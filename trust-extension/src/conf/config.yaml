@@ -1,10 +1,11 @@
 delay_max: 500
 delay_min: 20
 ldap:
-  url: "ldap://localhost:3890"
+  url: "ldap://ldap:3890"
   baseDn: "ou=people,dc=example,dc=com"
   auth: "simple"
 trusted_networks:
   - 192.168.55.0/24
+  - 172.16.0.0/12
   - ::1/128
-  - localhost/24
+  - localhost/8

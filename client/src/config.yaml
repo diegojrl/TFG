@@ -1,11 +1,10 @@
-host: "hivemq.lan"
-username: "test"
-password: "12345678"
-#clientId: trust-cli
+host: "${host}"
+username: "${user}"
+password: "${password}"
 tls:
   useTls: true
-  certificate: "/home/diego/Documents/TFG/client/src/main/resources/client-trust-store.jks"
-  certificatePassword: "example"
+  certificate: "${cert}"
+  certificatePassword: "${cert-pwd}"
 opinions:
   web control admin: 1
   web control paco: 0.4

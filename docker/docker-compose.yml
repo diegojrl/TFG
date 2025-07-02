@@ -8,8 +8,11 @@ services:
       - ./logs:/opt/hivemq/log
       - ./conf:/opt/hivemq/conf
       - ./extensions:/opt/hivemq/extensions
-      - data:/opt/hivemq/data
-    network_mode: host
+      - hivemq-data:/opt/hivemq/data
+    ports:
+      - 1883:1883 # MQTT
+      - 8883:8883 # MQTTS
+      - 9010:9010 # JMX
     depends_on:
       - ldap
 
@@ -17,16 +20,25 @@ services:
     image: lldap/lldap:stable
     container_name: ldap
     ports:
-      # web front-end
-      - 17170:17170
-      - 127.0.0.1:3890:3890
+      - 17170:17170 # web front-end
     volumes:
-      - ./ldap_data:/data
+      - ldap-data:/data
     environment:
       TZ: Europe/Madrid
       LLDAP_LDAP_BASE_DN: dc=example,dc=com
-    env_file:
-      - env
 
+  web:
+    build:
+      context: ../web
+      args:
+        hostname: ${hostname:-example.com}
+      tags:
+        - web
+    ports:
+      - 80:80
+      - 443:443
+    depends_on:
+      - hivemq
 volumes:
-  data:
+  hivemq-data:
+  ldap-data:
