@@ -36,12 +36,12 @@ function setup_certificates() {
 
 function build_web() {
   echo PUBLIC_MQTT_HOST="ws://${hostname}/mqtt" > ../web/.env
-  docker compose build || exit 91
+  hostname="${hostname}" docker compose build || exit 91
 }
 
 function build_client() {
-  #docker run --rm -v ../client:/build -w /build --entrypoint /bin/bash ghcr.io/graalvm/native-image-community:21 \
-  #  -c "microdnf --refresh install maven -y && JAVA_HOME=/usr/lib64/graalvm/graalvm-community-java21 mvn package" || exit 92
+  docker run --rm -v ../client:/build -w /build --entrypoint /bin/bash ghcr.io/graalvm/native-image-community:21 \
+    -c "microdnf --refresh install maven -y && JAVA_HOME=/usr/lib64/graalvm/graalvm-community-java21 mvn package" || exit 92
   config_file=../client/src/config.yaml
   sed -i "s/\${host}/$hostname/g" $config_file
   cert_path="$(pwd)/conf/mqtt-client-trust-store.jks"
@@ -50,7 +50,7 @@ function build_client() {
 }
 
 function run_servers() {
-  read -pr "Ejecutar servidores(S/N): " start
+  read -rp "Ejecutar servidores(S/N): " start
   case "$start" in
       [Ss]* )
         docker compose up -d || exit 50
@@ -62,7 +62,7 @@ function run_servers() {
 }
 
 function run_client() {
-  read -pr "Ejecutar cliente(S/N): " start
+  read -rp "Ejecutar cliente(S/N): " start
   case "$start" in
       [Ss]* )
         return 0
@@ -75,7 +75,7 @@ check_dependencies
 
 # Move to this script dir
 cd "$(dirname "$0")" || exit 1
-chmod 777 .
+chmod 777 conf
 hostname=$(hostname --fqdn)
 
 read -rsp "Introduce la contraseña para el certificado: " password

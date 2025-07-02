@@ -6,9 +6,9 @@
             <bind-address>0.0.0.0</bind-address>
         </tcp-listener>
         <websocket-listener>
-            <port>8000</port>
+            <port>8080</port>
             <bind-address>0.0.0.0</bind-address>
-            <path>/mqtt</path>
+            <path>/</path>
             <name>my-websocket-listener</name>
             <subprotocols>
                 <subprotocol>mqttv3.1</subprotocol>

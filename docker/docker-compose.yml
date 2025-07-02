@@ -3,7 +3,7 @@ services:
     image: docker.io/hivemq/hivemq-ce
     container_name: hivemq
     environment:
-      HIVEMQ_LOG_LEVEL: DEBUG
+      HIVEMQ_LOG_LEVEL: INFO
     volumes:
       - ./logs:/opt/hivemq/log
       - ./conf:/opt/hivemq/conf
@@ -28,6 +28,7 @@ services:
       LLDAP_LDAP_BASE_DN: dc=example,dc=com
 
   web:
+    container_name: web
     build:
       context: ../web
       args:
