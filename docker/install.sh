@@ -54,6 +54,10 @@ function run_servers() {
   read -rp "Ejecutar servidores(S/N): " start
   case "$start" in
       [Ss]* )
+        if [ ! -d 'logs' ];then
+          mkdir logs || exit 17;
+          chmod 777 logs
+        fi
         docker compose up -d || exit 50
         return 0
         ;;
@@ -62,11 +66,11 @@ function run_servers() {
   return 1
 }
 
-function run_client() {
-  read -rp "Ejecutar cliente(S/N): " start
-  case "$start" in
+function ask_build_client() {
+  read -rp "Compilar cliente para linux(S/N): " build
+  case "$build" in
       [Ss]* )
-        return 0
+        build_client
         ;;
       * ) ;;
   esac
@@ -90,9 +94,6 @@ echo
 setup_extension
 setup_certificates
 build_web
-build_client
+ask_build_client
 
-if run_servers
-then
-  run_client
-fi
+run_servers
