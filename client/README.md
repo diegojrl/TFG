@@ -46,7 +46,12 @@ messages:
 
 ```
 ### Configuración básica
-Esta configuración es **obligatoria** para que el cliente pueda conectarse al broker MQTT.
+Esta configuración es **obligatoria** para que el cliente pueda conectarse al broker MQTT. Ejemplo:
+```yaml
+host: "mqtt.example.com"
+username: "user"
+password: "password"
+```
 | Configuración | Por defecto | Descripción                                                     |
 | ------------- | ----------- | --------------------------------------------------------------- |
 | host          | -           | Dirección del servidor, puede ser un nombre de dominio o una IP |
@@ -99,4 +104,4 @@ messages:
 | topic         | -           | Topic de MQTT para publicar el mensaje (obligatorio)                                                                                             |
 | interval      | null        | Intervalo en segundos para publicar el mensaje, Si es *null* indica que solo se enviará una vez. Si el valor es 0, el intervalo real será de 5ms |
 | content       | ""          | Contenido del mensaje, en formato UTF-8                                                                                                          |
-| qos           | null        | Valor de QoS para publicar el mensaje. El valor será 0 si qos es null                                                                            |
+| qos           | null        | Valor de QoS para publicar el mensaje, puede ser 0, 1 o 2. El valor será 0 si qos es null                                                                            |
