@@ -3,8 +3,8 @@ Este repositorio contiene el código y la documentación para el proyecto.
 
 El proyecto se divide en tres partes:
 - Implementación en el servidor, como una [extensión](trust-extension) para el broker MQTT [HiveMQ](https://www.hivemq.com/products/mqtt-broker/).
-- [Cliente MQTT](client) implementando el protocolo.
-- [Cliente web](web) para la visualización de datos relativos al protocolo.
+- [Cliente MQTT](client#cliente-mqtt-adaptado-para-usar-el-protocolo-de-confianza) implementando el protocolo.
+- [Cliente web](web#cliente-web) para la visualización de datos relativos al protocolo.
 
 ## Instalación
 El sistema está preparado para ser usado bajo una máquina linux y ha sido probado en [Debian 13](https://www.debian.org/index.es.html). Además necesita las siguientes dependencias:
