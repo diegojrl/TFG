@@ -96,4 +96,19 @@ setup_certificates
 build_web
 ask_build_client
 
-run_servers
+if run_servers
+then
+  echo 
+  echo "Datos de conexión del servidor"
+  echo
+  echo "Nombre del host: ${hostname}"
+  echo "URL administración de usuarios: http://${hostname}:17170/"
+  echo "URL MQTT: mqtt://${hostname}:1883"
+  echo "URL MQTTS: mqtts://${hostname}:8883"
+  echo "URL MQTT WebSocket: wss://${hostname}/mqtt"
+  echo "URL web: https://${hostname}/"
+  echo
+  echo "Usuario por defecto: admin, contraseña: password"
+  echo
+fi
+

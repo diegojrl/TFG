@@ -1,40 +1,105 @@
-# sv
+# Cliente web
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+Servidor web creado con el framework [Svelte](https://svelte.dev/). Este servicio permite visualizar los datos relativos al cálculo de la confianza en tiempo real. Además tiene la funcionalidad de modificar algunos de estos datos.
 
-## Creating a project
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Compilación
 
-```bash
-# create a new project in the current directory
-npx sv create
+### Dependencias
+Para compilar el cliente web es necesario instalar [node](https://nodejs.org/en/download).
 
-# create a new project in my-app
-npx sv create my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a
-development server:
+Una vez node está instalado, se instalan todas las dependencias del proyecto. Ejecutar desde la carpeta *web*.
 
 ```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+npm install
 ```
 
-## Building
+### Compilar proyecto Svelte
+Antes de compilar la web es necesario configurar la dirección del broker MQTT al que se conectará.
 
-To create a production version of your app:
-
+Para ello se crea el archivo `.env` en la carpeta *cliente*. Dentro de este debe especificarse en la variable de entorno `PUBLIC_MQTT_HOST` la URL en formato estándar del servidor MQTT.
+```
+PUBLIC_MQTT_HOST="ws://example.com:8080/mqtt"
+```
+Una vez configurada la dirección del servidor se puede compilar la web. Para ello se ejecuta el siguiente comando:
 ```bash
 npm run build
 ```
 
-You can preview the production build with `npm run preview`.
+Cuando el proceso finalize, dentro de la carpeta build, se encuentran los archivos necesarios para el servidor web. 
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target
-> environment.
+### Instalación y configuración del servidor web
+En este caso se va a usar [httpd/apache2](https://httpd.apache.org/) como servidor, pero podría usarse cualquier otro.
+
+Para configurar la web en el servidor es necesario tener apache2 instalado, por ejemplo, usando [Debian](https://www.debian.org/index.es.html):
+```bash
+sudo apt update && sudo apt install apache2
+```
+Activar los componentes necesarios en el servidor
+```bash
+a2enmod proxy proxy_http proxy_wstunnel rewrite
+```
+Añadir los archivos de la compilación al servidor.
+```bash
+sudo cp ./build/* /var/www/html
+
+sudo chown www-data:www-data -R /var/www/html
+```
+
+#### Certificados TLS
+Para activar el cifrado TLS para HTTP es necesario proporcionar un certificado al servidor web. Hay dos opciones, usar uno existente, o crear un certificado autofirmado.
+
+Para crear un certificado autofirmado, se puede ejecutar el siguiente comando, remplazando `{hostname}` por el nombre de dominio del servidor. 
+```bash
+openssl req -x509 -nodes -days 365 -newkey rsa:4096 -keyout certificate.key -out certificate.crt -subj "/CN={hostname}"
+```
+
+La ruta de este fichero será necesaria posteriormente, durante la configuración del servidor web.
+
+#### Configurar sito
+Una vez realizados todos los pasos anteriores se puede continuar con la configuración. Primero, se necesita crear un nuevo archivo de configuración de apache2.
+```bash
+cd /etc/apache2/sites-available
+
+sudo touch trust-site.conf
+```
+
+Dentro de este documento hay que añadir dos *VirtualHost*. El primero se encarga de redirigir el tráfico HTTP a HTTPS. Para ello, se añade las siguientes líneas en el documento.
+
+Al igual que con la creación del certificado, será necesario reemplazar `{hostname}` por el dominio del servidor.
+
+```xml
+<VirtualHost *:80>
+   ServerName {hostname}
+   Redirect permanent / https://{hostname}
+</VirtualHost>
+```
+
+Después de configurar la redirección, hay que configurar la ruta de los documentos y los certificados, además del certificado TLS.
+
+En este ejemplo se usan `/etc/ssl/certs/certificate.crt` y `/etc/ssl/certs/certificate.key` como las rutas para la clave pública y clave privada respectivamente. Es necesario asegurar que las rutas apuntan al certificado creado anteriormente, o a uno ya existente.
+
+Además, se debe establecer la dirección del servidor MQTT, remplazando `{MQTT_SERVER}` por dicha dirección. Si el servidor MQTT se encuentra en el mismo ordenador que el servidor web, este valor debe ser `localhost`.
+
+```xml
+<VirtualHost *:443>
+    SSLEngine on
+    SSLCertificateFile /etc/ssl/certs/certificate.crt
+    SSLCertificateKeyFile /etc/ssl/private/certificate.key
+
+	DocumentRoot /var/www/html
+
+	DirectoryIndex index.html
+
+	RewriteEngine On
+	RewriteCond %{HTTP:Upgrade} =websocket [NC]
+	RewriteRule /ws ws://{MQTT_SERVER}:8080/ [P,L]
+</VirtualHost>
+```
+
+Con esto, el servidor está casi configurado, solo queda activar esta configuración y reiniciar el servicio de apache2.
+```bash
+sudo ln -s /etc/apache2/sites-available/trust-site.conf /etc/apache2/sites-enabled/trust-site.conf
+
+sudo systemctl restart apache2.service
+```

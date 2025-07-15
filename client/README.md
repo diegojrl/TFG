@@ -12,7 +12,7 @@ Para compilar el cliente son necesarias las siguientes dependencias:
 Usando la línea de comandos:
 - Entrar en la carpeta ***client***.
 - Ejecutar el comando: `mvn package`.
-- Si el proceso termina correctamente, el ejecutable se encotrará en ***target/client***.
+- Si el proceso termina correctamente, el ejecutable se encotrará en el directorio ***./target/client***.
 ## Uso
 
 Para poder usar el cliente se necesita el ejecutable creado en el apartado anterior y un archivo de configuración.
