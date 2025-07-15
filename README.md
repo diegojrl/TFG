@@ -12,7 +12,7 @@ El sistema está preparado para ser usado bajo una máquina linux y ha sido prob
 - unzip
 - git
 
-### Automática
+### Instalación automática
 La instalación automática se trata de un script bash que compila y configura el sistema completo. Esto incluye el servidor MQTT con la extensión, el cliente web y opcionalmente el cliente MQTT.
 
 Para la instalación automática es necesario tener el comando `hostname` instalado.
@@ -25,5 +25,5 @@ cd TFG/docker
 ```
 Si el proceso finaliza correctamente y se ha seleccionado la opción de ejecutar los servidores, el entorno estará funcionando y se podrá conectar usando los datos mostrados por pantalla al final de dicho procso.
 
-### Manual
+### Instalación Manual
 La instalación de forma manual requiere la ejecución de una serie de comandos, cada parte del proyecto se compila y configura por separado. Ver el documento ***README.md*** en cada uno de estos apartados para compilar y configuar el proyecto de forma manual.
