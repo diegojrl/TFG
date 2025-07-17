@@ -4,7 +4,7 @@
   <groupId>trust</groupId>
   <artifactId>trust-extension</artifactId>
   <version>1.0</version>
-  <description>HiveMQ 4 Trust Extension - adds access control with ABAC and trust</description>
+  <description>HiveMQ Trust Extension - adds access control with ABAC and trust</description>
   <build>
     <plugins>
       <plugin>
@@ -112,6 +112,6 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <extension.name>Trust Extension</extension.name>
     <extension.author>Diego Jesus R.L.</extension.author>
-    <source.document.name>README.adoc</source.document.name>
+    <source.document.name>README.md</source.document.name>
   </properties>
 </project>

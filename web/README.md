@@ -28,7 +28,7 @@ npm run build
 
 Cuando el proceso finalize, dentro de la carpeta build, se encuentran los archivos necesarios para el servidor web. 
 
-### Instalación y configuración del servidor web
+## Instalación y configuración del servidor web
 En este caso se va a usar [httpd/apache2](https://httpd.apache.org/) como servidor, pero podría usarse cualquier otro.
 
 Para configurar la web en el servidor es necesario tener apache2 instalado, por ejemplo, usando [Debian](https://www.debian.org/index.es.html):
@@ -46,7 +46,7 @@ sudo cp ./build/* /var/www/html
 sudo chown www-data:www-data -R /var/www/html
 ```
 
-#### Certificados TLS
+### Certificados TLS
 Para activar el cifrado TLS para HTTP es necesario proporcionar un certificado al servidor web. Hay dos opciones, usar uno existente, o crear un certificado autofirmado.
 
 Para crear un certificado autofirmado, se puede ejecutar el siguiente comando, remplazando `{hostname}` por el nombre de dominio del servidor. 
@@ -56,7 +56,7 @@ openssl req -x509 -nodes -days 365 -newkey rsa:4096 -keyout certificate.key -out
 
 La ruta de este fichero será necesaria posteriormente, durante la configuración del servidor web.
 
-#### Configurar sito
+### Configurar sito
 Una vez realizados todos los pasos anteriores se puede continuar con la configuración. Primero, se necesita crear un nuevo archivo de configuración de apache2.
 ```bash
 cd /etc/apache2/sites-available
