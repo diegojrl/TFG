@@ -1,5 +1,5 @@
 # Extensión HiveMQ
-Esta extensión proporciona nuevas características al broker MQTT HiveMQ. Implementa un sistema de autenticación apoyandose en el protocolo [LDAP](https://es.wikipedia.org/wiki/Protocolo_ligero_de_acceso_a_directorios). Añade las operaciones necesarias para calcular la confianza por cada dispositivo conectado. Además permite tomar decisiones de autorización basandose en toda esta información.
+Esta extensión proporciona nuevas características al [broker MQTT HiveMQ](https://github.com/hivemq/hivemq-community-edition), escrito en [java](https://es.wikipedia.org/wiki/Java_(lenguaje_de_programaci%C3%B3n)). Implementa un sistema de autenticación apoyandose en el protocolo [LDAP](https://es.wikipedia.org/wiki/Protocolo_ligero_de_acceso_a_directorios). Añade las operaciones necesarias para calcular la confianza por cada dispositivo conectado. Además permite tomar decisiones de autorización basandose en esta información.
 
 ## Compilación
 
@@ -24,7 +24,7 @@ Antes de instalar la extensión es necesario tener un servidor MQTT de HiveMQ in
 
 Una vez el servidor está configurado, se puede proceder a instalar la extensión. Para ello, simplemente se descomprime el archivo generado anteriormente, en la ruta *./extensions*. Esto debe crear una nueva carpeta dentro de *./extensions* llamada *trust-extension*.
 
-Con esto la extensión está instalada e iniciará la próxima vez que arranque el servidor. Pero para que funcione correctamente es necesario configurar varios parmámetros. Todos los archivos de configuración se encuentran dentro de la carpeta de la extensión, en la ruta ***./extensions/trust-extension/conf***.
+Con esto la extensión está instalada e iniciará la próxima vez que arranque el servidor. Pero para que funcione correctamente es necesario configurar varios parmámetros. Todos los archivos de configuración se encuentran dentro de la carpeta de la extensión, en la ruta ***./extensions/trust-extension/conf/***.
 
 ### Configuración general
 En este archivo de configuración se establecen varios ajustes que afectan al cálculo de confianza y la autenticación de usuarios. El fichero se localiza dentro de la carpeta de configuración mencionada anteriormente, con nombre *config.yaml* 
@@ -87,7 +87,7 @@ Existen las siguientes variables y sus valores asociados:
 | reputation | low, medium, high | Indica la media de las opiniones ponderadas, aportadas por el resto de dispositivos.                                                                                                |
 | trust      | low, medium, high | Indica el valor final de confianza                                                                                                                                                  |
 
-El cálculo de confianza se realiza usando la función mínimo como función de activación y una media ponderada como función de agregación. Dando los siguientes pesos a cada variable:
+El cálculo de confianza se realiza usando la función mínimo como función de activación y una media ponderada como función de agregación. La ponderación aplicada es la siguiente:
 | Variable   | Peso |
 | ---------- | ---- |
 | security   | 0.3  |
@@ -98,11 +98,11 @@ El cálculo de confianza se realiza usando la función mínimo como función de 
 ### Configuración de autorización 
 Por último, es necesario configurar las reglas de autorización y adaptarlas para el correcto funcionamiento del broker MQTT. Esta configuración se situa en el archivo *accessControl.yaml*.
 
-Las reglas en este fichero se aplican en el mismo orden en el que aparecen y solo se tiene en cuenta la primera regla que se pueda aplicar. Si no se declara ninguna regla o ninguna es aplicable, la acción por defecto es bloquear la conexión.
+Las reglas en este fichero se aplican en el orden que aparecen y solo se tiene en cuenta la primera regla que se pueda aplicar. Si no se declara ninguna regla o ninguna es aplicable, la acción por defecto es bloquear la conexión.
 
 El formato para los tópicos MQTT sigue las mismas reglas que el broker HiveMQ, para más información ver [HiveMQ mqtt topics](https://www.hivemq.com/blog/mqtt-essentials-part-5-mqtt-topics-best-practices/).
 
-En la configuración por defecto, las cinco primeras reglas son necesarias para el correcto funcionamiento de la extensión. Se recomienda adaptar la segunda regla para no permitir modificar valores de la confianza a dispositivos o usuarios no autorizados. La configuración por defecto es la siguiente:
+En la configuración por defecto, las cinco primeras reglas son necesarias para el correcto funcionamiento de la extensión, aunque se pueden adaptar para mejorar la seguridad. Se recomienda modificar o eliminar la segunda regla para no permitir modificar valores de la confianza a dispositivos o usuarios no autorizados. La configuración por defecto es la siguiente:
 ```yaml
 permissions:
   - topic: control/view/+
@@ -136,12 +136,14 @@ permissions:
       - username: test
 ```
 Cada tópico lleva asociada una lista de reglas, cada regla se separa por el caracter `-` y tienen las siguientes opciones:
-| Opción    | Por defecto | Descripción                                        |
-| --------- | ----------- | -------------------------------------------------- |
-| allow     | true        | Indica si esta regla permite o rechaza la conexión |
-| clientId  | -           | Indica si esta regla permite o rechaza la conexión |
-| trust     | -           | Indica si esta regla permite o rechaza la conexión |
-| username  | -           | Indica si esta regla permite o rechaza la conexión |
-| action    | -           | Indica si esta regla permite o rechaza la conexión |
-| qos       | -           | Indica si esta regla permite o rechaza la conexión |
-| retention | -           | Indica si esta regla permite o rechaza la conexión |
+| Opción    | Por defecto | Descripción                                                                                                                                                                                                                                                                        |
+| --------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| allow     | true        | Indica si esta regla permite o rechaza la conexión                                                                                                                                                                                                                                 |
+| clientId  | -           | Indica el id del cliente                                                                                                                                                                                                                                                           |
+| trust     | -           | Indica el umbral de confianza a cumplir para aplicar la regla. Si la regla tiene *allow true* el nivel de confianza tendrá que ser mayor que el umbral. Si la regla especifica *allow false* entonces el nivel de confianza deberá ser menor al umbral para poder aplicar la regla |
+| username  | -           | Indica el nombre de usuario                                                                                                                                                                                                                                                        |
+| action    | all         | Indica la acción a realizar, puede ser: *publish*, *subscribe*, *all*                                                                                                                                                                                                              |
+| qos       | any         | Indica los niveles de QoS permitidos, los valores posibles son: *zero*, *one*, *two*, *zero_one*, *one_two*, *zero_two*, *any*                                                                                                                                                     |
+| retention | any         | Indica si el mensaje puede ser retenido. Posibles valores: *yes*, *no*, *any*                                                                                                                                                                                                      |
+
+Una regla solo es aplicable cuando se cumplen todas las condiciones especificadas en dicha regla. 

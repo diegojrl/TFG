@@ -7,17 +7,17 @@ El proyecto se divide en tres partes:
 - [Cliente web](web) para la visualización de datos relativos al protocolo.
 
 ## Instalación
-El sistema está preparado para ser usado bajo una máquina linux y ha sido probado en [Debian 13](https://www.debian.org/index.es.html). Además necesita las siguientes dependencias:
+El sistema está preparado para ser usado con un sistema operativo linux y ha sido probado en [Debian 13](https://www.debian.org/index.es.html). Además necesita las siguientes dependencias:
 - [Docker](https://docs.docker.com/engine/install/)
 - unzip
 - git
 
 ### Instalación automática
-La instalación automática se trata de un script bash que compila y configura el sistema completo. Esto incluye el servidor MQTT con la extensión, el cliente web y opcionalmente el cliente MQTT.
+La instalación automática se trata de un script bash que compila y configura el sistema completamente. Esto incluye el servidor MQTT con la extensión, el cliente web y opcionalmente el cliente MQTT.
 
-Para la instalación automática es necesario tener el comando `hostname` instalado.
+Para la instalación automática es necesario tener el comando `hostname` disponible.
 
-Ejecutar los siguientes comandos en el terminal y seguir los pasos.
+Ejecutar los siguientes comandos en el terminal y seguir los pasos indicados por pantalla.
 ```shell
 git pull https://github.com/diegojrl/TFG.git
 cd TFG/docker
@@ -28,6 +28,6 @@ Si el proceso finaliza correctamente y se ha seleccionado la opción de ejecutar
 ### Instalación Manual
 La instalación de forma manual requiere la ejecución de una serie de comandos, cada parte del proyecto se compila y configura por separado. Ver el documento ***README.md*** en cada uno de estos apartados para compilar y configuar el proyecto de forma manual.
 
+- Instalación del [servidor MQTT](trust-extension#compilación)
 - Instalación del [cliente](client#compilación)
 - Instalación del [servidor web](web#compilación)
-- Instalación del [servidor MQTT](trust-extension#compilación)
