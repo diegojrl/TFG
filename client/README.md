@@ -57,6 +57,7 @@ password: "password"
 | host          | -           | Dirección del servidor, puede ser un nombre de dominio o una IP |
 | username      | -           | Nombre de usuario enviado en MQTT                               |
 | password      | -           | Contraseña del usuario MQTT                                     |
+| clientId      | -           | Id del cliente MQTT. Por defecto es un valor autogenerado       |
 
 ### Configuración de certificados
 
@@ -104,4 +105,4 @@ messages:
 | topic         | -           | Topic de MQTT para publicar el mensaje (obligatorio)                                                                                             |
 | interval      | null        | Intervalo en segundos para publicar el mensaje, Si es *null* indica que solo se enviará una vez. Si el valor es 0, el intervalo real será de 5ms |
 | content       | ""          | Contenido del mensaje, en formato UTF-8                                                                                                          |
-| qos           | null        | Valor de QoS para publicar el mensaje, puede ser 0, 1 o 2. El valor será 0 si qos es null                                                                            |
+| qos           | null        | Valor de QoS para publicar el mensaje, puede ser 0, 1 o 2. El valor será 0 si qos es null                                                        |
