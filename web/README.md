@@ -21,7 +21,9 @@ Para ello se crea el archivo `.env` en la carpeta *cliente*. Dentro de este debe
 ```
 PUBLIC_MQTT_HOST="ws://example.com:8080/mqtt"
 ```
+
 Una vez configurada la dirección del servidor se puede compilar la web. Para ello se ejecuta el siguiente comando:
+
 ```bash
 npm run build
 ```
@@ -32,14 +34,19 @@ Cuando el proceso finalize, dentro de la carpeta build, se encuentran los archiv
 En este caso se va a usar [httpd/apache2](https://httpd.apache.org/) como servidor, pero podría usarse cualquier otro.
 
 Para configurar la web en el servidor es necesario tener apache2 instalado, por ejemplo, usando [Debian](https://www.debian.org/index.es.html):
+
 ```bash
 sudo apt update && sudo apt install apache2
 ```
+
 Activar los componentes necesarios en el servidor
+
 ```bash
 a2enmod proxy proxy_http proxy_wstunnel rewrite
 ```
+
 Añadir los archivos de la compilación al servidor.
+
 ```bash
 sudo cp ./build/* /var/www/html
 
@@ -49,7 +56,8 @@ sudo chown www-data:www-data -R /var/www/html
 ### Certificados TLS
 Para activar el cifrado TLS para HTTP es necesario proporcionar un certificado al servidor web. Hay dos opciones, usar uno existente, o crear un certificado autofirmado.
 
-Para crear un certificado autofirmado, se puede ejecutar el siguiente comando, remplazando `{hostname}` por el nombre de dominio del servidor. 
+Para crear un certificado autofirmado, se puede ejecutar el siguiente comando, remplazando `{hostname}` por el nombre de dominio del servidor.
+
 ```bash
 openssl req -x509 -nodes -days 365 -newkey rsa:4096 -keyout certificate.key -out certificate.crt -subj "/CN={hostname}"
 ```
@@ -58,6 +66,7 @@ La ruta de este fichero será necesaria posteriormente, durante la configuració
 
 ### Configurar sito
 Una vez realizados todos los pasos anteriores se puede continuar con la configuración. Primero, se necesita crear un nuevo archivo de configuración de apache2.
+
 ```bash
 cd /etc/apache2/sites-available
 
@@ -98,6 +107,7 @@ Además, se debe establecer la dirección del servidor MQTT, remplazando `{MQTT_
 ```
 
 Con esto, el servidor está casi configurado, solo queda activar esta configuración y reiniciar el servicio de apache2.
+
 ```bash
 sudo ln -s /etc/apache2/sites-available/trust-site.conf /etc/apache2/sites-enabled/trust-site.conf
 

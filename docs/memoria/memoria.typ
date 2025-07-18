@@ -7,22 +7,22 @@
 
 
 #show: memoria.with(
-    degree: "Grado en Ingeniería Informática",
-    title: "Autorización basada en la confianza para el protocolo MQTT",
-    title_en: "Trust based authorization for the MQTT protocol",
-    author: "Diego Jesús Romero Luque",
-    tutors: "Davide Ferraris",
-    department: " Lenguajes y Ciencias de la Computación",
-    date: "20-07-2025",
-    abstract: resumen,
-    keywords: ("MQTT", "HiveMq", "Autorización", "Confianza", "LDAP", "Aplicación Web", "Java", "Svelte", "TypeScript"),
-    abstract_en: abstract,
-    keywords_en: ("MQTT", "HiveMq", "Authorization", "Trust", "LDAP", "Web Application", "Java", "Svelte", "TypeScript"),
+  degree: "Grado en Ingeniería Informática",
+  title: "Autorización basada en la confianza para el protocolo MQTT",
+  title_en: "Trust based authorization for the MQTT protocol",
+  author: "Diego Jesús Romero Luque",
+  tutors: "Davide Ferraris",
+  department: " Lenguajes y Ciencias de la Computación",
+  date: "20-07-2025",
+  abstract: resumen,
+  keywords: ("MQTT", "HiveMq", "Autorización", "Confianza", "LDAP", "Aplicación Web", "Java", "Svelte", "TypeScript"),
+  abstract_en: abstract,
+  keywords_en: ("MQTT", "HiveMq", "Authorization", "Trust", "LDAP", "Web Application", "Java", "Svelte", "TypeScript"),
 )
 
 
 #let anexo(text) = {
-  set heading(numbering: "A.", supplement: [Anexo])
+  set heading(numbering: "A.1.", supplement: [Anexo])
   counter(heading).update(0)
   text
 }
@@ -39,11 +39,13 @@ fads
 == Objetivos
 == Tecnologías utilizadas
 === HiveMq
-HiveMq @hiveMq es un servidor creado especialmente para gestionar los mensajes del protocolo MQTT. Este tipo de servidor se conoce comunmente como _broker_, 
+HiveMq @hiveMq es un servidor creado especialmente para gestionar los mensajes del protocolo MQTT. Este tipo de servidor se conoce comunmente como _broker_,
 ya que hace de intermediario para todos los mensajes que se envian.
 === Cliente web
 === Herramientas comunes
-
+=== IDE
+=== Misceláneo
+git - drawio - pandoc - typst
 = Estado del arte
 
 Con el fin de establecer el contexto de este trabajo se revisarán los estudios relacionados con la confianza y el control de
@@ -113,4 +115,7 @@ Estos son los requisitos definidos para la página web.
 == Casos de uso
 
 #show: anexo
-= Anexo1 <a1>
+#include "manuales/main.typ"
+#include "manuales/trust-extension.typ"
+#include "manuales/web.typ"
+#include "manuales/client.typ"

@@ -18,11 +18,13 @@ La instalación automática se trata de un script bash que compila y configura e
 Para la instalación automática es necesario tener el comando `hostname` disponible.
 
 Ejecutar los siguientes comandos en el terminal y seguir los pasos indicados por pantalla.
+
 ```shell
 git pull https://github.com/diegojrl/TFG.git
 cd TFG/docker
 ./install.sh
 ```
+
 Si el proceso finaliza correctamente y se ha seleccionado la opción de ejecutar los servidores, el entorno estará funcionando y se podrá conectar usando los datos mostrados por pantalla al final de dicho procso.
 
 ### Instalación Manual

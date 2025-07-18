@@ -30,6 +30,7 @@ Con esto la extensión está instalada e iniciará la próxima vez que arranque 
 En este archivo de configuración se establecen varios ajustes que afectan al cálculo de confianza y la autenticación de usuarios. El fichero se localiza dentro de la carpeta de configuración mencionada anteriormente, con nombre *config.yaml* 
 
 Configuración por defecto:
+
 ```yaml
 delay_max: 500
 delay_min: 20
@@ -43,6 +44,7 @@ trusted_networks:
   - ::1/128
   - localhost/8
 ```
+
 | Configuración    | Por defecto | Descripción                                                                                                                                                                                                                                      |
 | ---------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | delay_min        | 20          | Establece el valor mínimo para la latencia de un dispositivo. Medido en milisegundos.                                                                                                                                                            |
@@ -57,6 +59,7 @@ trusted_networks:
 La extensión utiliza la lógica difusa para integrar la información recabada de cada dispositivo y calcular un valor final de confianza. Las reglas que se aplican en este cálculo son modificables desde el fichero *trustRules.flc*.
 
 Configuración por defecto:
+
 ```
 IF security low THEN trust low
 IF security high THEN trust high
@@ -73,10 +76,13 @@ IF reputation high THEN trust high
 IF reputation medium THEN trust medium
 IF reputation low THEN trust low
 ```
+
 El archivo sigue el siguente formato:
+
 ```
 IF (variable) (valor) THEN (variable) (valor)
 ```
+
 Existen las siguientes variables y sus valores asociados:
 
 | Variable   | Valores           | Descripción                                                                                                                                                                         |
@@ -88,6 +94,7 @@ Existen las siguientes variables y sus valores asociados:
 | trust      | low, medium, high | Indica el valor final de confianza                                                                                                                                                  |
 
 El cálculo de confianza se realiza usando la función mínimo como función de activación y una media ponderada como función de agregación. La ponderación aplicada es la siguiente:
+
 | Variable   | Peso |
 | ---------- | ---- |
 | security   | 0.3  |
@@ -103,6 +110,7 @@ Las reglas en este fichero se aplican en el orden que aparecen y solo se tiene e
 El formato para los tópicos MQTT sigue las mismas reglas que el broker HiveMQ, para más información ver [HiveMQ mqtt topics](https://www.hivemq.com/blog/mqtt-essentials-part-5-mqtt-topics-best-practices/).
 
 En la configuración por defecto, las cinco primeras reglas son necesarias para el correcto funcionamiento de la extensión, aunque se pueden adaptar para mejorar la seguridad. Se recomienda modificar o eliminar la segunda regla para no permitir modificar valores de la confianza a dispositivos o usuarios no autorizados. La configuración por defecto es la siguiente:
+
 ```yaml
 permissions:
   - topic: control/view/+
@@ -135,7 +143,9 @@ permissions:
     rules:
       - username: test
 ```
+
 Cada tópico lleva asociada una lista de reglas, cada regla se separa por el caracter `-` y tienen las siguientes opciones:
+
 | Opción    | Por defecto | Descripción                                                                                                                                                                                                                                                                        |
 | --------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | allow     | true        | Indica si esta regla permite o rechaza la conexión                                                                                                                                                                                                                                 |

@@ -240,7 +240,7 @@
   //Indice
   outline(target: heading.where(numbering: "1."), depth: 3)
   //Apendice
-  outline(target: heading.where(numbering: "A."), title: [Anexo])
+  outline(target: heading.where(numbering: "A.1."), title: [Anexo])
 
   // Cada apartado aparece en una página nueva e impar
   show heading.where(level: 1): it => pagebreak(weak: true) + it
