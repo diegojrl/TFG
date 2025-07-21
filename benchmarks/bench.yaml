@@ -9,8 +9,8 @@ opinions:
   web control paco: 0.4
   cli: 0.9
 messages:
-  - topic: "bench/client/${clientId}"
+  - topic: "test/bench/${clientId}"
     content: "${message}"
-    interval: 12
+    interval: 0
     qos: ${qos}
 

@@ -134,7 +134,6 @@ public class Mqtt5TrustConnectionLifeCycle implements MqttClientConnectedListene
                 } else {
                     System.err.println(e.getLocalizedMessage());
                 }
-                System.err.println("subs ok");
             }, executor);
 
             // Create periodic message loop
