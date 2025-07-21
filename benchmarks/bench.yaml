@@ -1,0 +1,16 @@
+host: "${host}"
+username: "${user}"
+password: "${password}"
+clientId: ${clientId}
+tls:
+  useTls: false
+opinions:
+  web control admin: 1
+  web control paco: 0.4
+  cli: 0.9
+messages:
+  - topic: "bench/client/${clientId}"
+    content: "${message}"
+    interval: 12
+    qos: ${qos}
+
