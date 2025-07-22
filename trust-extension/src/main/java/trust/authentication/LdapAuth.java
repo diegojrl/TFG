@@ -23,17 +23,16 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Optional;
 import java.util.Properties;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
+
 
 public class LdapAuth implements SimpleAuthenticator {
     private static final Logger log = LoggerFactory.getLogger(LdapAuth.class);
-    private static final Executor executor = Executors.newFixedThreadPool(8);
-    private final ManagedExtensionExecutorService extensionExecutor = Services.extensionExecutorService();
+    private final ManagedExtensionExecutorService executor = Services.extensionExecutorService();
     private final Properties env = new Properties(5);
 
     public LdapAuth() {
         this.env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
+        this.env.put("com.sun.jndi.ldap.connect.pool", "true");
         this.env.put(Context.PROVIDER_URL, Configuration.getLdapUrl());
         this.env.put(Context.SECURITY_AUTHENTICATION, Configuration.getLdapAuth());
     }
@@ -45,22 +44,21 @@ public class LdapAuth implements SimpleAuthenticator {
 
         if (username.isPresent() && password.isPresent()) {
 
-            simpleAuthInput.getConnectionInformation().getConnectionAttributeStore().putAsString("username", username.get());
+            simpleAuthInput.getConnectionInformation().getConnectionAttributeStore().putAsString("username",
+                    username.get());
 
             final var output = simpleAuthOutput.async(Duration.ofSeconds(10), TimeoutFallback.FAILURE);
             executor.execute(() -> {
                 final String passw = StandardCharsets.UTF_8.decode(password.get()).toString();
                 final boolean loginOk = authenticate(username.get(), passw);
-                extensionExecutor.execute(() -> {
-                    if (loginOk) {
-                        output.getOutput().authenticateSuccessfully();
-                    } else {
-                        output.getOutput().failAuthentication(ConnackReasonCode.UNSPECIFIED_ERROR);
-                    }
-                    output.getOutput().getDefaultPermissions().setDefaultBehaviour(DefaultAuthorizationBehaviour.DENY);
-                    log.debug("Auth done");
-                    output.resume();
-                });
+                if (loginOk) {
+                    output.getOutput().authenticateSuccessfully();
+                } else {
+                    output.getOutput().failAuthentication(ConnackReasonCode.UNSPECIFIED_ERROR);
+                }
+                output.getOutput().getDefaultPermissions().setDefaultBehaviour(DefaultAuthorizationBehaviour.DENY);
+                log.debug("Auth done");
+                output.resume();
             });
 
         } else {
