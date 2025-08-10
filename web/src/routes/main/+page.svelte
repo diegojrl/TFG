@@ -24,7 +24,7 @@
     <wbr>
     <button
             class="bg-red-600 hover:bg-red-800 rounded-md px-3 py-1 text-white" onclick={logout}
-    >Logout
+    >Cerrar sesión
     </button
     >
 </div>
@@ -32,7 +32,7 @@
 
 {#if devices.length === 0}
     <div class="items-center justify-center flex">
-        <p>No devices connected</p>
+        <p>No hay dispositivos conectados</p>
     </div>
 {:else}
     <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 m-4">

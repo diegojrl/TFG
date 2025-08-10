@@ -38,7 +38,7 @@
     <table class="table-auto">
         <tbody>
         <tr>
-            <td>Ping</td>
+            <td>Latencia</td>
             <td><input bind:value={ping}
                        class="[appearance:textfield] mr-2 ml-2 rounded-md text-center border-gray-300 border-2"
                        max="10000" min="0" oninput={send_ping} type="number"
@@ -74,7 +74,7 @@
             </td>
         </tr>
         <tr>
-            <td>Opinion</td>
+            <td>Opinión</td>
             <td><input bind:value={opinion} class="mr-2 ml-2 " max="100" min="0" oninput={send_opinion} type="range">
             </td>
         </tr>
@@ -86,7 +86,7 @@
             class="bg-blue-500 text-white mt-4 px-3 py-1 rounded-md hover:bg-blue-600"
             onclick={onClose}
     >
-        Close
+        Cerrar
     </button>
 
 </Modal>

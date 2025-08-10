@@ -12,13 +12,13 @@
 
 <Modal {onClose}>
     <div class="p-5">
-        <h2 class="text-xl font-bold mb-2">Sing in</h2>
+        <h2 class="text-xl font-bold mb-2">Iniciar sesión</h2>
         <br>
         <form>
             <input
                     bind:value={username}
                     class="border-gray-300 border-2 py-1 rounded-md"
-                    placeholder="Username"
+                    placeholder="Nombre de usuario"
                     type="text"
                     use:focus
             />
@@ -27,7 +27,7 @@
             <input
                     bind:value={password}
                     class="border-gray-300 border-2 py-1 rounded-md"
-                    placeholder="Password"
+                    placeholder="Contraseña"
                     type="password"
             />
             <br>
@@ -36,7 +36,7 @@
                     class="mt-4 w-full bg-blue-500 text-white py-1 rounded-md hover:bg-blue-600"
                     onclick={onLogin}
             >
-                Login
+                Acceder
             </button>
         </form>
     </div>

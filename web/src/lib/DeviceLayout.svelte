@@ -15,7 +15,7 @@
     <div class="flex justify-between">
         <h2 class="truncate font-bold text-lg">{dev.clientId}</h2>
         <button
-                aria-label="s"
+                aria-label="Editar"
                 class="hover:bg-gray-300 text-blue-600 rounded-md"
                 onclick={edit}
         >
@@ -40,29 +40,29 @@
     <table class="table-auto w-full">
         <tbody>
         <tr>
-            <td>Latency:</td>
+            <td>Latencia:</td>
             <td>{dev.avgDelay}ms</td>
         </tr>
         <tr>
-            <td>Errors(%):</td>
+            <td>Errores(%):</td>
             <td>{dev.failedInteractionsPercentage.toFixed(2)}%</td>
         </tr>
         <tr>
-            <td>Network type:</td>
+            <td>Tipo de red:</td>
             <td>{dev.networkType}</td>
         </tr>
         <tr>
-            <td>Encryption:</td>
+            <td>Cifrado:</td>
             <td>{dev.networkSecurity}</td>
         </tr>
         <tr>
-            <td>Reputation(%):</td>
+            <td>Reputación(%):</td>
             <td>{dev.reputation.toFixed(4)}%</td>
         </tr>
         </tbody>
     </table>
     <br>
-    <p><b>Trust</b></p>
+    <p><b>Confianza</b></p>
     <div class="text-end flex items-center">
         <div class="w-full bg-gray-400 rounded-full h-2.5 dark:bg-gray-700 ">
             <div
