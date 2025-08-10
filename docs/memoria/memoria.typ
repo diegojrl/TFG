@@ -30,90 +30,76 @@
 
 
 = Introducción
-
-Hola a tofdaos \
-
 #lorem(50)
-fads
+
 == Motivación
+#lorem(50)
+
 == Objetivos
+Este trabajo tiene como objetivo implementar un sistema de control de acceso basado en la confianza para IoT [5] usando el protocolo MQTT como base. La solución incluirá mecanismos de autenticación y autorización de dispositivos. Además, se implementará una interfaz web que permita a los usuarios visualizar y gestionar los parámetros relevantes del sistema.
+
+El TFG tiene varios objetivos, todos relacionados con un sistema de control de acceso para IoT basando en la confianza y el protocolo MQTT:
+- Creación de un modelo de confianza apropiado para MQTT.
+- Implementar un sistema de control de acceso como una extensión del broker HiveMQ, basado en el modelo de confianza descrito anteriormente.
+- Desarrollo de una interfaz web donde se podrán visualizar y editar ciertos atributos del modelo.
 == Tecnologías utilizadas
-=== HiveMq
-HiveMq @hiveMq es un servidor creado especialmente para gestionar los mensajes del protocolo MQTT. Este tipo de servidor se conoce comunmente como _broker_,
-ya que hace de intermediario para todos los mensajes que se envian.
-=== Cliente web
-=== Herramientas comunes
-=== IDE
-=== Misceláneo
-git - drawio - pandoc - typst
+#include "tecnologias.typ"
+
 = Estado del arte
-
-Con el fin de establecer el contexto de este trabajo se revisarán los estudios relacionados con la confianza y el control de
-acceso en IoT.
-
-- En @siot se presenta una arquitectura para integrar dispositivos inteligentes. El componente de gestión de confianza se basa
-  en las relaciones previas con los dispositivos para seleccionar el dispositivo que mejor cumplirá con el servicio.
-
-- Gestión de la confianza para la arquitectura basada en servicio @soa-iot, presenta un sistema de confianza distribuido para interconectar
-  dispositivos IoT que proporcionan diferentes servicios, tomano como base las relaciones sociales entre los dispositivos.
-
-- Trust-aware access control system for IoT (TACIoT) @taciot, propone un mecanismo de seguridad ligero para dispositivos IoT, tomando la confianza
-  como un factor principal y usando la lógica difusa para su cálculo. Este sistema ha sido probado bajo condiciones reales y muestra un buen rendimiento.
-
-- Trustee @trustee, presenta un sistema de gestión de la confianza usando múltiples factores. Aprovechando las ventajas que aportan las técnicas de aprendizaje
-  computacional, el sistema tiene la capacidad de detectar anomalías e integrar esta información en el cálculo de la confianza.
-
-- El estudio @IotAC presenta una revisión sobre los mecanismos para el control de acceso en IoT. Comparando las limitaciones y fortalezas de distintos modelos, entre ellos, Role Base Access Control(RBAC), Attribute Based Access Control(ABAC) o Capability Base Access Control(CapBAC). Destacando la inexistencia de una solución universal para el control de acceso enfocado a IoT.
-
-Tras realizar una revisión exhaustiva de las investigaciones relevantes, se puede concluir
-que, aunque existe una gran cantidad de información respecto a la confianza en IoT, actualmente
-no existe un sistema que ofrezca la capacidad de integrarse fácilmente en un entorno existente.
+#include "estado_arte.typ"
 
 
-= Desarrollo del proyecto
+= Análisis y diseño
 == Requisitos
-=== Funcionales
-==== Web
-Estos son los requisitos definidos para la página web.
-- RF1: Un usuario y contraseña válidos serán necesarios para acceder a la web.
-- RF2: Se podrá acceder a la web desde cualquier dispositivo.
-- RF3: Desde la vista principal se podrán observar todos los dispositivos conectados al servidor desde que inicia la conexión.
-- RF4: Cada dispositivo tiene asociados datos sobre la confianza.
-- RF5: Desde cada dispositivo se puede entrar en su menú de configuración.
-
-==== Extensión
-- RF6: El cliente debe aportar un usuario y contraseña válidos.
-- RF7: El servidor comprueba la validez del usuario y contraseña mediante el protocolo LDAP.
-- RF8: El servidor calculará la confianza a partir de los datos recabados de cada dispositivo.
-- RF9: El servidor almacenará la información histórica sobre los clientes.
-- RF10: El servidor enviará información sobre la confianza de cada cliente.
-- RF11: El cliente tendrá la posibilidad de aportar su opinión sobre otros clientes conectados.
-- RF12: Se podrán modificar algunas de las características usadas para el cálculo de la confianza.
-- RF13: Se podrá configurar el cálculo de la confianza.
-- RF14: El servidor podrá denegar o conceder acceso a los recursos según la configuración proporcionada por el usuario.
-==== Cliente
-- RF15: Un usuario y contraseña válidos serán necesarios para iniciar la conexión con el servidor.
-- RF16: El cliente dará su opinión de otros clientes según la configuración del usuario.
-- RF17: El cliente publicará mensajes cada cierto tiempo según la configuración del usuario.
-
-=== No funcionales
-==== Web
-- RNF1: Tiempos de carga de la web bajos
-- RNF2: Seguridad en el acceso, la conexión será cifrada.
-- RNF3: Seguridad de la contraseña de los usuarios.
-- RNF4: Facilidad de uso.
-
-==== Extensión
-- RNF5: La configuración del servidor será fácil e intuitiva.
-- RNF6: La inclusión de las características en el sistema no tendrá un impacto excesivo en el rendimiento.
-- RNF7: Los clientes podrán usar el servidor aun sin conocer las nuevas características
-==== Cliente
-- RNF8: El cliente será fácil de usar.
-- RNF9: La configuración del cliente será sencilla.
-- RNF10: El cliente  se conectará de forma segura al servidor, verificando los certificados.
+#include "requisitos.typ"
 
 == Casos de uso
+#include "casos_de_uso.typ"
 
+== Cáclulo de confianza
+Que es la confianza?? ....
+
+=== Atributos
+Este modelo intenta ser lo mas generico posible, sin forzar una arquitectura específica, pero aprovechando las características y mensajes ya existentes en el protocolo MQTT.
+
+==== Latencia
+La latencia se refiere a el tiempo que tarda un dispositivo en recibir un mensaje y confirmar la recepción de este. Este atributo indica la media de la latencia en cada mensaje.
+
+==== Seguridad
+Esta característica tiene en cuenta la seguridad de la conexión entre el cliente y el servidor, la seguridad se clasifica como buena o mala. Será buena si la conexión es cifrada (TLS) o si la ip se encuentra en un rango configurado como de confianza, ver más en @configuración-general.
+
+==== Tasa de errores
+La tasa errores indica con un porcentage el númerp de mensajes que han sido reenviados frente a el total de los mensajes publicados. 
+
+==== Reputación
+
+=== Cálculo y modificación de atributos
+==== Tasa de errores
+Tiene un valor por defecto de 50%.
+
+Usando la misma información que en la detección de Latencia (packetId), comprueba las veces que se envía cada mensaje. Si un mensaje se envía varias veces, aumenta la tasa de fallos.
+$ text("tasa de errores") = frac(text("paquetes_reenviados"), text("mensajes_publicados")) $
+=== Lógica difusa
+== Intercambio de información
+Para obtener la latencia media de un dispositivo, en cada mensaje que se envía hacia este cliente con $Q o S > 0$, el broker guarda el instante de tiempo en el que se envía el mensaje y espera a su confirmación. Además, cuando el broker recibe un mensaje _MQTT ReqPing_ publica un mensaje en el topic _“tmgr/ping”_ para ese dispositivo, de esta forma, el dispositivo únicamente debe subscribirse al tópico con _QoS 1 o 2_ y el protocolo MQTT se encarga de el envío y recepción de todos estos mensajes. En el siguiente diagrama se puede visualizar el intercambio de mensajes durante el cálculo de la latencia.
+
+#align(center)[
+  #image("imagenes/diagramas/secuencia/secuencia-ping.drawio.svg", width: 80%)
+]
+
+El valor final de la latencia se obtiene de la siguiente forma:
+
+- Si Latencia ≤ LATENCIA_MIN entonces Latencia = LATENCIA_MIN
+- Si Latencia ≥ LATENCIA_MAX entonces Latencia = LATENCIA_MAX
+- En otros casos Latencia
+
+Los valores de LATENCIA_MIN y LATENCIA_MAX son configurables, ver más en @configuración-general
+#image("imagenes/diagramas/secuencia/secuencia-conexion.drawio.svg")
+#image("imagenes/diagramas/secuencia/secuencia-control-view.drawio.svg")
+
+== Arquitectura
+= Implementación
+= Conclusiones
 #show: anexo
 #include "manuales/main.typ"
 #include "manuales/trust-extension.typ"
