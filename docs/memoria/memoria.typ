@@ -69,7 +69,7 @@ La latencia se refiere a el tiempo que tarda un dispositivo en recibir un mensaj
 Esta característica tiene en cuenta la seguridad de la conexión entre el cliente y el servidor, la seguridad se clasifica como buena o mala. Será buena si la conexión es cifrada (TLS) o si la ip se encuentra en un rango configurado como de confianza, ver más en @configuración-general.
 
 ==== Tasa de errores
-La tasa errores indica con un porcentage el númerp de mensajes que han sido reenviados frente a el total de los mensajes publicados. 
+La tasa errores indica con un porcentage el númerp de mensajes que han sido reenviados frente a el total de los mensajes publicados.
 
 ==== Reputación
 La reputación se refiere a la relación entre dispositivos, donde cada dispositivo puede aportar su opinión sobre otro.
@@ -107,7 +107,9 @@ $ text("tasa de errores") = frac(text("paquetes_reenviados"), text("mensajes_pub
 === Gestión de datos
 ==== Clase DeviceTrustAttributes -- impementacion??
 ==== Base de datos
-//#image("imagenes/diagramas/sql/") actualizar
+#align(center)[
+#image("imagenes/diagramas/sql/db.png", width: 80%)
+]
 ==== Vista de control?
 #image("imagenes/diagramas/secuencia/secuencia-control-view.drawio.svg")
 === Autenticación
