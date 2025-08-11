@@ -72,15 +72,10 @@ Esta característica tiene en cuenta la seguridad de la conexión entre el clien
 La tasa errores indica con un porcentage el númerp de mensajes que han sido reenviados frente a el total de los mensajes publicados. 
 
 ==== Reputación
+La reputación se refiere a la relación entre dispositivos, donde cada dispositivo puede aportar su opinión sobre otro.
 
 === Cálculo y modificación de atributos
-==== Tasa de errores
-Tiene un valor por defecto de 50%.
-
-Usando la misma información que en la detección de Latencia (packetId), comprueba las veces que se envía cada mensaje. Si un mensaje se envía varias veces, aumenta la tasa de fallos.
-$ text("tasa de errores") = frac(text("paquetes_reenviados"), text("mensajes_publicados")) $
-=== Lógica difusa
-== Intercambio de información
+==== Latencia
 Para obtener la latencia media de un dispositivo, en cada mensaje que se envía hacia este cliente con $Q o S > 0$, el broker guarda el instante de tiempo en el que se envía el mensaje y espera a su confirmación. Además, cuando el broker recibe un mensaje _MQTT ReqPing_ publica un mensaje en el topic _“tmgr/ping”_ para ese dispositivo, de esta forma, el dispositivo únicamente debe subscribirse al tópico con _QoS 1 o 2_ y el protocolo MQTT se encarga de el envío y recepción de todos estos mensajes. En el siguiente diagrama se puede visualizar el intercambio de mensajes durante el cálculo de la latencia.
 
 #align(center)[
@@ -89,15 +84,38 @@ Para obtener la latencia media de un dispositivo, en cada mensaje que se envía 
 
 El valor final de la latencia se obtiene de la siguiente forma:
 
-- Si Latencia ≤ LATENCIA_MIN entonces Latencia = LATENCIA_MIN
-- Si Latencia ≥ LATENCIA_MAX entonces Latencia = LATENCIA_MAX
+- Si $"Latencia" ≤ "LATENCIA_MIN" "entonces" "Latencia" = "LATENCIA_MIN"$
+- Si $"Latencia" ≥ "LATENCIA_MAX" "entonces" "Latencia" = "LATENCIA_MAX"$
 - En otros casos Latencia
 
-Los valores de LATENCIA_MIN y LATENCIA_MAX son configurables, ver más en @configuración-general
-#image("imagenes/diagramas/secuencia/secuencia-conexion.drawio.svg")
-#image("imagenes/diagramas/secuencia/secuencia-control-view.drawio.svg")
+Los valores de $"LATENCIA_MIN"$ y $"LATENCIA_MAX"$ son configurables, ver más en @configuración-general
+
+
+==== Tasa de errores
+Tiene un valor por defecto de 50%.
+
+Usando la misma información que en la detección de Latencia (packetId), comprueba las veces que se envía cada mensaje. Si un mensaje se envía varias veces, aumenta la tasa de fallos.
+$ text("tasa de errores") = frac(text("paquetes_reenviados"), text("mensajes_publicados")) $
+
+==== Reputación
+
+
+=== Lógica difusa
+
 
 == Arquitectura
+=== Gestión de datos
+==== Clase DeviceTrustAttributes -- impementacion??
+==== Base de datos
+//#image("imagenes/diagramas/sql/") actualizar
+==== Vista de control?
+#image("imagenes/diagramas/secuencia/secuencia-control-view.drawio.svg")
+=== Autenticación
+#image("imagenes/diagramas/secuencia/secuencia-conexion.drawio.svg")
+=== Autorización
+
+
+
 = Implementación
 = Conclusiones
 #show: anexo
