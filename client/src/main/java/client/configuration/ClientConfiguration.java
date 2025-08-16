@@ -53,6 +53,6 @@ public class ClientConfiguration implements Opinions, Messages {
     }
 
     public List<PeriodicMessage> getPeriodicMessages() {
-        return configFile.messages;
+        return configFile.messages == null ? List.of() : configFile.messages;
     }
 }
