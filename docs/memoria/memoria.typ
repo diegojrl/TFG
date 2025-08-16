@@ -65,17 +65,6 @@ Este modelo intenta ser lo mas generico posible, sin forzar una arquitectura esp
 ==== Latencia
 La latencia se refiere a el tiempo que tarda un dispositivo en recibir un mensaje y confirmar la recepción de este. Este atributo indica la media de la latencia en cada mensaje.
 
-==== Seguridad
-Esta característica tiene en cuenta la seguridad de la conexión entre el cliente y el servidor, la seguridad se clasifica como buena o mala. Será buena si la conexión es cifrada (TLS) o si la ip se encuentra en un rango configurado como de confianza, ver más en @configuración-general.
-
-==== Tasa de errores
-La tasa errores indica con un porcentage el númerp de mensajes que han sido reenviados frente a el total de los mensajes publicados.
-
-==== Reputación
-La reputación se refiere a la relación entre dispositivos, donde cada dispositivo puede aportar su opinión sobre otro.
-
-=== Cálculo y modificación de atributos
-==== Latencia
 Para obtener la latencia media de un dispositivo, en cada mensaje que se envía hacia este cliente con $Q o S > 0$, el broker guarda el instante de tiempo en el que se envía el mensaje y espera a su confirmación. Además, cuando el broker recibe un mensaje _MQTT ReqPing_ publica un mensaje en el topic _“tmgr/ping”_ para ese dispositivo, de esta forma, el dispositivo únicamente debe subscribirse al tópico con _QoS 1 o 2_ y el protocolo MQTT se encarga de el envío y recepción de todos estos mensajes. En el siguiente diagrama se puede visualizar el intercambio de mensajes durante el cálculo de la latencia.
 
 #align(center)[
@@ -90,18 +79,43 @@ El valor final de la latencia se obtiene de la siguiente forma:
 
 Los valores de $"LATENCIA_MIN"$ y $"LATENCIA_MAX"$ son configurables, ver más en @configuración-general
 
+==== Seguridad
+Esta característica tiene en cuenta la seguridad de la conexión entre el cliente y el servidor, la seguridad se clasifica como buena o mala. Será buena si la conexión es cifrada (TLS) o si la ip se encuentra en un rango configurado como de confianza, ver más en @configuración-general.
 
 ==== Tasa de errores
-Tiene un valor por defecto de 50%.
+La tasa errores indica con un porcentage el número de mensajes que han sido reenviados frente a el total de los mensajes publicados. Tiene un valor por defecto de 50%.
 
 Usando la misma información que en la detección de Latencia (packetId), comprueba las veces que se envía cada mensaje. Si un mensaje se envía varias veces, aumenta la tasa de fallos.
 $ text("tasa de errores") = frac(text("paquetes_reenviados"), text("mensajes_publicados")) $
 
 ==== Reputación
+La reputación se refiere a la relación entre dispositivos, donde cada dispositivo puede aportar su opinión sobre otro.
 
+Para calcular el valor de la reputación de cada dispositivo es necesario disponer con cierta información de antemano. Principalmente las opiniones de los dispositivos entre ellos, debe ser un valor entre 0 y 1. Para obtener estos datos cada dispositivo debe proporcionarlos individualmente de la siguiente forma.
+
+#image("imagenes/diagramas/secuencia/secuencia-conexion.drawio.svg")
+
+Primero un nuevo dispositivo se conecta al broker. Tras esto el broker automáticamente envía un aviso de este hecho al resto de clientes y cada cliente, opcionalmente, aporta un valor de opinión sobre este nuevo dispositivo. En ningún caso un cliente podrá opinar sobre él mismo.
+
+Al mismo tiempo, el nuevo cliente puede subscribirse a los avisos de dispositivos conectados. Al realizar esta acción, recibirá un aviso de todos los dispositivos conectados al broker actualmente y, al igual que el resto de clientes, puede aportar su propia opinión sobre el resto.
+
+Una vez se obtienen todos los datos necesarios, la reputación de cada dispositivo se calcula con la siguiente fórmula:
+
+$ R_N = sum_(i=1)^N O_i*T_i $
+
+Donde $R_j$ es la reputación del cliente $j$, $N$ es el número de opiniones que afectan a el dispositivo actualmente, $O_i$ es la opinión que ha aportado el dispositivo $i$ sobre el cliente $j$ y $T_i$ es el valor de la confianza del dispositivo $i$ en el momento del cálculo.
 
 === Lógica difusa
+Tras adquirir la información de los atributos de cada cliente 
 
+=== Modificación de atributos
+Algunos de los atributos descritos anteriormente permiten ser modificados usando mensajes de MQTT.
+
+- *Latencia*: se usa el topic _control/mod/{client_id}/ping_. El contenido del mensaje serán 4 bytes representando un número entero. Si el número está fuera del rango configurado se usará el valor máximo o mínimo según corresponda.
+
+- *Tasa de errores*: se usa el topic _control/mod/{client_id}/failPctr_. El contenido del mensaje serán 4 bytes representando un número entero $n$ donde  $n in [0,100]$. Si $n in.not [0,100]$, se usará el valor $0$ o $100$ según corresponda.
+
+- *Reputación*: se usa el topic _control/mod/{client_id}/rep_. Este mensaje no tiene contenido, indica que se deben eliminar todas las opiniones que afectan al dispositivo _client_id_, resultando en una reputación con valor $0$.
 
 == Arquitectura
 === Gestión de datos
