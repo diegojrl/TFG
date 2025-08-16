@@ -208,7 +208,7 @@ la conexión.
 
 El formato para los tópicos MQTT sigue las mismas reglas que el broker
 HiveMQ, para más información ver
-#link("https://www.hivemq.com/blog/mqtt-essentials-part-5-mqtt-topics-best-practices/")[HiveMQ mqtt topics];.
+#link("https://www.hivemq.com/blog/mqtt-essentials-part-5-mqtt-topics-best-practices/")[HiveMQ mqtt topics];. Además se aceptan los siguentes sustituidores: _{{clientid}}_ y _{{username}}_ que se sustituyen por el id del cliente y el nombre de usuario respectivamente.
 
 En la configuración por defecto, las cinco primeras reglas son
 necesarias para el correcto funcionamiento de la extensión, aunque se

@@ -107,7 +107,7 @@ Por último, es necesario configurar las reglas de autorización y adaptarlas pa
 
 Las reglas en este fichero se aplican en el orden que aparecen y solo se tiene en cuenta la primera regla que se pueda aplicar. Si no se declara ninguna regla o ninguna es aplicable, la acción por defecto es bloquear la conexión.
 
-El formato para los tópicos MQTT sigue las mismas reglas que el broker HiveMQ, para más información ver [HiveMQ mqtt topics](https://www.hivemq.com/blog/mqtt-essentials-part-5-mqtt-topics-best-practices/).
+El formato para los tópicos MQTT sigue las mismas reglas que el broker HiveMQ, para más información ver [HiveMQ mqtt topics](https://www.hivemq.com/blog/mqtt-essentials-part-5-mqtt-topics-best-practices/). Además se aceptan los siguentes sustituidores: _{{clientid}}_ y _{{username}}_ que se sustituyen por el id del cliente y el nombre de usuario respectivamente.
 
 En la configuración por defecto, las cinco primeras reglas son necesarias para el correcto funcionamiento de la extensión, aunque se pueden adaptar para mejorar la seguridad. Se recomienda modificar o eliminar la segunda regla para no permitir modificar valores de la confianza a dispositivos o usuarios no autorizados. La configuración por defecto es la siguiente:
 

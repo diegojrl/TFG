@@ -65,10 +65,14 @@ Este modelo intenta ser lo mas generico posible, sin forzar una arquitectura esp
 ==== Latencia
 La latencia se refiere a el tiempo que tarda un dispositivo en recibir un mensaje y confirmar la recepción de este. Este atributo indica la media de la latencia en cada mensaje.
 
-Para obtener la latencia media de un dispositivo, en cada mensaje que se envía hacia este cliente con $Q o S > 0$, el broker guarda el instante de tiempo en el que se envía el mensaje y espera a su confirmación. Además, cuando el broker recibe un mensaje _MQTT ReqPing_ publica un mensaje en el topic _“tmgr/ping”_ para ese dispositivo, de esta forma, el dispositivo únicamente debe subscribirse al tópico con _QoS 1 o 2_ y el protocolo MQTT se encarga de el envío y recepción de todos estos mensajes. En el siguiente diagrama se puede visualizar el intercambio de mensajes durante el cálculo de la latencia.
+Para obtener la latencia media de un dispositivo, en cada mensaje que se envía hacia este cliente con $"Qos" > 0$, el broker guarda el instante de tiempo en el que se envía el mensaje y espera a su confirmación, _puback_ o _pubrec_ para $"Qos" = 1$ o $"Qos" = 2$ respectivamente. Además, cuando el broker recibe un mensaje _MQTT ReqPing_ publica un mensaje en el topic _“tmgr/ping”_ para ese dispositivo, de esta forma, el dispositivo únicamente debe subscribirse al tópico con _QoS 1 o 2_ y el protocolo MQTT se encarga de el envío y recepción de todos estos mensajes. En el siguiente diagrama se puede visualizar el intercambio de mensajes durante el cálculo de la latencia.
 
 #align(center)[
-  #image("imagenes/diagramas/secuencia/secuencia-ping.drawio.svg", width: 80%)
+  #figure(
+    image("imagenes/diagramas/secuencia/secuencia-ping.drawio.svg", width: 80%),
+    caption: "Proceso de cálculo de latencia"
+  )
+  
 ]
 
 El valor final de la latencia se obtiene de la siguiente forma:
@@ -85,15 +89,19 @@ Esta característica tiene en cuenta la seguridad de la conexión entre el clien
 ==== Tasa de errores
 La tasa errores indica con un porcentage el número de mensajes que han sido reenviados frente a el total de los mensajes publicados. Tiene un valor por defecto de 50%.
 
-Usando la misma información que en la detección de Latencia (packetId), comprueba las veces que se envía cada mensaje. Si un mensaje se envía varias veces, aumenta la tasa de fallos.
-$ text("tasa de errores") = frac(text("paquetes_reenviados"), text("mensajes_publicados")) $
+Usando la misma información que en la detección de Latencia, comprueba las veces que se envía cada mensaje. Si un mensaje se envía varias veces, aumenta la tasa de fallos.
+
+$ "tasa de errores" = "paquetes_reenviados" / "mensajes_publicados" $
 
 ==== Reputación
 La reputación se refiere a la relación entre dispositivos, donde cada dispositivo puede aportar su opinión sobre otro.
 
-Para calcular el valor de la reputación de cada dispositivo es necesario disponer con cierta información de antemano. Principalmente las opiniones de los dispositivos entre ellos, debe ser un valor entre 0 y 1. Para obtener estos datos cada dispositivo debe proporcionarlos individualmente de la siguiente forma.
+Para calcular el valor de la reputación de cada dispositivo es necesario disponer con cierta información de antemano. Principalmente las opiniones de los dispositivos entre ellos, debe ser un valor entre 0 y 1. Para obtener estos datos cada dispositivo debe proporcionarlos individualmente de la siguiente forma:
 
-#image("imagenes/diagramas/secuencia/secuencia-conexion.drawio.svg")
+#figure(
+image("imagenes/diagramas/secuencia/secuencia-conexion.drawio.svg"),
+caption: "Procedimiento de obtención de opiniones"
+)
 
 Primero un nuevo dispositivo se conecta al broker. Tras esto el broker automáticamente envía un aviso de este hecho al resto de clientes y cada cliente, opcionalmente, aporta un valor de opinión sobre este nuevo dispositivo. En ningún caso un cliente podrá opinar sobre él mismo.
 
@@ -106,7 +114,7 @@ $ R_N = sum_(i=1)^N O_i*T_i $
 Donde $R_j$ es la reputación del cliente $j$, $N$ es el número de opiniones que afectan a el dispositivo actualmente, $O_i$ es la opinión que ha aportado el dispositivo $i$ sobre el cliente $j$ y $T_i$ es el valor de la confianza del dispositivo $i$ en el momento del cálculo.
 
 === Lógica difusa
-Tras adquirir la información de los atributos de cada cliente 
+Tras adquirir la información de los atributos de cada cliente
 
 === Modificación de atributos
 Algunos de los atributos descritos anteriormente permiten ser modificados usando mensajes de MQTT.
@@ -117,20 +125,51 @@ Algunos de los atributos descritos anteriormente permiten ser modificados usando
 
 - *Reputación*: se usa el topic _control/mod/{client_id}/rep_. Este mensaje no tiene contenido, indica que se deben eliminar todas las opiniones que afectan al dispositivo _client_id_, resultando en una reputación con valor $0$.
 
-== Arquitectura
+== Arquitectura ? quizas sobra la cabezera
 === Gestión de datos
 ==== Clase DeviceTrustAttributes -- impementacion??
 ==== Base de datos
 #align(center)[
-#image("imagenes/diagramas/sql/db.png", width: 80%)
+  #figure(
+    image("imagenes/diagramas/sql/db.png", width: 80%),
+    caption: "Diagrama de entidad"
+  )
+
 ]
 ==== Vista de control?
-#image("imagenes/diagramas/secuencia/secuencia-control-view.drawio.svg")
+#figure(
+  image("imagenes/diagramas/secuencia/secuencia-control-view.drawio.svg"),
+  caption: "Protocolo de obtención de información"
+)
 === Autenticación
-#image("imagenes/diagramas/secuencia/secuencia-conexion.drawio.svg")
+El proceso para autenticar un usuario es relativamente sencillo. Se utiliza un nombre de usuario y una contraseña para acceder al broker. Estos datos son enviados, primero mediante el protocolo MQTT hacia el broker, y más adelante, usando el protocolo Lightweight Directory Access Protocol (LDAP), a un servicio externo.
+
+Dicho servicio se encargará de la gestión de los usuarios y toda la información relacionada. Es desde este servicio donde hay que crear nuevos usuarios, actualizar las contraseñas y establecer políticas de seguridad para las contraseñas. Será el proveedor de LDAP el cual se ocupe de almacenar las claves y otros datos de forma segura, siguiendo las buenas prácticas en el ámbito. La conexión con este servicio es configurable, ver @configuración-general.
+
 === Autorización
+El subsistema de autorización analiza cada mensaje de publicación que recibe el broker y decide si permite o rechaza el mensaje en cuestión. Para ello
+se ha diseñado un sistema de control de acceso basado en atributos (ABAC).
 
+El sistema ABAC se considera uno de los modelos más apropiado para IoT. Esto se debe a su capacidad de incluir atributos adicionales de forma flexible  @IotAC. El sistema sigue la siguiente estructura:
 
+#figure(
+  image("imagenes/diagramas/ac-arch.png", width: 70%),
+  caption: [Arquitectura del sistema de control de acceso @IotAC]
+)
+
+- *PIP* o punto de información de políticas se encarga de obtener la información del dispositivo al cual le afecta la política.
+- *PAP* o punto de administración de políticas se ocupa de alamcenar y proporcionar las reglas que tienen efecto en cada caso.
+- *PDP* o punto de decisión de políticas se encarga de tomar la decisión de acceso, aceptando o rechazando la publicación de mensajes.
+- *PEP* o punto de cumplimiento de políticas se ocupa de aplicar las decisiones tomadas. Cuando un mensaje es rechazado el cliente que lo envía es forzosamente desconectado del broker.
+
+Los atributos disponibles para el uso en las reglas de autorización son los siguientes: 
+  - clientId: Identificador del dispositivo.
+  - trust: Valor de la confianza del dispositivo.
+  - username: Nombre de usuario utilizado en el último inicio de sesión del cliente.
+  - qos: Valor de la calidad de servicio usada en la publicación del mensaje.
+  - retain: Valor que indica si el mensaje a publicar debe ser retenido.
+
+Para configurar las reglas se usa un archivo en formato YAML. En este archivo se introducen las reglas de control de acceso asocidadas a cada _topic_. El diseño se inspira en el funcionamiento de algunos firewalls de red como iptables o nftables, donde la regla que se aplica es la primera que coincide. Para más información sobre la configuración de las reglas ver @configuración-de-autorización
 
 = Implementación
 = Conclusiones
