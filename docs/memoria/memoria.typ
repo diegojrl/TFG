@@ -64,7 +64,7 @@ En esta relación intervienen al menos dos actores, el que confia y el que recib
 === Atributos
 Este modelo intenta ser lo mas generico posible, sin forzar una arquitectura específica, pero aprovechando las características y mensajes ya existentes en el protocolo MQTT. Es por ello que se han seleccionado los siguientes atributos para el cálculo de confianza.
 
-==== Latencia
+==== Latencia <att-ping>
 La latencia se refiere a el tiempo que tarda un dispositivo en recibir un mensaje y confirmar la recepción de este. Este atributo indica la media de la latencia en cada mensaje.
 
 Para obtener la latencia media de un dispositivo, en cada mensaje que se envía hacia este cliente con $"Qos" > 0$, el broker guarda el instante de tiempo en el que se envía el mensaje y espera a su confirmación, _puback_ o _pubrec_ para $"Qos" = 1$ o $"Qos" = 2$ respectivamente. Además, cuando el broker recibe un mensaje _MQTT ReqPing_ publica un mensaje en el tópico _“tmgr/ping”_ para ese dispositivo, de esta forma, el dispositivo únicamente debe subscribirse al tópico con _QoS 1 o 2_ y el protocolo MQTT se encarga de el envío y recepción de todos estos mensajes. En el siguiente diagrama se puede visualizar el intercambio de mensajes durante el cálculo de la latencia.
@@ -85,17 +85,17 @@ El valor final de la latencia se obtiene de la siguiente forma:
 
 Los valores de $"LATENCIA_MIN"$ y $"LATENCIA_MAX"$ son configurables, ver más en @configuración-general
 
-==== Seguridad
+==== Seguridad <att-seguridad>
 Esta característica tiene en cuenta la seguridad de la conexión entre el cliente y el servidor, la seguridad se clasifica como buena o mala. Será buena si la conexión es cifrada (TLS) o si la dirección IP se encuentra en un rango configurado como seguro, ver más en @configuración-general.
 
-==== Tasa de errores
+==== Tasa de errores <att-errors>
 La tasa errores indica con un porcentage el número de mensajes que han sido reenviados frente a el total de los mensajes publicados. Tiene un valor por defecto de 50%.
 
 Usando la misma información que en la detección de Latencia, comprueba las veces que se envía cada mensaje. Si un mensaje se envía varias veces, aumenta la tasa de fallos.
 
 $ "tasa de errores" = "paquetes_reenviados" / "mensajes_publicados" $
 
-==== Reputación
+==== Reputación <att-rep>
 La reputación se refiere a la relación entre dispositivos, donde cada dispositivo puede aportar su opinión sobre otro.
 
 Para calcular el valor de la reputación de cada dispositivo es necesario disponer con cierta información de antemano. Principalmente las opiniones de los dispositivos entre ellos, debe ser un valor entre 0 y 1. Para obtener estos datos cada dispositivo debe proporcionarlos individualmente usando el siguiente procedimiento:
@@ -115,13 +115,59 @@ $ R_N = sum_(i=1)^N O_i*T_i $
 
 Donde $R_j$ es la reputación del cliente $j$, $N$ es el número de opiniones que afectan a el dispositivo actualmente, $O_i$ es la opinión que ha aportado el dispositivo $i$ sobre el cliente $j$ y $T_i$ es el valor de la confianza del dispositivo $i$ en el momento del cálculo.
 
-=== Lógica difusa
-Tras adquirir la información de los atributos de cada cliente...
-- pesos...
-- valores logica difusa, funciones ...
-- reglas ...
-- librería f4j
-=== Modificación de atributos <modificacion-atributos>
+=== Lógica difusa <att-trust>
+Tras adquirir la información de los atributos de cada cliente se usará la lógica difusa para obtener un valor final de confianza para el dispositivo. Primero, para cada atributo, se establecen unos términos asociados a un mnemónico y una función de pertenencia, ver más en @configuración-de-reglas-difusas. Por ejemplo, para la reputación, se obtiene la siguiente función de pertenencia:
+#figure(
+  image("imagenes/funcionesActivacion/reputacion.svg"),
+  caption: "Función de activación de reputación",
+)
+
+En @funciones-activacion se pueden observar las funciones de pertenencia de cada atributo.
+
+Una vez definidas las funciones de pertenencia, el conjunto difuso se calcula con las reglas definidas en el archivo de configuración, ver más en @configuración-de-reglas-difusas. Luego estas reglas se agregan usando una media ponderada y el mínimo como función de activación. Los pesos de la media ponderada indican el grado de importancia de cada atributo en el valor final de la confianza. La importancia de cada atributo se ha establecido como se muestra en la siguiente tabla:
+#figure(
+  align(center)[#table(
+    columns: 2,
+    align: (col, row) => (auto, auto).at(col),
+    inset: 6pt,
+    [Atributo], [Peso],
+    [Seguridad], [0.3],
+    [Latencia], [0.15],
+    [Tasa de errores], [0.3],
+    [Reputación], [0.25],
+  )],
+)
+
+== Base de datos
+El objetivo de la base de datos es la persistencia de la información sobre los clientes. Es decir, el sistema recuerda el comportamiento de cada dispositivo a lo largo del tiempo, aunque se desconecte del servidor. Se ha definido el siguiente esquema.
+#align(center)[
+  #figure(
+    image("imagenes/diagramas/sql/db.png", width: 70%),
+    caption: "Diagrama de base de datos",
+  )
+]
+- *DEVICES*: Es la tabla principal de la base de datos. Guarda la información necesaria para el cálculo de confianza. Se identifica por el _ClientId_ y el usuario al que pertenece el dispositivo. Como el mismo _ClientId_ no puede ser usado por dos dispositivos al mismo tiempo, esta columna se define como única.
+- *USERS*: Indica el nombre de usuario usado en la conexión de los clientes. Este nombre debe coincidir con el nombre de usuario en el servidor LDAP y, por tanto, debe ser único.
+- *OPINIONS*: Almacena las relaciones de opinión entre los dispositivos.
+- *DEVICES_AUDIT*: Guarda información histórica sobre el estado de los atributos de cada dispositivo. Se actualizará automáticamente cuando esta información cambie.
+
+== Protocolo de gestión de dispositivos
+Se ha desarrollado un protocolo que permita monitorizar y alterar el estado de los atributos asosiados a cada cliente. El protoclo consta de dos secciones, la primera para rebicir información y la segunda para modificar los atributos.
+=== Visualización <vista-control>
+Para recibir información de el dispositivo con id de cliente _client_id_, el interesado debe subscribirse al tópico _control/view/{client_id}_. Una vez subscrito recibirá la información de este dispositivo repetidamente en un periodo de 15 segundos. En el siguiente diagrama se puede observar el intercambio de mensajes:
+#figure(
+  image("imagenes/diagramas/secuencia/secuencia-control-view.drawio.svg"),
+  caption: "Protocolo de obtención de información",
+)
+Se enviará la siguiente información de cada dispositivo:
+- Latencia (@att-ping).
+- Tasa de errores (@att-errors).
+- Tipo de red. Indica si la conexión se incluye en una red de confianza (@att-seguridad).
+- Seguridad de red. Indica si la conexión es cifrada (@att-seguridad).
+- Reputación (@att-rep).
+- Confianza (@att-trust).
+
+=== Modificación <modificacion-atributos>
 Algunos de los atributos descritos anteriormente permiten ser modificados usando mensajes de MQTT.
 
 - *Latencia*: se reserva el tópico _control/mod/{client_id}/ping_. El contenido del mensaje serán 4 bytes representando un número entero. Si el número está fuera del rango configurado se usará el valor máximo o mínimo según corresponda.
@@ -129,23 +175,6 @@ Algunos de los atributos descritos anteriormente permiten ser modificados usando
 - *Tasa de errores*: se usa el tópico _control/mod/{client_id}/failPctr_. El contenido del mensaje serán 4 bytes representando un número entero $n$ donde  $n in [0,100]$. Si $n in.not [0,100]$, se usará el valor $0$ o $100$ según corresponda.
 
 - *Reputación*: se emplea el tópico _control/mod/{client_id}/rep_. Este mensaje no tiene contenido, indica que se deben eliminar todas las opiniones que afectan al dispositivo _client_id_, resultando en una reputación con valor $0$.
-
-
-== Gestión de datos
-=== Clase DeviceTrustAttributes -- impementacion??
-=== Base de datos
-#align(center)[
-  #figure(
-    image("imagenes/diagramas/sql/db.png", width: 80%),
-    caption: "Diagrama de entidad",
-  )
-
-]
-=== Vista de control? <vista-control>
-#figure(
-  image("imagenes/diagramas/secuencia/secuencia-control-view.drawio.svg"),
-  caption: "Protocolo de obtención de información",
-)
 == Autenticación
 El proceso para autenticar un usuario es relativamente sencillo. Se utiliza un nombre de usuario y una contraseña para acceder al broker. Estos datos son enviados, primero mediante el protocolo MQTT hacia el broker, y más adelante, usando el protocolo Lightweight Directory Access Protocol (LDAP), a un servicio externo.
 
@@ -174,7 +203,7 @@ Los atributos disponibles para el uso en las reglas de autorización son los sig
 - qos: Valor de la calidad de servicio usada en la publicación del mensaje.
 - retain: Valor que indica si el mensaje a publicar debe ser retenido.
 
-Para configurar las reglas se usa un archivo en formato YAML. En este archivo se introducen las reglas de control de acceso asocidadas a cada _topic_. El diseño se inspira en el funcionamiento de algunos firewalls de red como iptables o nftables, donde la regla que se aplica es la primera que coincide. Para más información sobre la configuración de las reglas ver @configuración-de-autorización
+Para configurar las reglas se usa un archivo en formato YAML. En este archivo se introducen las reglas de control de acceso asociadas a cada _topic_. El diseño se inspira en el funcionamiento de algunos firewalls de red como iptables o nftables, donde la regla que se aplica es la primera que coincide. Para más información sobre la configuración de las reglas ver @configuración-de-autorización
 
 == Diseño web
 La idea para la aplicación web es que proporcione la funcionalidad de la forma más simple posible, pero con un diseño moderno. Por tanto, la página web dispondrá de una página principal, donde se podrá visualizar los clientes conectados al broker y acceder a la configuración de cada dispositivo.
@@ -245,15 +274,47 @@ Por último, la aplicación web tiene la capacidad de modificar algunos de los a
 Este menú publicará los mensajes apropidaos según el atributo que se intente modificar (@modificacion-atributos). Para que el procedimiento funcione correctamente el cliente debe tener otorgados los permisos suficientes para cada tópico, ver @autorizacion.
 
 == Diseño cliente
-El cliente MQTT es una adaptación de un cliente ya existente @hiveMqClient, pero agregando la nueva funcionalidad que ofrece el sistema. El objetivo principal de este cliente es realizar las pruebas de las diferentes funciones que se han añadido y adicionalmente evaluar el rendimiento del sistema.
+El cliente MQTT es una adaptación de un cliente ya existente @hiveMqClient, pero agregando la nueva funcionalidad que ofrece el sistema. El objetivo principal de este cliente es realizar las pruebas de lafuncionalidad añadida al sistema y adicionalmente evaluar el rendimiento del sistema.
 
-Además, el cliente, para ser usado en pruebas de rendimiento, deberá ser lo más ligero posible. Con este objetivo, en vez de empaquetar el cliente en un archivo jar para JVM, se compila a código nativo usando GraalVM. Esto aporta ventajas como un inicio casi instantáneo, menor uso de recursos y un rendimiento más consistente desde el inicio @graalvm.
+Con este objetivo, el cliente integrará las siguientes características:
+- Para que el cliente sea lo más ligero posible, en vez de ser empaquetado en un archivo jar para JVM, se compila a código nativo usando GraalVM. Esto aporta ventajas como un inicio casi instantáneo, menor uso de recursos y un rendimiento más consistente desde el inicio @graalvm.
+- El cliente incluirá la capacidad de publicar mensajes automáticamente y estos mensajes serán personalizables. Para configurar estos mensajes ver @configuración-de-mensajes.
+- Se incorporará la funcionalidad para opinar sobre otros dispositivos desde este cliente. Ver @configuración-de-opiniones.
 
-El cliente debe ser configura
+== Docker
+Todo el sistema debe ser desplegable usando contenedores docker. Para ello se utilizarán varios contenedores. Primeramente, el contenedor principal contendrá el broker MQTT junto a la extensión y la base de datos. Luego, en otro contenedor se incluirá un servidor http/https para la aplicación web.
+
+Considerando el uso de un servidor LDAP y las interconexiones entre servicios. Se obtiene un diagrama general de la arquitectura del sistema:
+#figure(
+  image("imagenes/diagramas/docker.svg"),
+  caption: "Arquitectura del sistema",
+)
+
 = Implementación
+== Fases de desarrollo
+== Extensión HiveMQ
+=== Obtención de atributos
+=== Base de datos
+=== Controlador lógica difusa
+
+== Aplicación web
+
+== Cliente MQTT
+
 = Conclusiones
+
+#page(
+  header: none,
+  bibliography(
+    "bibliografia.bib",
+    full: false,
+    style: "ieee",
+  ),
+)
+
 #show: anexo
-#include "manuales/main.typ"
-#include "manuales/trust-extension.typ"
-#include "manuales/web.typ"
-#include "manuales/client.typ"
+#include "anexos/manuales/main.typ"
+#include "anexos/manuales/trust-extension.typ"
+#include "anexos/manuales/web.typ"
+#include "anexos/manuales/client.typ"
+#include "anexos/funcionesActivacion.typ"

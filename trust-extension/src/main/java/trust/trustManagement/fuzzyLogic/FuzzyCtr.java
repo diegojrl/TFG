@@ -32,8 +32,6 @@ public class FuzzyCtr {
 
         ControllerBuilder controller = ControllerBuilder.newBuilder();
 
-        //Todo
-        //controller.defuzzifier(new Maximum(Maximum.MinOfMax));
         controller.activationFunction(fuzzy4j.aggregation.Minimum.INSTANCE);
         controller.accumulationFunction(OWA.FACTORY.create(0.3, .15, .3, .25));
 
