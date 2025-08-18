@@ -3,7 +3,7 @@ HiveMq @hiveMq es un servidor creado especialmente para gestionar los mensajes d
 ya que hace de intermediario para todos los mensajes que se envian.
 
 #align(center)[
-  #image("imagenes/hivemq.jpg", width: 30%)
+  #image("../../imagenes/hivemq.jpg", width: 30%)
 ]
 
 Este servicio es usado por las marcas principales en los sectores de producción, energía, automoción y logística. Usando el servicio para construir sistemas IoT y transmisión de datos en tiempo real @hiveMq.
