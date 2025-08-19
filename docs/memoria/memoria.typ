@@ -115,3 +115,4 @@
 #include "anexos/manuales/web.typ"
 #include "anexos/manuales/client.typ"
 #include "anexos/funcionesActivacion.typ"
+#include "anexos/script-benchmarks.typ"
