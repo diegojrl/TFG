@@ -1,4 +1,41 @@
-= Script pruebas de rendimiento <script-benchmark>
+= Pruebas de rendimiento
+
+== Archivo de control de acceso <benchmark-ac>
+```yaml
+permissions:
+  - topic: control/view/+
+    rules:
+      - action: subscribe
+  - topic: control/mod/#
+    rules:
+      - action: publish
+        username: admin
+  - topic: tmgr/ping
+    rules:
+      - action: subscribe
+        qos: one_two
+  - topic: "tmgr/rep/${{clientid}}"
+    rules:
+      - allow: false
+        action: publish
+  - topic: "tmgr/rep/+"
+    rules:
+      - allow: true
+  - topic: test/#
+    rules:
+      - clientId: cli
+        username: test
+        trust: 0.5
+      - username: paco
+        allow: false
+      - username: admin
+  - topic: my/#
+    rules:
+      - username: test
+
+```
+
+== Script <benchmark-script>
 Script proveniente del repositorio del proyecto: https://github.com/diegojrl/TFG/blob/main/benchmarks/launch.sh
 
 ```bash
@@ -33,7 +70,7 @@ for i in $(seq 1 $n); do
   sed -i "s/\${message}/$msg/g" $file
 done
 
-    
+
 # Lanzar todos los clientes
 for i in "${files[@]}"; do
   env CONFIG_FILE="$i" ../client/target/client &

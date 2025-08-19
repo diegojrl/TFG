@@ -34,16 +34,14 @@
 = Introducción
 #include "capitulos/introduccion/introduccion.typ"
 
-== Motivación
-#include "capitulos/introduccion/motivacion.typ"
-#pagebreak()
-
 == Objetivos
 #include "capitulos/introduccion/objetivos.typ"
 
 == Tecnologías utilizadas
 #include "capitulos/introduccion/tecnologias.typ"
 
+== Metodología
+#include "capitulos/introduccion/metodologia.typ"
 
 = Estado del arte
 #include "capitulos/estado_arte.typ"

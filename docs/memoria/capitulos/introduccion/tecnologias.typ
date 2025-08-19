@@ -54,7 +54,7 @@ Java es un lenguaje de programación orientado a objetos,  propiedad de Oracle @
 Maven es una herramienta de gestión y automatización de proyectos de software, principalmente para  Java, creado por la fundación apache @maven. En maven se crea un modelo del proyecto donde se definen dependencias, configuración de compilación, empaquetado y despliegue.
 
 - Gestión automática de dependencias.
-- Integración con IDEs y otras herramientas.
+- Integración con Entornos de Desarrollo Integrados (IDEs) y otras herramientas.
 - Automatización del proceso de compilación.
 
 ==== Docker y Linux
@@ -65,7 +65,7 @@ Docker es una plataforma que permite empaquetar aplicaciones junto a todas sus d
 - Escalabilidad. Los contenedores pueden ser usados en orquestadores como Kubernetes @k8s, usado para desplegar aplicaciones en escala.
 
 ==== Intellij IDEA
-IntelliJ IDEA es un Entorno de Desarrollo Integrado (IDE) creado por JetBrains @Intellij, diseñado principalmente para el desarrollo en Java y otros lenguajes de la JVM. Algunas de sus ventajas más notables:
+IntelliJ IDEA es un IDE creado por JetBrains @Intellij, diseñado principalmente para el desarrollo en Java y otros lenguajes de la JVM. Algunas de sus ventajas más notables:
 
 - Soporte de primera calidad para java.
 - Análisis inteligente del código y autocompletado avanzado.
