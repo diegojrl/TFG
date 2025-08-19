@@ -24,6 +24,8 @@
 #let anexo(text) = {
   set heading(numbering: "A.1.", supplement: [Anexo])
   counter(heading).update(0)
+  counter(page).update(1)
+  set page(numbering: "I")
   text
 }
 
