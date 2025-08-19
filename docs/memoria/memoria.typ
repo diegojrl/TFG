@@ -91,7 +91,12 @@
 #include "capitulos/implementacion/cliente.typ"
 
 
+= Pruebas de rendimiento
+#include "capitulos/pruebas-rendimiento.typ"
+
+
 = Conclusiones
+
 
 #page(
   header: none,
@@ -101,6 +106,7 @@
     style: "ieee",
   ),
 )
+
 
 #show: anexo
 
