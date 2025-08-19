@@ -5,7 +5,9 @@ Los equipos utilizados tienen las siguientes características. Para el servidor,
 
 La prueba consiste en conectar múltiples clientes al broker y observar la cantidad de mensajes que pueden publicar. Cada cliente se conecta usando cifrado TLS y con el mismo usuario. Cada cliente publica un mensaje de 512 bytes cada 5 milisegundos.
 
-Se han realizado pruebas conectando 20, 100 y 500 clientes durante un periodo de 30 segundos, este proceso se realiza de automáticamente usando el script descrito en @script-benchmark. En una de las pruebas se usa la extension desarrollada en este proyecto y en la otra se usa la extension _Allow All Extension_ @allow-all-extension, que no comprueba ni los mensajes ni los usuarios. Cada prueba se ha repetido 4 veces, descartando el primer resultado y tomando la media de los resultados restantes.
+Se han realizado pruebas conectando 20, 100 y 500 clientes durante un periodo de 30 segundos, este proceso se realiza de automáticamente usando el script descrito en @script-benchmark. En una de las pruebas se usa la extension desarrollada en este proyecto y en la otra se usa la extension _Allow All Extension_ @allow-all-extension, que no comprueba ni los mensajes ni los usuarios. Cada prueba se ha repetido 4 veces.
+
+Una vez tomados todos los datos, se ha creado un script en Python que descarta el primer resultado y toma la media de los resultados restantes como valor final.
 
 == Resultados
 #figure(

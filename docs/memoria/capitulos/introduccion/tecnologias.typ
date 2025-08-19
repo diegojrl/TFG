@@ -13,9 +13,9 @@ Algunas de las ventajas que aporta son:
 HiveMq @hiveMq es un servidor creado especialmente para gestionar los mensajes del protocolo MQTT. Este tipo de servidor se conoce comunmente como _broker_,
 ya que hace de intermediario para todos los mensajes que se envian.
 
-#align(center)[
-  #image("../../imagenes/hivemq.jpg", width: 30%)
-]
+//#align(center)[
+//  #image("../../imagenes/hivemq.jpg", width: 30%)
+//]
 
 Este servicio es usado por las marcas principales en los sectores de producción, energía, automoción y logística. Usando el servicio para construir sistemas IoT y transmisión de datos en tiempo real @hiveMq.
 
@@ -81,7 +81,11 @@ Visual Studio Code es un editor de código fuente gratuito y multiplataforma des
 - Integraciones con sistemas de control de versiones como git.
 === Misceláneo
 ==== Git
+Git es un sistema de control de versiones distribuido. Permite registrar los cambios en archivos y proyectos a lo largo del tiempo, facilitando la gestión de versiones de software. Además, permite trabajar sin conexión. El servidor usado para el desarrollo del proyecto es GitHub @github.
+
 ==== Draw.io
+Draw.io es una herramienta gratuita y online para crear diagramas de todo tipo @drawio. Funciona desde el navegador y además se integra con plataformas de almacenamiento en la nube como Google Drive y GitHub.
+
 ==== Typst
 Typst es un sistema de composición tipográfica basado en marcado. Está diseñado para ser tan potente como LaTeX, pero con mayor facilidad de uso @typst. Las principales ventajas respescto a LaTeX son:
 
@@ -90,5 +94,7 @@ Typst es un sistema de composición tipográfica basado en marcado. Está diseñ
 - Tiempos de compilación muy reducidos.
 
 ==== Pandoc
-Pandoc es una herramienta de conversión de documentos que permite transformar archivos entre múltiples formatos. Usado principalmente para la documentación.
+Pandoc es una herramienta de conversión de documentos que funciona como un conversor universal de formatos @pandoc. Por ejemplo, se puede usar para convertir un archivo Markdown a LaTeX o Typst, o un archivo pdf a otro archivo en formato Microsoft Word.
+
 ==== Python
+Python es un lenguaje de programación interpretado y de alto nivel @python. Algunas de sus ventajas incluyen: amplia librería estándar, gran ecosistema de paquetes y la velocidad de desarrollo. Todo esto convierte a Python en un lenguaje de programación muy versátil y popular.
