@@ -24,6 +24,8 @@
 #let anexo(text) = {
   set heading(numbering: "A.1.", supplement: [Anexo])
   counter(heading).update(0)
+  counter(page).update(1)
+  set page(numbering: "I")
   text
 }
 
@@ -32,16 +34,14 @@
 = Introducción
 #include "capitulos/introduccion/introduccion.typ"
 
-== Motivación
-#include "capitulos/introduccion/motivacion.typ"
-#pagebreak()
-
 == Objetivos
 #include "capitulos/introduccion/objetivos.typ"
 
 == Tecnologías utilizadas
 #include "capitulos/introduccion/tecnologias.typ"
 
+== Metodología
+#include "capitulos/introduccion/metodologia.typ"
 
 = Estado del arte
 #include "capitulos/estado_arte.typ"
@@ -91,7 +91,12 @@
 #include "capitulos/implementacion/cliente.typ"
 
 
+= Pruebas de rendimiento
+#include "capitulos/pruebas-rendimiento.typ"
+
+
 = Conclusiones
+
 
 #page(
   header: none,
@@ -102,6 +107,7 @@
   ),
 )
 
+
 #show: anexo
 
 #include "anexos/manuales/main.typ"
@@ -109,3 +115,4 @@
 #include "anexos/manuales/web.typ"
 #include "anexos/manuales/client.typ"
 #include "anexos/funcionesActivacion.typ"
+#include "anexos/script-benchmarks.typ"
