@@ -4,7 +4,7 @@ Para cumplir con los objetivos del cliente se ha creado una Implementación de l
 
 #align(center)[
   #figure(
-    image("../../../diagramas/client-package.png"),
+    image("../../imagenes/diagramas/client-package.png"),
     
     caption: "Paquete cliente MQTT",
   )
@@ -16,7 +16,7 @@ El archivo de configuración es un fichero en formato YAML cuya estructura se es
 
 #align(center)[
   #figure(
-    image("../../../diagramas/client-config.png"),
+    image("../../imagenes/diagramas/client-config.png"),
     
     caption: "Paquete confiugración cliente MQTT",
   )
