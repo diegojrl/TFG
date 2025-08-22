@@ -5,7 +5,7 @@ Una vez se comprueba que los datos del usuario son correctos, se actualiza la ba
 
 #figure(
   image("../../../diagramas/LifeCycleListener.png"),
-  caption: "",
+  caption: "Clase inicio de conexión.",
 )
 
 Más adelante, cuando el cliente se desconecta del broker, primero se actualiza la información del dispositivo en la base de datos y luego se eliminan los mensajes residuales del tópico _control/view/{clientId}_.
@@ -49,9 +49,13 @@ La base de datos se controla desde el paquete _db_. En este paquete se encuentra
 Desde la clase _Database_ se crea el esquema de la base de datos y contiene todos los métodos necesarios para lanzar las consultas SQL. También se añade un trigger en la base de datos _AuditTrigger_ que se encarga de almacenar los datos históricos de los dispositivos, para un posible estudio de esta información en el futuro.
 
 === Controlador lógica difusa
-//rules
-//datos dispositivos
-// @fuzzy4j
+Para obtener el valor nítido de la confianza se ha usado la lógica difusa, más concretamente la biblioteca Fuzzy4j @fuzzy4j. Pero es necesario configurar las reglas que se aplican. Con este objetivo se ha creado la clase _RulesFile_ que lee un fichero con las reglas definidas por el usuario y las almacena en una lista.
+
+#figure(
+  image("../../../diagramas/fuzzyctr.png"),
+  caption: "Controlador lógica difusa."
+)
+Luego en la clase _FuzzyCtr_, siguiendo el patrón de singleton, se crea el controlador de la lógica difusa cargando las reglas y estableciendo los parámetros como se especificó en la @att-trust. Para obtener el valor nítido de un cliente se llamará a la función _evaluate_ que calculará el valor dado el dispositivo.
 
 === Autorización
 La autorización se ha implementado siguiendo lo descrito en la @autorizacion.
