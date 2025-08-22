@@ -80,7 +80,6 @@
 
 
 = Implementación
-== Fases de desarrollo
 == Extensión HiveMQ
 #include "capitulos/implementacion/extension.typ"
 

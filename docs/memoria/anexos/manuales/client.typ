@@ -21,7 +21,7 @@ proceso termina correctamente, el ejecutable se encotrará en el
 directorio #strong[#emph[./target/client];];.
 
 == Uso
-<uso>
+<cm-uso>
 Para poder usar el cliente se necesita el ejecutable creado en el
 apartado anterior y un archivo de configuración.
 
