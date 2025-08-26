@@ -71,6 +71,9 @@
 )
 
 #let numberingH(c) = {
+  if c.numbering == none {
+    return []
+  }
   return numbering(c.numbering, ..counter(heading).at(c.location()))
 }
 
@@ -243,7 +246,7 @@
   outline(target: heading.where(numbering: "A.1."), title: [Anexo], depth: 1)
 
   // Cada apartado aparece en una página nueva e impar
-  show heading.where(level: 1): it => pagebreak(weak: true) + it
+  show heading.where(level: 1): it => pagebreak(weak: true, to: "odd") + it
   //show heading.where(level: 1): it => pagebreak(to: "odd", weak: true) + it
 
   set page(
