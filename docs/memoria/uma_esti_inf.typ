@@ -77,7 +77,7 @@
           rows: (4.5cm, 0.5cm),
           grid(
             rows: (4cm, 0cm),
-            image("imagenes/logos-uma/logo+uma1.png"),
+            image("imagenes/logos-uma/logo+uma.png"),
             text(fill: white)[E.T.S DE INGENIERÍA INFORMÁTICA],
           ),
           align(left, text(fill: white)[\
