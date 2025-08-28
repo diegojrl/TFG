@@ -3,12 +3,12 @@ Tras todo el desarrollo de este proyecto, se puede concluir que los objetivos es
 
 Durante el transcurso del proyecto he tratado con tecnologías que no conocía hasta el momento, como VisualVM, para tomar datos de rendimiento. Y otras tecnologías que conocía, pero nunca había utilizado, como docker y typst. Queda claro que mis conocimientos al respecto de estas tecnologías han mejorado considerablemente, pero aún queda mucho más que aprender sobre ellas.
 
-Por último, quiero destacar que este es el primer proyecto personal, de este tamaño, que realizo. Aunque es cierto que ya había desarrolaldo algunos proyectos, ninguno de ellos abarcaba tantas tecnologías y plataformas diferentes, siendo todo un reto conseguir un buen funcionamiento entre la aplicación web, el servidor y la aplicación de consola.
+Por último, quiero destacar que este es el primer proyecto personal, de este tamaño, que realizo. Aunque es cierto que ya había desarrollado algunos proyectos, ninguno de ellos abarcaba tantas tecnologías y plataformas diferentes, siendo todo un reto conseguir un buen funcionamiento entre la aplicación web, el servidor y la aplicación de consola.
 
 == Dificultades
 Nada más comenzar el proyecto, fue complicado seleccionar el servidor MQTT donde se implementaría el sistema, hay muchas opciones y todas similares entre ellas. Finalmente, tras estudiar la documentación de cada opción se acabó seleccionando HiveMQ, por su buena calidad en los documentos y familiaridad con el lenguaje de programación.
 
-Más adelante, durante las pruebas de rendimiento, se detectó un problema con el inicio de sesión, al conectar muchos clientes a la vez, el sistema no podía gestionar la gran cantidad de peticiones, resultando en muhcos clientes desconectados. Tras investigar el problema se ajustó la configuración de la conexión con el servidor LDAP y el problema quedó solucionado.
+Más adelante, durante las pruebas de rendimiento, se detectó un problema con el inicio de sesión, al conectar muchos clientes a la vez, el sistema no podía gestionar la gran cantidad de peticiones, resultando en muchos clientes desconectados. Tras investigar el problema se ajustó la configuración de la conexión con el servidor LDAP y el problema quedó solucionado.
 
 == Lineas futuras
 Por el momento, el sistema funciona correctamente y con un buen rendimiento, pero esto no significa que no pueda mejorarse. A continuación se exploran algunas posibles mejoras.

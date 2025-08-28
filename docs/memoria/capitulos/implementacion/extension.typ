@@ -35,7 +35,7 @@ El control de los atributos de los dispositivos cuenta de dos acciones separadas
   caption: "Clases control de atributos."
 )
 
-La otra accion que se puede realizar es la modificación de atributos. En este caso se realiza en la clase _ModificationListener_ siguiendo el mismo procedimiento que en el cambio de opinión, explicado en la @impl-att.
+La otra acción que se puede realizar es la modificación de atributos. En este caso se realiza en la clase _ModificationListener_ siguiendo el mismo procedimiento que en el cambio de opinión, explicado en la @impl-att.
 
 === Base de datos
 La base de datos se controla desde el paquete _db_. En este paquete se encuentran dos clases auxiliares que reflejan el esquema de base de datos, _Device_ y _Opinion_, estos objetos hacen de intermediarios entre la base de datos y los datos usados para el cálculo de confianza.

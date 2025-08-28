@@ -1,9 +1,5 @@
 #import "uma_esti_inf.typ": memoria
-
-
-#let resumen = lorem(200)
-
-#let abstract = lorem(200)
+#import "resumen.typ": resumen, abstract
 
 
 #show: memoria.with(
@@ -15,9 +11,9 @@
   department: " Lenguajes y Ciencias de la Computación",
   date: "20-08-2025",
   abstract: resumen,
-  keywords: ("MQTT", "HiveMq", "Autorización", "Confianza", "LDAP", "Aplicación Web", "Java", "Svelte", "TypeScript"),
+  keywords: ("MQTT", "HiveMQ", "Autorización", "Confianza", "LDAP", "Aplicación Web", "Java", "Svelte", "TypeScript"),
   abstract_en: abstract,
-  keywords_en: ("MQTT", "HiveMq", "Authorization", "Trust", "LDAP", "Web Application", "Java", "Svelte", "TypeScript"),
+  keywords_en: ("MQTT", "HiveMQ", "Authorization", "Trust", "LDAP", "Web Application", "Java", "Svelte", "TypeScript"),
 )
 
 
@@ -53,7 +49,7 @@
 == Casos de uso
 #include "capitulos/analisis_diseño/casos_de_uso.typ"
 
-== Cáclulo de confianza
+== Cálculo de confianza
 #include "capitulos/analisis_diseño/calculo_confianza.typ"
 
 == Base de datos

@@ -1,4 +1,4 @@
-Se ha desarrollado un protocolo que permita monitorizar y alterar el estado de los atributos asosiados a cada cliente. El protoclo consta de dos secciones, la primera para rebicir información y la segunda para modificar los atributos.
+Se ha desarrollado un protocolo que permita monitorizar y alterar el estado de los atributos asociados a cada cliente. El protoclo consta de dos secciones, la primera para recibir información y la segunda para modificar los atributos.
 === Visualización <vista-control>
 Para recibir información de el dispositivo con id de cliente _client_id_, el interesado debe subscribirse al tópico _control/view/{client_id}_. Una vez subscrito recibirá la información de este dispositivo repetidamente en un periodo de 15 segundos. En el siguiente diagrama se puede observar el intercambio de mensajes:
 #figure(

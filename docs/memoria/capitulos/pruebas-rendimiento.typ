@@ -20,7 +20,7 @@ En esta primera gráfica se puede observar el número de mensjaes totales que se
   image("../imagenes/rendimiento/bench-clientes-recursos.svg", width: 90%),
   caption: "Uso de recursos frente a cantidad de clientes."
 )
-En este caso se observa el uso total del procesador y memoria ram respecto al número de clientes. En la @f-pub-cl se empezaba a ver un deteriodo del rendimiento a partir de los 100 clientes y ahora se puede observar que a partir de esta cifra, el uso del procesador está alcanzando el límite del equipo.
+En este caso se observa el uso total del procesador y memoria ram respecto al número de clientes. En la @f-pub-cl se empezaba a ver un deterioro del rendimiento a partir de los 100 clientes y ahora se puede observar que a partir de esta cifra, el uso del procesador está alcanzando el límite del equipo.
 
 #figure(
   image("../imagenes/rendimiento/bench-mensajes-recursos.svg", width: 90%),
@@ -28,4 +28,4 @@ En este caso se observa el uso total del procesador y memoria ram respecto al n�
 ) <f-rec-pub>
 Quizás más interesante es el consumo de recursos según la cantidad de mensajes publicados. En la @f-rec-pub se puede ver el uso de la memoria ram es superior cuando se usa el sistema de autorización basado en la confianza, pero  aumenta linealmente, igual que _Allow All Extension_. El uso del procesador parece que también aumenta linealmente hasta que alcanza valores cercanos al límite.
 
-En resumen, la extension desarrollada presenta el rendimiento esperado, peor que un sistema completamente inseguro, pero manteniendo la escalabiliad. Para obtener un desempeño mejor solo habría que aumentar los recursos del ordenador donde se ejecuta HiveMQ.
+En resumen, la extension desarrollada presenta el rendimiento esperado, peor que un sistema completamente inseguro, pero manteniendo la escalabilidad. Para obtener un desempeño mejor solo habría que aumentar los recursos del ordenador donde se ejecuta HiveMQ.

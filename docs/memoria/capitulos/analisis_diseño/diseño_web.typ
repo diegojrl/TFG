@@ -63,4 +63,4 @@ Por último, la aplicación web tiene la capacidad de modificar algunos de los a
   caption: "Edición de atributos.",
 )
 
-Este menú publicará los mensajes apropidaos según el atributo que se intente modificar (@modificacion-atributos). Para que el procedimiento funcione correctamente el cliente debe tener otorgados los permisos suficientes para cada tópico, ver @autorizacion.
+Este menú publicará los mensajes apropiados según el atributo que se intente modificar (@modificacion-atributos). Para que el procedimiento funcione correctamente el cliente debe tener otorgados los permisos suficientes para cada tópico, ver @autorizacion.

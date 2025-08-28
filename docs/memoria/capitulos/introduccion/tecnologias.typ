@@ -5,17 +5,13 @@ Se basa en un modelo de publicación/suscripción con un broker o servidor centr
 
 Algunas de las ventajas que aporta son:
 - Ligereza y eficiencia. Está diseñado para dispositivos con recursos limitados y tener un uso de ancho de banda bajo.
-- Independenica sobre la red. El protocolo puede funcionar con TCP, Websockets y otros tipos de redes.
+- Independencia sobre la red. El protocolo puede funcionar con TCP, Websockets y otros tipos de redes.
 - Conexiones no continuas. Si un cliente pierde la conexión, al reconectarse recibirá los mensajes pendientes.
 - Fiabilidad configurable. La confirmación de mensajes se puede establecer en tres niveles, $0$ para mensajes no confirmados, $1$ para garantizar que el mensaje se recibe al menos una vez y $2$ para entregar el mensaje exactamente una vez.
 
-=== HiveMq
-HiveMq @hiveMq es un servidor creado especialmente para gestionar los mensajes del protocolo MQTT. Este tipo de servidor se conoce comunmente como _broker_,
-ya que hace de intermediario para todos los mensajes que se envian.
-
-//#align(center)[
-//  #image("../../imagenes/hivemq.jpg", width: 30%)
-//]
+=== HiveMQ
+HiveMQ @hiveMq es un servidor creado especialmente para gestionar los mensajes del protocolo MQTT. Este tipo de servidor se conoce comúnmente como _broker_,
+ya que hace de intermediario para todos los mensajes que se envían.
 
 Este servicio es usado por las marcas principales en los sectores de producción, energía, automoción y logística. Usando el servicio para construir sistemas IoT y transmisión de datos en tiempo real @hiveMq.
 
@@ -31,7 +27,7 @@ Svelte es un framework para el desarrollo de interfaces de usuario que usa un co
 ==== Tailwind CSS
 Tailwind CSS es un framework de CSS que permite diseñar interfaces directamente en el HTML usando clases predefinidas @tailwind. No proporciona componentes ya diseñados, sino que aporta las herramientas para crearlos fácilmente. Sus ventajas son las siguientes:
 
-- Personalización. No obliga a seguir un estilo predetermindado.
+- Personalización. No obliga a seguir un estilo predeterminado.
 - Diseño responsive. Ofrece las utilidades necesarias para crear componentes que reaccionen a los cambios de tamaño de la pantalla.
 - Muy bien integrado en frameworks, entre ellos, Svelte.
 ==== TypeScript
@@ -70,7 +66,7 @@ IntelliJ IDEA es un IDE creado por JetBrains @Intellij, diseñado principalmente
 - Soporte de primera calidad para java.
 - Análisis inteligente del código y autocompletado avanzado.
 - Herramientas de depuración integradas.
-- Integración con bases de datos y contorl de versiones.
+- Integración con bases de datos y control de versiones.
 - Otras integraciones como docker.
 
 ==== Visual Studio Code

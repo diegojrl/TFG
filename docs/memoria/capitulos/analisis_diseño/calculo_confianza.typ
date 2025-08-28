@@ -8,7 +8,7 @@ Este modelo intenta ser lo mas generico posible, sin forzar una arquitectura esp
 ==== Latencia <att-ping>
 La latencia se refiere a el tiempo que tarda un dispositivo en recibir un mensaje y confirmar la recepción de este. Este atributo indica la media de la latencia en cada mensaje.
 
-Para obtener la latencia media de un dispositivo, en cada mensaje que se envía hacia este cliente con $"Qos" > 0$, el broker guarda el instante de tiempo en el que se envía el mensaje y espera a su confirmación, _puback_ o _pubrec_ para $"Qos" = 1$ o $"Qos" = 2$ respectivamente. Además, cuando el broker recibe un mensaje _MQTT ReqPing_ publica un mensaje en el tópico _“tmgr/ping”_ para ese dispositivo, de esta forma, el dispositivo únicamente debe subscribirse al tópico con _QoS 1 o 2_ y el protocolo MQTT se encarga de el envío y recepción de todos estos mensajes. En el siguiente diagrama se puede visualizar el intercambio de mensajes durante el cálculo de la latencia.
+Para obtener la latencia media de un dispositivo, en cada mensaje que se envía hacia este cliente con $"QoS" > 0$, el broker guarda el instante de tiempo en el que se envía el mensaje y espera a su confirmación, _puback_ o _pubrec_ para $"QoS" = 1$ o $"QoS" = 2$ respectivamente. Además, cuando el broker recibe un mensaje _MQTT ReqPing_ publica un mensaje en el tópico _“tmgr/ping”_ para ese dispositivo, de esta forma, el dispositivo únicamente debe subscribirse al tópico con _QoS 1 o 2_ y el protocolo MQTT se encarga de el envío y recepción de todos estos mensajes. En el siguiente diagrama se puede visualizar el intercambio de mensajes durante el cálculo de la latencia.
 
 #align(center)[
   #figure(
@@ -50,7 +50,7 @@ Primero un nuevo dispositivo se conecta al broker. Tras esto el broker automáti
 
 Al mismo tiempo, el nuevo cliente puede subscribirse a los avisos de dispositivos conectados. Al realizar esta acción, recibirá un aviso de todos los dispositivos conectados al broker actualmente y, al igual que el resto de clientes, puede aportar su propia opinión sobre el resto.
 
-Una vez se obtienen todos los datos necesarios, la reputación de cada dispositivo se calcula con la siguiente fórmula:
+Una vez que se obtienen todos los datos necesarios, la reputación de cada dispositivo se calcula con la siguiente fórmula:
 
 $ R_N = sum_(i=1)^N O_i*T_i $
 
