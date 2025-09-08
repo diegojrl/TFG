@@ -3,7 +3,7 @@ La confianza es un concepto complejo y multidisciplinar que se aplica en en much
 En esta relación intervienen al menos dos actores, el que confia y el que recibe la confianza. La confianza es dinámica, puede variar según el contexto y las acciones realizadas por cada actor @iot-trust-survey. En este sistema se introduce un tercer actor, el broker MQTT, que actua como intermediario legítimo en la relación de confianza.
 
 === Atributos
-Este modelo intenta ser lo mas generico posible, sin forzar una arquitectura específica, pero aprovechando las características y mensajes ya existentes en el protocolo MQTT. Es por ello que se han seleccionado los siguientes atributos para el cálculo de confianza.
+Este modelo intenta ser lo más genérico posible, sin forzar una arquitectura específica, pero aprovechando las características y mensajes ya existentes en el protocolo MQTT. Es por ello que se han seleccionado los siguientes atributos para el cálculo de confianza.
 
 ==== Latencia <att-ping>
 La latencia se refiere a el tiempo que tarda un dispositivo en recibir un mensaje y confirmar la recepción de este. Este atributo indica la media de la latencia en cada mensaje.
@@ -63,7 +63,7 @@ Tras adquirir la información de los atributos de cada cliente se usará la lóg
   caption: "Función de activación de reputación",
 )
 
-En @funciones-activacion se pueden observar las funciones de pertenencia de cada atributo.
+En @funciones-pertenencia se pueden observar las funciones de pertenencia de cada atributo.
 
 Una vez definidas las funciones de pertenencia, el conjunto difuso se calcula con las reglas definidas en el archivo de configuración, ver más en @configuración-de-reglas-difusas. Luego estas reglas se agregan usando una media ponderada y el mínimo como función de activación. Los pesos de la media ponderada indican el grado de importancia de cada atributo en el valor final de la confianza. La importancia de cada atributo se ha establecido como se muestra en la siguiente tabla:
 #figure(

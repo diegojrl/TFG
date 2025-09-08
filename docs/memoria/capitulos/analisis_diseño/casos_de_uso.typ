@@ -22,7 +22,7 @@
   #tabla-casos-uso(
     1,
     [Acceso Web],
-    [El accede a la página web y en ella observa los dispositivos conectados. ],
+    [El usuario accede a la página web y en ella observa los dispositivos conectados. ],
     [El usuario debe disponer de un navegador web y el link de la página web. ],
     [Usuario/Administrador.],
     [

@@ -10,4 +10,4 @@ El proyecto tiene varios objetivos, todos relacionados con un sistema de control
 Con estos objetivos en mente, el proyecto se puede dividir en estos tres componentes:
 - Extensión HiveMQ, donde se encontrará toda la lógica del sistema.
 - Aplicación web, será la interfaz para observar y alterar el sistema.
-- Cliente MQTT, encargado de demostrar la funcionalidad.
+- Cliente MQTT, encargado de demostrar el correcto funcionamiento de los mecanismos implementados.
