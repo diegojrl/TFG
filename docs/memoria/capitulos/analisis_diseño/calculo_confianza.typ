@@ -22,7 +22,7 @@ El valor final de la latencia se obtiene de la siguiente forma:
 
 - Si $"Latencia" ≤ "LATENCIA_MIN" "entonces" "Latencia" = "LATENCIA_MIN"$
 - Si $"Latencia" ≥ "LATENCIA_MAX" "entonces" "Latencia" = "LATENCIA_MAX"$
-- En otros casos Latencia
+- En otros casos $"Latencia"$
 
 Los valores de $"LATENCIA_MIN"$ y $"LATENCIA_MAX"$ son configurables, ver más en @configuración-general
 
