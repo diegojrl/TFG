@@ -16,6 +16,7 @@ Los atributos de cada dispositivo se almacenan en una instancia de la clase _Dev
   image("../../imagenes/diagramas/DeviceTrustAttributes.png"),
   caption: "Clase DeviceTrustAttributes y TrustStore.",
 )
+
 - Latencia y tasa de errores: Para detectar la latencia y los errores de los dispositivos hay que aprovechar una de las caracterísiticas del protocolo MQTT, cada mensaje publicado está identificado mediante un PacketId, que es único por cada conexión. El identificador se envía al publicar y confirmar la recepción de los mensajes. Usando la interfaz _PublishOutboundInterceptor_ y _PubrecOutboundInterceptor_ se almacenan los identifadores y el instante de tiempo en el que se recibe cada paquete. En este momento también se comprueba que el identificador del paquete no es repetido, en ese caso se considera que la entrega anterior ha fallado y aumenta el contador de mensajes fallidos del cliente. Luego usando _PubackInboundInterceptor_, _PubrecInboundInterceptor_ y _PubrelInboundInterceptor_, se interceptan las confirmaciones de cada mensaje y actualizan los valores de latencia.
 
 #figure(

@@ -9,8 +9,11 @@ El sistema ABAC se considera uno de los modelos más apropiado para IoT. Esto se
 )
 
 - *PIP* o punto de información de políticas se encarga de obtener la información del dispositivo al cual le afecta la política.
+
 - *PAP* o punto de administración de políticas se ocupa de almacenar y proporcionar las reglas que tienen efecto en cada caso.
+
 - *PDP* o punto de decisión de políticas se encarga de tomar la decisión de acceso, aceptando o rechazando la publicación de mensajes.
+
 - *PEP* o punto de cumplimiento de políticas se ocupa de aplicar las decisiones tomadas. Cuando un mensaje es rechazado el cliente que lo envía es forzosamente desconectado del broker.
 
 Los atributos disponibles para el uso en las reglas de autorización son los siguientes:
