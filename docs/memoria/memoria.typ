@@ -9,7 +9,7 @@
   author: "Diego Jesús Romero Luque",
   tutors: "Davide Ferraris",
   department: " Lenguajes y Ciencias de la Computación",
-  date: "20-08-2025",
+  date: "10-09-2025",
   abstract: resumen,
   keywords: ("MQTT", "HiveMQ", "Autorización", "Confianza", "LDAP", "Aplicación Web", "Java", "Svelte", "TypeScript"),
   abstract_en: abstract,
