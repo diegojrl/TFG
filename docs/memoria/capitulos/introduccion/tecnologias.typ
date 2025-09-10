@@ -25,41 +25,41 @@ Se ha seleccionado este broker debido a su sistema de extensiones, el cual prove
 ==== Svelte
 Svelte es un framework para el desarrollo de interfaces de usuario que usa un compilador extremadamente conciso, usando lenguajes muy conocidos, como HTML, CSS y JavaScript @svelte. Algunas de sus ventajas son:
 
-- Rendimiento. Genera código optimizado para su uso directo.
+- *Rendimiento*. Genera código optimizado para su uso directo.
 
-- Código más simple. Vincula el código HTML, CSS y JavaScript en un mismo fichero.
+- Código más *simple*. Vincula el código HTML, CSS y JavaScript en un mismo fichero.
 
-- Reactividad. Los valores se actualizan automaticamente cuando cambian.
+- *Reactividad*. Los valores se actualizan automaticamente cuando cambian.
 
 ==== Tailwind CSS
 Tailwind CSS es un framework de CSS que permite diseñar interfaces directamente en el HTML usando clases predefinidas @tailwind. No proporciona componentes ya diseñados, sino que aporta las herramientas para crearlos fácilmente. Sus ventajas son las siguientes:
 
-- Personalización. No obliga a seguir un estilo predeterminado.
+- *Personalización*. No obliga a seguir un estilo predeterminado.
 
-- Diseño responsive. Ofrece las utilidades necesarias para crear componentes que reaccionen a los cambios de tamaño de la pantalla.
+- *Diseño responsive*. Ofrece las utilidades necesarias para crear componentes que reaccionen a los cambios de tamaño de la pantalla.
 
-- Muy bien integrado en frameworks, entre ellos, Svelte.
+- Muy bien *integrado en frameworks*, entre ellos, Svelte.
 
 ==== TypeScript
 TypeScript es un lenguaje que complementa al lenguaje JavaScript, añadiendo características extras @typescript. Fue desarrollados por Microsoft y es necesario convertir el código a el lenguaje JavaScript antes de ejecutarlo. Sus ventajas son:
 
-- Sistema de típos estático. Permite la declaración de tipos para las funciones y variables.
+- *Sistema de típos* estático. Permite la declaración de tipos para las funciones y variables.
 
-- El autocompletado es más completo que en JavaScript.
+- El *autocompletado* es más completo que en JavaScript.
 
-- Integrado con la mayoría de frameworks modernos.
+- *Integraciones* con la mayoría de frameworks modernos.
 
-- Compatibilidad con JavaScript. Es posible usar dependencias creadas para JavaScript.
+- *Compatibilidad con JavaScript*. Es posible usar dependencias creadas para JavaScript.
 
 === Herramientas comunes
 ==== Java
 Java es un lenguaje de programación orientado a objetos,  propiedad de Oracle @java. Es uno de los lenguajes más usados en el mundo gracias a su portabilidad, robustez y versatilidad. Sus principales ventajas son:
 
-- Multiplataforma, culquier sistema que tenga disponible una Máquina Virtual de Java (JVM), puede ejecutar programas java.
+- *Multiplataforma*, culquier sistema que tenga disponible una Máquina Virtual de Java (JVM), puede ejecutar programas java.
 
-- Al ser uno de los lenguajes más usados, tiene una gran cantidad de recursos disponibles, como documentación o frameworks.
+- Al ser uno de los lenguajes más usados, tiene una gran cantidad de *recursos disponibles*, como documentación o frameworks.
 
-- Muy versátil, es usado en aplicaciones de escritorio, servidores, teléfonos móviles e incluso IoT.
+- *Versatilidad*, es usado en aplicaciones de escritorio, servidores, teléfonos móviles e incluso IoT.
 
 ==== Maven
 Maven es una herramienta de gestión y automatización de proyectos de software, principalmente para  Java, creado por la fundación apache @maven. En maven se crea un modelo del proyecto donde se definen dependencias, configuración de compilación, empaquetado y despliegue.
@@ -73,11 +73,11 @@ Maven es una herramienta de gestión y automatización de proyectos de software,
 ==== Docker y Linux
 Docker es una plataforma que permite empaquetar aplicaciones junto a todas sus dependencias, en un entorno aislado y portable @docker. Para poder usar Docker es necesario disponer de el sistema operativo Linux, un sistema gratuito y de código libre, ampliamente usado en servidores y sistemas empotrados. Docker aporta las siguientes ventajas:
 
-- Portabilidad y reproducibilidad, los contenedores aseguran que las aplicaciones funcionan exactamente igual sin importar la plataforma o el sistema usado.
+- *Portabilidad y reproducibilidad*. Los contenedores aseguran que las aplicaciones funcionan exactamente igual sin importar la plataforma o el sistema usado.
 
-- Aislamiento y seguridad. Cada contenedor se ejecuta en un entorno aislado, sin acceso directo a los recursos del sistema.
+- *Aislamiento y seguridad*. Cada contenedor se ejecuta en un entorno aislado, sin acceso directo a los recursos del sistema.
 
-- Escalabilidad. Los contenedores pueden ser usados en orquestadores como Kubernetes @k8s, usado para desplegar aplicaciones en escala.
+- *Escalabilidad*. Los contenedores pueden ser usados en orquestadores como Kubernetes @k8s, usado para desplegar aplicaciones en escala.
 
 ==== Intellij IDEA
 IntelliJ IDEA es un IDE creado por JetBrains @Intellij, diseñado principalmente para el desarrollo en Java y otros lenguajes de la JVM. Algunas de sus ventajas más notables:
