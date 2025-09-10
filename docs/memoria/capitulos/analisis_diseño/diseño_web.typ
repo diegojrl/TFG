@@ -1,4 +1,4 @@
-La idea para la aplicación web es que proporcione la funcionalidad de la forma más simple posible, pero con un diseño moderno. Por tanto, la página web dispondrá de una página principal, donde se podrá visualizar los clientes conectados al broker y acceder a la configuración de cada dispositivo.
+La idea para la aplicación web es que proporcione la funcionalidad de la forma más simple posible, pero con un diseño moderno. Por tanto, la página web dispondrá de una *página principal*, donde se podrá visualizar los clientes conectados al broker y acceder a la configuración de cada dispositivo.
 
 Además la pantalla principal deberá ser visualizada correctamente independientemente del dispositivo desde el que se accede.
 
@@ -23,7 +23,7 @@ Además la pantalla principal deberá ser visualizada correctamente independient
   caption: "Pantalla principal, en diferentes tamaños.",
 )
 
-Para recibir la información que se muestra en la pantalla principal, la aplicación web se conecta a el servidor MQTT usando WebSocket y se subscribe a los tópicos correspondientes para recibir los datos necesarios (@vista-control). La dirección del broker debe ser especificada en la configuración de la aplicación web, ver más en @cliente-web. Para iniciar la conexión es necesario que el usuario proporcione los datos para iniciar sesión, con este proposito se crea una ruta en la página web que se visualizará de la siguiente manera:
+Para recibir la información que se muestra en la pantalla principal, la aplicación web se conecta a el servidor MQTT usando *WebSockets* y se subscribe a los tópicos correspondientes para recibir los datos necesarios (@vista-control). La dirección del broker debe ser especificada en la configuración de la aplicación web, ver más en @cliente-web. Para iniciar la conexión es necesario que el usuario proporcione los datos para iniciar sesión, con este proposito se crea una ruta en la página web que se visualizará de la siguiente manera:
 
 #figure(
   grid(
@@ -43,7 +43,7 @@ Para recibir la información que se muestra en la pantalla principal, la aplicac
   caption: "Inicio de sesión.",
 )
 
-Por último, la aplicación web tiene la capacidad de modificar algunos de los atributos de los dispositivos. Para ello el usuario deberá pulsar el botón que se encuentra en la esquina superior derecha de cada dispositivo, apareciendo la siguiente ventana:
+Por último, la aplicación web tiene la capacidad de *modificar* algunos de los atributos de los dispositivos. Para ello el usuario deberá pulsar el botón que se encuentra en la esquina superior derecha de cada dispositivo, apareciendo la siguiente ventana:
 
 #figure(
   grid(

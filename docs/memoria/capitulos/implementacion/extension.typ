@@ -17,16 +17,16 @@ Los atributos de cada dispositivo se almacenan en una instancia de la clase _Dev
   caption: "Clase DeviceTrustAttributes y TrustStore.",
 )
 
-- Latencia y tasa de errores: Para detectar la latencia y los errores de los dispositivos hay que aprovechar una de las caracterísiticas del protocolo MQTT, cada mensaje publicado está identificado mediante un PacketId, que es único por cada conexión. El identificador se envía al publicar y confirmar la recepción de los mensajes. Usando la interfaz _PublishOutboundInterceptor_ y _PubrecOutboundInterceptor_ se almacenan los identifadores y el instante de tiempo en el que se recibe cada paquete. En este momento también se comprueba que el identificador del paquete no es repetido, en ese caso se considera que la entrega anterior ha fallado y aumenta el contador de mensajes fallidos del cliente. Luego usando _PubackInboundInterceptor_, _PubrecInboundInterceptor_ y _PubrelInboundInterceptor_, se interceptan las confirmaciones de cada mensaje y actualizan los valores de latencia.
+- *Latencia y tasa de errores*: Para detectar la latencia y los errores de los dispositivos hay que aprovechar una de las caracterísiticas del protocolo MQTT, cada mensaje publicado está identificado mediante un PacketId, que es único por cada conexión. El identificador se envía al publicar y confirmar la recepción de los mensajes. Usando la interfaz _PublishOutboundInterceptor_ y _PubrecOutboundInterceptor_ se almacenan los identifadores y el instante de tiempo en el que se recibe cada paquete. En este momento también se comprueba que el identificador del paquete no es repetido, en ese caso se considera que la entrega anterior ha fallado y aumenta el contador de mensajes fallidos del cliente. Luego usando _PubackInboundInterceptor_, _PubrecInboundInterceptor_ y _PubrelInboundInterceptor_, se interceptan las confirmaciones de cada mensaje y actualizan los valores de latencia.
 
 #figure(
   image("../../imagenes/diagramas/trustManagement.png"),
   caption: "Clases cálculo de atributos.",
 )
 
-- Seguridad: Cuando se establece la conexión inicialmente se comprueba el uso de cifrado y la red desde donde se realiza la conexión. Con estos datos se puede calcular el valor de la seguridad según lo redactado en la  @att-seguridad.
+- *Seguridad*: Cuando se establece la conexión inicialmente se comprueba el uso de cifrado y la red desde donde se realiza la conexión. Con estos datos se puede calcular el valor de la seguridad según lo redactado en la  @att-seguridad.
 
-- Reputación: Usando la interfaz _PublishInboundInterceptor_, la clase _ReputationListener_ intercepta todos los mensajes que se publican en busca del tópico _tmgr/rep/_. Cada vez que se recibe una nueva opinión para cierto cliente se recalcula la reputación. Para ello se accede a la base de datos y se recuperan todas las opiniones y valores de confianza que afectan al cliente. Luego se calcula como se indica en la @att-rep.
+- *Reputación*: Usando la interfaz _PublishInboundInterceptor_, la clase _ReputationListener_ intercepta todos los mensajes que se publican en busca del tópico _tmgr/rep/_. Cada vez que se recibe una nueva opinión para cierto cliente se recalcula la reputación. Para ello se accede a la base de datos y se recuperan todas las opiniones y valores de confianza que afectan al cliente. Luego se calcula como se indica en la @att-rep.
 
 === Control de atributos
 El control de los atributos de los dispositivos cuenta de dos acciones separadas. La primera se encarga de informar a los clientes de los valores de los atributos. Para ello se inicia un nuevo hilo en el servidor que se activa cada 15 segundos y publica toda la información de todos los dispositivos. La información de interés de cada dispositivo se convierte en formato binario de MessagePack @messagePack con la biblioteca Jackson @jackson y se publica el mensaje que llegará a todos los clientes que se hayan subscrito.

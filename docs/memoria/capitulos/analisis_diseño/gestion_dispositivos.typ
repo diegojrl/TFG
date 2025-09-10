@@ -6,12 +6,18 @@ Para recibir información de el dispositivo con id de cliente _client_id_, el in
   caption: "Protocolo de obtención de información",
 )
 Se enviará la siguiente información de cada dispositivo:
-- Latencia (@att-ping).
-- Tasa de errores (@att-errors).
-- Tipo de red. Indica si la conexión se incluye en una red de confianza (@att-seguridad).
-- Seguridad de red. Indica si la conexión es cifrada (@att-seguridad).
-- Reputación (@att-rep).
-- Confianza (@att-trust).
+
+- *Latencia* (@att-ping).
+
+- *Tasa de errores* (@att-errors).
+
+- *Tipo de red*. Indica si la conexión se incluye en una red de confianza (@att-seguridad).
+
+- *Seguridad de red*. Indica si la conexión es cifrada (@att-seguridad).
+
+- *Reputación* (@att-rep).
+
+- *Confianza* (@att-trust).
 
 === Modificación <modificacion-atributos>
 Algunos de los atributos descritos anteriormente permiten ser modificados usando mensajes de MQTT.

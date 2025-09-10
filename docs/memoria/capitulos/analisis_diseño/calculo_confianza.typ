@@ -1,12 +1,12 @@
 La confianza es un concepto complejo y multidisciplinar que se aplica en en muchos campos, como la filosofía o la informática. Generalmente, se entiende como la expectativa de que una persona, entidad o sistema actuará en el futuro de manera honesta, predecible y fiable @iot-trust-survey.
 
-En esta relación intervienen al menos dos actores, el que confia y el que recibe la confianza. La confianza es dinámica, puede variar según el contexto y las acciones realizadas por cada actor @iot-trust-survey. En este sistema se introduce un tercer actor, el broker MQTT, que actua como intermediario legítimo en la relación de confianza.
+En esta relación intervienen al menos dos actores, el que confia y el que recibe la confianza. La confianza es dinámica, puede variar según el contexto y las acciones realizadas por cada actor @iot-trust-survey. En este sistema se introduce un tercer actor, el broker MQTT, que actua como *intermediario* legítimo en la relación de confianza.
 
 === Atributos
 Este modelo intenta ser lo más genérico posible, sin forzar una arquitectura específica, pero aprovechando las características y mensajes ya existentes en el protocolo MQTT. Es por ello que se han seleccionado los siguientes atributos para el cálculo de confianza.
 
 ==== Latencia <att-ping>
-La latencia se refiere a el tiempo que tarda un dispositivo en recibir un mensaje y confirmar la recepción de este. Este atributo indica la media de la latencia en cada mensaje.
+La *latencia* se refiere a el tiempo que tarda un dispositivo en recibir un mensaje y confirmar la recepción de este. Este atributo indica la media de la latencia en cada mensaje.
 
 Para obtener la latencia media de un dispositivo, en cada mensaje que se envía hacia este cliente con $"QoS" > 0$, el broker guarda el instante de tiempo en el que se envía el mensaje y espera a su confirmación, _puback_ o _pubrec_ para $"QoS" = 1$ o $"QoS" = 2$ respectivamente. Además, cuando el broker recibe un mensaje _MQTT ReqPing_ publica un mensaje en el tópico _“tmgr/ping”_ para ese dispositivo, de esta forma, el dispositivo únicamente debe subscribirse al tópico con _QoS 1 o 2_ y el protocolo MQTT se encarga de el envío y recepción de todos estos mensajes. En el siguiente diagrama se puede visualizar el intercambio de mensajes durante el cálculo de la latencia.
 
@@ -20,14 +20,16 @@ Para obtener la latencia media de un dispositivo, en cada mensaje que se envía 
 
 El valor final de la latencia se obtiene de la siguiente forma:
 
-- Si $"Latencia" ≤ "LATENCIA_MIN" "entonces" "Latencia" = "LATENCIA_MIN"$
-- Si $"Latencia" ≥ "LATENCIA_MAX" "entonces" "Latencia" = "LATENCIA_MAX"$
-- En otros casos $"Latencia"$
+- Si $"Latencia" ≤ "LATENCIA_MIN" "entonces" "Latencia" = "LATENCIA_MIN"$.
 
-Los valores de $"LATENCIA_MIN"$ y $"LATENCIA_MAX"$ son configurables, ver más en @configuración-general
+- Si $"Latencia" ≥ "LATENCIA_MAX" "entonces" "Latencia" = "LATENCIA_MAX"$.
+
+- En otros casos $"Latencia"$.
+
+Los valores de $"LATENCIA_MIN"$ y $"LATENCIA_MAX"$ son configurables, ver más en @configuración-general.
 
 ==== Seguridad <att-seguridad>
-Esta característica tiene en cuenta la seguridad de la conexión entre el cliente y el servidor, la seguridad se clasifica como buena o mala. Será buena si la conexión es cifrada (TLS) o si la dirección IP se encuentra en un rango configurado como seguro, ver más en @configuración-general.
+Esta característica tiene en cuenta la *seguridad de la conexión* entre el cliente y el servidor, la seguridad se clasifica como buena o mala. Será buena si la conexión es cifrada (TLS) o si la dirección IP se encuentra en un rango configurado como seguro, ver más en @configuración-general.
 
 ==== Tasa de errores <att-errors>
 La tasa errores indica con un porcentage el número de mensajes que han sido reenviados frente a el total de los mensajes publicados. Tiene un valor por defecto de 50%.
@@ -37,7 +39,7 @@ Usando la misma información que en la detección de Latencia, comprueba las vec
 $ "tasa de errores" = "paquetes_reenviados" / "mensajes_publicados" $
 
 ==== Reputación <att-rep>
-La reputación se refiere a la relación entre dispositivos, donde cada dispositivo puede aportar su opinión sobre otro.
+La reputación se refiere a la relación entre dispositivos, donde cada dispositivo puede aportar su *opinión* sobre otro.
 
 Para calcular el valor de la reputación de cada dispositivo es necesario disponer con cierta información de antemano. Principalmente las opiniones de los dispositivos entre ellos, debe ser un valor entre 0 y 1. Para obtener estos datos cada dispositivo debe proporcionarlos individualmente usando el siguiente procedimiento:
 
@@ -57,7 +59,7 @@ $ R_N = sum_(i=1)^N O_i*T_i $
 Donde $R_j$ es la reputación del cliente $j$, $N$ es el número de opiniones que afectan a el dispositivo actualmente, $O_i$ es la opinión que ha aportado el dispositivo $i$ sobre el cliente $j$ y $T_i$ es el valor de la confianza del dispositivo $i$ en el momento del cálculo.
 
 === Lógica difusa <att-trust>
-Tras adquirir la información de los atributos de cada cliente se usará la lógica difusa para obtener un valor final de confianza para el dispositivo. Primero, para cada atributo, se establecen unos términos asociados a un mnemónico y una función de pertenencia, ver más en @configuración-de-reglas-difusas. Por ejemplo, para la reputación, se obtiene la siguiente función de pertenencia:
+Tras adquirir la información de los atributos de cada cliente se usará la lógica difusa para obtener un *valor final de confianza* para el dispositivo. Primero, para cada atributo, se establecen unos términos asociados a un mnemónico y una función de pertenencia, ver más en @configuración-de-reglas-difusas. Por ejemplo, para la reputación, se obtiene la siguiente función de pertenencia:
 #figure(
   image("../../imagenes/funcionesActivacion/reputacion.svg"),
   caption: "Función de activación de reputación",
