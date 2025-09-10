@@ -27,7 +27,7 @@ Svelte es un framework para el desarrollo de interfaces de usuario que usa un co
 
 - *Rendimiento*. Genera código optimizado para su uso directo.
 
-- Código más *simple*. Vincula el código HTML, CSS y JavaScript en un mismo fichero.
+- *Simplicidad*. Vincula el código HTML, CSS y JavaScript en un mismo fichero, resultando en un código más simple.
 
 - *Reactividad*. Los valores se actualizan automaticamente cuando cambian.
 
@@ -38,18 +38,18 @@ Tailwind CSS es un framework de CSS que permite diseñar interfaces directamente
 
 - *Diseño responsive*. Ofrece las utilidades necesarias para crear componentes que reaccionen a los cambios de tamaño de la pantalla.
 
-- Muy bien *integrado en frameworks*, entre ellos, Svelte.
+- *Integraciones*. Muy bien integrado en frameworks, entre ellos, Svelte.
 
 ==== TypeScript
 TypeScript es un lenguaje que complementa al lenguaje JavaScript, añadiendo características extras @typescript. Fue desarrollados por Microsoft y es necesario convertir el código a el lenguaje JavaScript antes de ejecutarlo. Sus ventajas son:
 
-- *Sistema de típos* estático. Permite la declaración de tipos para las funciones y variables.
+- Sistema de típos estático. Permite la declaración de tipos para las funciones y variables.
 
-- El *autocompletado* es más completo que en JavaScript.
+- El autocompletado es más completo que en JavaScript.
 
-- *Integraciones* con la mayoría de frameworks modernos.
+- Integraciones con la mayoría de frameworks modernos.
 
-- *Compatibilidad con JavaScript*. Es posible usar dependencias creadas para JavaScript.
+- Ofrece una gran compatibilidad con JavaScript. Es posible usar dependencias creadas para este lenguaje desde TypeScript.
 
 === Herramientas comunes
 ==== Java
@@ -57,7 +57,7 @@ Java es un lenguaje de programación orientado a objetos,  propiedad de Oracle @
 
 - *Multiplataforma*, culquier sistema que tenga disponible una Máquina Virtual de Java (JVM), puede ejecutar programas java.
 
-- Al ser uno de los lenguajes más usados, tiene una gran cantidad de *recursos disponibles*, como documentación o frameworks.
+- *Recursos*. Al ser uno de los lenguajes más usados, tiene una gran cantidad de material disponible, como documentación o frameworks.
 
 - *Versatilidad*, es usado en aplicaciones de escritorio, servidores, teléfonos móviles e incluso IoT.
 
